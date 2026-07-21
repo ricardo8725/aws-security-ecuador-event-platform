@@ -1,0 +1,50 @@
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+
+# Terraform
+**/.terraform/
+*.tfstate
+*.tfstate.*
+*.tfstate.backup
+.terraform.lock.hcl
+tfplan
+*.tfvars
+!*.tfvars.example
+
+# AWS credentials
+.aws-credentials
+*.pem
+
+# Logs
+*.log
+npm-debug.log*
+
+# Node
+node_modules/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Lambda build artifacts
+lambda/*.zip
+
+# PDFs
+*.pdf
+
+# Admin dashboard config (generated at deploy from Terraform outputs)
+admin/config.js
+
+# NOTE: .kiro/ and design.md are intentionally INCLUDED in this repo
+# as a showcase of the spec-driven, AI-assisted workflow used to build it.

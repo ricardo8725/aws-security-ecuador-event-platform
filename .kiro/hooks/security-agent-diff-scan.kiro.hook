@@ -1,0 +1,13 @@
+{
+  "enabled": true,
+  "name": "Security Agent — Diff Scan",
+  "description": "On-demand diff scan via AWS Security Agent. Analyzes changes since last commit (HEAD). Run before pushing security-sensitive changes in lambda/, terraform/, or .github/workflows/.",
+  "version": "1",
+  "when": {
+    "type": "userTriggered"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "The user has manually triggered a diff security scan. Run the Diff Scan workflow from the AWS Security Agent power: call setup_check first, then start_diff_scan with path='/Users/wreyes/Documents/Deployments/PersonalDev/awssecurityecuador' and base_ref='HEAD'. Poll every 2 minutes with get_scan_status until COMPLETED or FAILED. On completion call get_scan_findings, present results grouped by severity, and write the full report to .security-agent/findings-{scan_id}.md. Offer to fix any HIGH or CRITICAL findings."
+  }
+}

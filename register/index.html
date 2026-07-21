@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Registro — AWS GenAI Security Day 2026</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎫</text></svg>" />
+<meta name="description" content="Regístrate al AWS GenAI Security Day — 18 de Julio 2026, Ecuador." />
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<!-- Cloudflare Turnstile -->
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400,500,600,700,800&family=JetBrains+Mono:wght@400,500,700&display=swap" rel="stylesheet">
+
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+  :root {
+    --bg-primary: #0d1117;
+    --bg-secondary: #161b22;
+    --bg-card: rgba(22, 27, 34, 0.6);
+    --bg-input: rgba(48, 54, 61, 0.4);
+    --border: #30363d;
+    --border-focus: #0a73ff;
+    --text-primary: #e6edf3;
+    --text-secondary: #8b949e;
+    --text-muted: #6e7681;
+    --accent-blue: #0a73ff;
+    --accent-green: #00ff88;
+    --accent-orange: #f5a133;
+    --accent-purple: #a371f7;
+    --accent-red: #f85149;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    margin: 0;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+  .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+  .tech-grid {
+    background-image:
+      linear-gradient(rgba(48, 54, 61, 0.3) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(48, 54, 61, 0.3) 1px, transparent 1px);
+    background-size: 50px 50px;
+  }
+
+  .text-gradient-ai {
+    background: linear-gradient(135deg, #a371f7 0%, #00ff88 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .card-tech {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+  }
+
+  .form-input, .form-select, .form-textarea {
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    padding: 12px 16px;
+    border-radius: 8px;
+    width: 100%;
+    font-family: inherit;
+    font-size: 14px;
+    transition: all 0.2s ease;
+  }
+  .form-input:focus, .form-select:focus, .form-textarea:focus {
+    outline: none;
+    border-color: var(--border-focus);
+    background: rgba(48, 54, 61, 0.6);
+    box-shadow: 0 0 0 3px rgba(10, 115, 255, 0.1);
+  }
+  .form-input::placeholder, .form-textarea::placeholder { color: var(--text-muted); }
+  .form-input:invalid:not(:placeholder-shown) { border-color: var(--accent-red); }
+
+  .form-label {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+  .form-label .required { color: var(--accent-red); margin-left: 4px; }
+  .form-help {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 6px;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #0a73ff 0%, #00ff88 100%);
+    color: #0d1117;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+  }
+  .btn-primary:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
+  }
+  .btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .btn-secondary {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+  .btn-secondary:hover { border-color: var(--accent-green); color: var(--accent-green); }
+
+  /* Checkbox custom */
+  .checkbox-wrapper {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    cursor: pointer;
+  }
+  .checkbox-wrapper input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 1.5px solid var(--border);
+    border-radius: 4px;
+    background: var(--bg-input);
+    cursor: pointer;
+    flex-shrink: 0;
+    margin-top: 2px;
+    position: relative;
+    transition: all 0.2s;
+  }
+  .checkbox-wrapper input[type="checkbox"]:checked {
+    background: var(--accent-green);
+    border-color: var(--accent-green);
+  }
+  .checkbox-wrapper input[type="checkbox"]:checked::after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 1px;
+    width: 5px;
+    height: 10px;
+    border: solid #0d1117;
+    border-width: 0 2.5px 2.5px 0;
+    transform: rotate(45deg);
+  }
+
+  .alert-success {
+    background: rgba(0, 255, 136, 0.1);
+    border: 1px solid rgba(0, 255, 136, 0.3);
+    color: var(--accent-green);
+    padding: 16px;
+    border-radius: 8px;
+    font-size: 14px;
+  }
+  .alert-error {
+    background: rgba(248, 81, 73, 0.1);
+    border: 1px solid rgba(248, 81, 73, 0.3);
+    color: var(--accent-red);
+    padding: 16px;
+    border-radius: 8px;
+    font-size: 14px;
+  }
+
+  .legal-box {
+    background: rgba(48, 54, 61, 0.3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    max-height: 200px;
+    overflow-y: auto;
+  }
+  .legal-box::-webkit-scrollbar { width: 6px; }
+  .legal-box::-webkit-scrollbar-track { background: transparent; }
+  .legal-box::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  .header-glass {
+    background: rgba(13, 17, 23, 0.8);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* Spinner */
+  .spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(13, 17, 23, 0.3);
+    border-top-color: #0d1117;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    display: inline-block;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header-glass sticky top-0 left-0 right-0 z-50">
+  <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+    <a href="https://aisecurity.awssecurityecuador.com/" class="flex items-center gap-3">
+      <img src="assets/logo.jpeg" alt="AWS UG Security Ecuador" class="w-10 h-10 rounded-lg object-cover" />
+      <div>
+        <div class="font-mono font-bold text-sm" style="color:#e6edf3">AWS_UG_SECURITY</div>
+        <div class="font-mono text-xs" style="color:#6e7681">REGISTER.GEN_AI.DAY</div>
+      </div>
+    </a>
+    <a href="https://aisecurity.awssecurityecuador.com/"
+       class="font-mono text-sm" style="color:#8b949e">← volver al evento</a>
+  </div>
+</header>
+
+<!-- BACKGROUND -->
+<div class="fixed inset-0 tech-grid" style="opacity:0.2; z-index:-1"></div>
+
+<main class="relative max-w-3xl mx-auto px-6 py-12 md:py-20">
+
+  <!-- Title -->
+  <div class="text-center mb-10">
+    <div class="font-mono text-xs mb-3" style="color:#a371f7">// REGISTRO_OFICIAL()</div>
+    <h1 class="font-bold mb-3" style="font-size:clamp(1.8rem,5vw,2.8rem)">
+      <span class="text-gradient-ai">AWS GenAI</span> Security Day
+    </h1>
+    <p class="font-mono text-sm" style="color:#8b949e">18 Julio 2026 · 08h30 — 16h00 ECT · Ecuador · FREE</p>
+  </div>
+
+  <!-- Form Card -->
+  <div class="card-tech p-6 md:p-10">
+
+    <!-- Status messages -->
+    <div id="success-msg" class="alert-success mb-6 hidden">
+      ✓ <strong>Registro confirmado.</strong> Tu código de registro es: <strong id="reg-code" style="font-family:'JetBrains Mono',monospace;font-size:16px;letter-spacing:2px;color:#00ff88"></strong>
+      <br><span style="font-size:13px;color:#8b949e">Revisa tu correo — te enviamos tu entrada digital con código QR.</span>
+      <div id="spots-info" class="mt-2" style="font-size:12px;color:#6e7681"></div>
+    </div>
+    <div id="error-msg" class="alert-error mb-6 hidden">
+      ✗ <span id="error-text">Hubo un error al procesar tu registro. Por favor intenta nuevamente.</span>
+    </div>
+
+    <form id="register-form" novalidate>
+
+      <!-- Honeypot anti-bot (hidden from real users) -->
+      <div style="position:absolute;left:-9999px" aria-hidden="true">
+        <input type="text" id="hp_website" name="website" tabindex="-1" autocomplete="off" />
+      </div>
+
+      <!-- Personal info -->
+      <div class="mb-8">
+        <div class="font-mono text-xs mb-4" style="color:#a371f7">// datos_personales()</div>
+
+        <div class="grid md:grid-cols-2 gap-4 mb-4">
+          <div>
+            <label class="form-label" for="first_name">Nombres<span class="required">*</span></label>
+            <input type="text" id="first_name" name="first_name" class="form-input" required
+                   maxlength="80" placeholder="Tu nombre" autocomplete="given-name" />
+          </div>
+          <div>
+            <label class="form-label" for="last_name">Apellidos<span class="required">*</span></label>
+            <input type="text" id="last_name" name="last_name" class="form-input" required
+                   maxlength="80" placeholder="Tus apellidos" autocomplete="family-name" />
+          </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-4 mb-4">
+          <div>
+            <label class="form-label" for="email">Email<span class="required">*</span></label>
+            <input type="email" id="email" name="email" class="form-input" required
+                   maxlength="120" placeholder="tu@correo.com" autocomplete="email" />
+            <div class="form-help">Recibirás los detalles del evento en este correo.</div>
+          </div>
+          <div>
+            <label class="form-label" for="phone">Teléfono</label>
+            <input type="tel" id="phone" name="phone" class="form-input"
+                   maxlength="20" placeholder="+593 99 999 9999" autocomplete="tel" />
+            <div class="form-help">Opcional. Solo para notificaciones del evento.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Professional info -->
+      <div class="mb-8">
+        <div class="font-mono text-xs mb-4" style="color:#a371f7">// info_profesional()</div>
+
+        <div class="grid md:grid-cols-2 gap-4 mb-4">
+          <div>
+            <label class="form-label" for="company">Empresa / Organización</label>
+            <input type="text" id="company" name="company" class="form-input"
+                   maxlength="120" placeholder="Nombre de tu empresa" autocomplete="organization" />
+          </div>
+          <div>
+            <label class="form-label" for="role">Cargo / Rol</label>
+            <input type="text" id="role" name="role" class="form-input"
+                   maxlength="120" placeholder="Ej: Cloud Security Engineer" autocomplete="organization-title" />
+          </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-4 mb-4">
+          <div>
+            <label class="form-label" for="experience">Experiencia con AWS<span class="required">*</span></label>
+            <select id="experience" name="experience" class="form-select" required>
+              <option value="">Selecciona...</option>
+              <option value="beginner">Principiante (&lt; 1 año)</option>
+              <option value="intermediate">Intermedio (1-3 años)</option>
+              <option value="advanced">Avanzado (3-5 años)</option>
+              <option value="expert">Experto (5+ años)</option>
+            </select>
+          </div>
+          <div>
+            <label class="form-label" for="ai_experience">Experiencia con IA/GenAI<span class="required">*</span></label>
+            <select id="ai_experience" name="ai_experience" class="form-select" required>
+              <option value="">Selecciona...</option>
+              <option value="none">Sin experiencia</option>
+              <option value="basic">Básica (he probado herramientas)</option>
+              <option value="intermediate">Intermedia (he construido proyectos)</option>
+              <option value="advanced">Avanzada (en producción)</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="form-label" for="city">Ciudad<span class="required">*</span></label>
+          <select id="city" name="city" class="form-select" required>
+            <option value="">Selecciona tu ciudad...</option>
+            <option value="quito">Quito</option>
+            <option value="guayaquil">Guayaquil</option>
+            <option value="cuenca">Cuenca</option>
+            <option value="ambato">Ambato</option>
+            <option value="manta">Manta</option>
+            <option value="loja">Loja</option>
+            <option value="machala">Machala</option>
+            <option value="other_ec">Otra ciudad de Ecuador</option>
+            <option value="other_country">Fuera de Ecuador</option>
+          </select>
+        </div>
+
+        <div class="mt-4">
+          <label class="form-label" for="employment_status">Situación laboral <span style="color:#6e7681">(opcional)</span></label>
+          <select id="employment_status" name="employment_status" class="form-select">
+            <option value="">Prefiero no decir</option>
+            <option value="employed">Trabajando actualmente</option>
+            <option value="open_to_offers">Trabajando, pero abierto/a a ofertas</option>
+            <option value="seeking">Buscando empleo activamente</option>
+            <option value="freelance">Independiente / Freelance</option>
+            <option value="student">Estudiante</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Interests -->
+      <div class="mb-8">
+        <div class="font-mono text-xs mb-4" style="color:#a371f7">// expectativas()</div>
+        <label class="form-label" for="expectations">¿Qué esperas aprender en el evento?</label>
+        <textarea id="expectations" name="expectations" class="form-textarea" rows="3"
+                  maxlength="500" placeholder="Cuéntanos brevemente tus intereses (opcional)"></textarea>
+      </div>
+
+      <!-- LOPDP Consent (Ley Orgánica de Protección de Datos Personales — Ecuador) -->
+      <div class="mb-8">
+        <div class="font-mono text-xs mb-4" style="color:#f5a133">// proteccion_de_datos() — LOPDP</div>
+
+        <div class="legal-box mb-4">
+          <p class="mb-2"><strong style="color:#e6edf3">Aviso de Privacidad — Ley Orgánica de Protección de Datos Personales (LOPDP)</strong></p>
+          <p class="mb-2">
+            En cumplimiento con la <strong>Ley Orgánica de Protección de Datos Personales del Ecuador</strong>
+            (Registro Oficial Suplemento No. 459 — 26 de mayo de 2021) y su Reglamento, te informamos que:
+          </p>
+          <p class="mb-2">
+            <strong style="color:#e6edf3">Responsable del tratamiento:</strong> AWS User Group Security Ecuador (organización comunitaria sin fines de lucro).
+          </p>
+          <p class="mb-2">
+            <strong style="color:#e6edf3">Finalidad:</strong> los datos personales recolectados serán utilizados exclusivamente para:
+            (i) gestionar tu registro al evento <em>AWS GenAI Security Day 2026</em>;
+            (ii) enviarte comunicaciones relacionadas con el evento (recordatorios, agenda, instrucciones de acceso);
+            (iii) generar estadísticas anonimizadas de asistencia para mejorar futuros eventos comunitarios.
+          </p>
+          <p class="mb-2">
+            <strong style="color:#e6edf3">Datos recolectados:</strong> nombres, apellidos, correo electrónico, teléfono (opcional), empresa, cargo, ciudad, nivel de experiencia y situación laboral (opcional).
+          </p>
+          <p class="mb-2">
+            <strong style="color:#e6edf3">Conservación:</strong> los datos se conservarán por un período máximo de 12 meses posteriores al evento, tras lo cual serán eliminados de forma segura.
+          </p>
+          <p class="mb-2">
+            <strong style="color:#e6edf3">Compartir con terceros:</strong> por defecto tus datos <strong>no se comparten</strong> con terceros para fines comerciales; los sponsors solo reciben estadísticas agregadas y anonimizadas. Únicamente compartiremos tus datos con terceros si lo autorizas marcando las casillas opcionales a continuación:
+          </p>
+          <p class="mb-2" style="padding-left:1rem">
+            • <strong style="color:#e6edf3">Bolsa de empleo:</strong> si la marcas, tu nombre, correo, situación laboral, nivel de experiencia y empresa/cargo podrán compartirse con sponsors verificados y empresas reclutadoras del evento, con el único fin de presentarte oportunidades laborales.<br/>
+            • <strong style="color:#e6edf3">Sponsors del evento:</strong> si la marcas, tus datos de contacto (nombre, correo, teléfono, empresa y cargo) podrán compartirse con los sponsors del evento para que te envíen información sobre sus productos y servicios. La entrega a los sponsors se realiza una vez finalizado el evento.
+          </p>
+          <p class="mb-2">
+            Ambos consentimientos son voluntarios, independientes de tu registro y revocables en cualquier momento escribiendo a <a href="mailto:privacy@awssecurityecuador.com" style="color:#0a73ff">privacy@awssecurityecuador.com</a>.
+          </p>
+          <p class="mb-2">
+            <strong style="color:#e6edf3">Tus derechos:</strong> de acuerdo con los artículos 12 y siguientes de la LOPDP, tienes derecho al acceso, rectificación, eliminación, oposición, portabilidad y limitación del tratamiento de tus datos. Puedes ejercerlos enviando un correo a <a href="mailto:privacy@awssecurityecuador.com" style="color:#0a73ff">privacy@awssecurityecuador.com</a>.
+          </p>
+          <p>
+            <strong style="color:#e6edf3">Autoridad de control:</strong> Superintendencia de Protección de Datos Personales del Ecuador.
+          </p>
+        </div>
+
+        <label class="checkbox-wrapper mb-3">
+          <input type="checkbox" id="consent_data" name="consent_data" required />
+          <span class="text-sm" style="color:#e6edf3">
+            <strong style="color:#00ff88">Acepto</strong> el tratamiento de mis datos personales según el aviso de privacidad descrito arriba, conforme a la LOPDP del Ecuador. <span class="required">*</span>
+          </span>
+        </label>
+
+        <label class="checkbox-wrapper mb-3">
+          <input type="checkbox" id="consent_communications" name="consent_communications" />
+          <span class="text-sm" style="color:#e6edf3">
+            Acepto recibir comunicaciones <strong>opcionales</strong> sobre futuros eventos de AWS UG Security Ecuador. (Puedes darte de baja en cualquier momento.)
+          </span>
+        </label>
+
+        <label class="checkbox-wrapper mb-3">
+          <input type="checkbox" id="consent_recruiters" name="consent_recruiters" />
+          <span class="text-sm" style="color:#e6edf3">
+            <strong style="color:#f5a133">Bolsa de empleo (opcional):</strong> autorizo que mi nombre, correo, situación laboral, nivel de experiencia y empresa/cargo se compartan con <strong>sponsors verificados y empresas reclutadoras</strong> del evento, con el único fin de contactarme sobre oportunidades laborales. Entiendo que es voluntario y puedo revocarlo escribiendo a <a href="mailto:privacy@awssecurityecuador.com" style="color:#0a73ff">privacy@awssecurityecuador.com</a>.
+          </span>
+        </label>
+
+        <label class="checkbox-wrapper mb-3">
+          <input type="checkbox" id="consent_sponsors" name="consent_sponsors" />
+          <span class="text-sm" style="color:#e6edf3">
+            <strong style="color:#f5a133">Sponsors del evento (opcional):</strong> autorizo que mis datos de contacto (nombre, correo, teléfono, empresa y cargo) se compartan con los <strong>sponsors del evento</strong> para recibir información sobre sus productos y servicios. Entiendo que es voluntario y puedo revocarlo escribiendo a <a href="mailto:privacy@awssecurityecuador.com" style="color:#0a73ff">privacy@awssecurityecuador.com</a>.
+          </span>
+        </label>
+
+        <label class="checkbox-wrapper">
+          <input type="checkbox" id="consent_image" name="consent_image" />
+          <span class="text-sm" style="color:#e6edf3">
+            Autorizo el uso de mi imagen en fotografías y/o videos tomados durante el evento, exclusivamente para fines de difusión comunitaria del mismo. (Opcional)
+          </span>
+        </label>
+      </div>
+
+      <!-- Turnstile CAPTCHA (invisible) -->
+      <div class="cf-turnstile mb-4" data-sitekey="0x4AAAAAADXdBBmDAZMroo6d" data-callback="onTurnstileSuccess" data-theme="dark"></div>
+
+      <!-- Submit -->
+      <div class="flex flex-col sm:flex-row gap-4">
+        <button type="submit" id="submit-btn"
+                class="btn-primary font-mono font-bold text-sm px-8 py-4 rounded-lg flex-1 flex items-center justify-center gap-2">
+          <span id="submit-text">CONFIRMAR_REGISTRO()</span>
+        </button>
+        <button type="reset"
+                class="btn-secondary font-mono font-semibold text-sm px-8 py-4 rounded-lg">
+          LIMPIAR()
+        </button>
+      </div>
+
+      <p class="font-mono text-xs mt-4 text-center" style="color:#6e7681">
+        // los campos marcados con * son obligatorios
+      </p>
+
+    </form>
+  </div>
+
+  <!-- Footer -->
+  <div class="text-center mt-10">
+    <p class="font-mono text-xs mb-2" style="color:#6e7681">
+      AWS::GEN_AI.SECURITY.DAY_2026
+    </p>
+    <p class="font-mono text-xs" style="color:#6e7681">
+      // © 2026 AWS_UG_SECURITY_ECUADOR — POWERED_BY::COMMUNITY
+    </p>
+  </div>
+
+</main>
+
+<script>
+  const form = document.getElementById('register-form');
+  const submitBtn = document.getElementById('submit-btn');
+  const submitText = document.getElementById('submit-text');
+  const successMsg = document.getElementById('success-msg');
+  const errorMsg = document.getElementById('error-msg');
+  const errorText = document.getElementById('error-text');
+
+  // API endpoint — gets replaced after Terraform deploys API Gateway
+  const API_ENDPOINT = window.REGISTRATION_API_URL || '/api/register';
+
+  let turnstileToken = '';
+  function onTurnstileSuccess(token) { turnstileToken = token; }
+
+  function showError(message) {
+    errorText.textContent = message;
+    errorMsg.classList.remove('hidden');
+    successMsg.classList.add('hidden');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function showSuccess(data) {
+    successMsg.classList.remove('hidden');
+    errorMsg.classList.add('hidden');
+    if (data.registration_code) {
+      document.getElementById('reg-code').textContent = data.registration_code;
+    }
+    if (data.spots_remaining !== undefined) {
+      document.getElementById('spots-info').textContent = `Cupos restantes: ${data.spots_remaining}/400`;
+    }
+    form.reset();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    errorMsg.classList.add('hidden');
+    successMsg.classList.add('hidden');
+
+    // Honeypot check — bots fill hidden fields
+    if (document.getElementById('hp_website').value) {
+      // Silently reject bot submissions
+      showSuccess({registration_code: 'OK', spots_remaining: 199});
+      return;
+    }
+
+    // Validate consent_data
+    if (!document.getElementById('consent_data').checked) {
+      showError('Debes aceptar el tratamiento de datos personales para continuar.');
+      return;
+    }
+
+    // Build payload
+    const data = {
+      first_name: document.getElementById('first_name').value.trim(),
+      last_name: document.getElementById('last_name').value.trim(),
+      email: document.getElementById('email').value.trim().toLowerCase(),
+      phone: document.getElementById('phone').value.trim(),
+      company: document.getElementById('company').value.trim(),
+      role: document.getElementById('role').value.trim(),
+      experience: document.getElementById('experience').value,
+      ai_experience: document.getElementById('ai_experience').value,
+      city: document.getElementById('city').value,
+      employment_status: document.getElementById('employment_status').value,
+      expectations: document.getElementById('expectations').value.trim(),
+      consent_data: document.getElementById('consent_data').checked,
+      consent_communications: document.getElementById('consent_communications').checked,
+      consent_image: document.getElementById('consent_image').checked,
+      consent_recruiters: document.getElementById('consent_recruiters').checked,
+      consent_sponsors: document.getElementById('consent_sponsors').checked,
+      event: 'aws-gen-ai-security-day-2026',
+      turnstile_token: turnstileToken
+    };
+
+    // Disable button + show spinner
+    submitBtn.disabled = true;
+    submitText.innerHTML = '<span class="spinner"></span> ENVIANDO...';
+
+    try {
+      const response = await fetch(API_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      if (response.ok) {
+        const responseData = await response.json().catch(() => ({}));
+        showSuccess(responseData);
+      } else {
+        const errorData = await response.json().catch(() => ({}));
+        showError(errorData.message || 'Error al procesar el registro. Intenta nuevamente.');
+      }
+    } catch (err) {
+      console.error(err);
+      showError('No se pudo conectar con el servidor. Verifica tu conexión e intenta nuevamente.');
+    } finally {
+      submitBtn.disabled = false;
+      submitText.textContent = 'CONFIRMAR_REGISTRO()';
+    }
+  });
+</script>
+
+</body>
+</html>

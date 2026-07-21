@@ -1,0 +1,13 @@
+{
+  "enabled": true,
+  "name": "Deploy to Main",
+  "description": "Formats Terraform files, stages all changes, commits with a message, pushes to main, and monitors the GitHub Actions deployment workflow using gh CLI.",
+  "version": "1",
+  "when": {
+    "type": "userTriggered"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Run the full deploy workflow: 1) Run `terraform fmt -recursive` in the terraform/ directory. 2) Stage all changes with `git add .`. 3) Ask the user for a commit message, then commit with `git commit -m \"<message>\"`. 4) Push to main with `git push origin main`. 5) Wait 5 seconds then monitor the deployment with `gh run list --limit 1` and `gh run watch` to show the progress until it completes or fails. Report the final status to the user."
+  }
+}

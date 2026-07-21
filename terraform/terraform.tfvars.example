@@ -1,0 +1,18 @@
+# Copy to terraform.tfvars and fill in your own values.
+# terraform.tfvars is gitignored — never commit real secrets.
+
+# --- Core ---
+aws_region       = "us-east-1"
+aws_profile      = ""                       # local CLI profile; leave empty in CI/CD (OIDC)
+project_name     = "mysecurity-event"
+domain_name      = "www.example.com"
+hosted_zone_name = "example.com"            # must already exist in Route53
+
+# --- CI/CD (GitHub OIDC) ---
+github_org  = "your-github-username"
+github_repo = "your-repo-name"
+
+# --- Secrets (do NOT hardcode in production; pass via env or CI secrets) ---
+# export TF_VAR_checkin_secret=... / TF_VAR_turnstile_secret=...
+checkin_secret   = "change-me-staff-checkin-token"
+turnstile_secret = "change-me-cloudflare-turnstile-secret"

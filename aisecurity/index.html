@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AWS GenAI Security Day — 18 Julio 2026</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>" />
+<meta name="description" content="AWS GenAI Security Day — Evento presencial sobre seguridad en IA Generativa. 18 de Julio 2026, Ecuador." />
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400,500,600,700,800&family=JetBrains+Mono:wght@400,500,700&display=swap" rel="stylesheet">
+
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+  :root {
+    --bg-primary: #0d1117;
+    --bg-secondary: #161b22;
+    --bg-card: rgba(22, 27, 34, 0.6);
+    --border: #30363d;
+    --text-primary: #e6edf3;
+    --text-secondary: #8b949e;
+    --text-muted: #6e7681;
+    --accent-blue: #0a73ff;
+    --accent-green: #00ff88;
+    --accent-orange: #f5a133;
+    --accent-purple: #a371f7;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    margin: 0;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+  /* Tech grid background */
+  .tech-grid {
+    background-image:
+      linear-gradient(rgba(48, 54, 61, 0.3) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(48, 54, 61, 0.3) 1px, transparent 1px);
+    background-size: 50px 50px;
+  }
+
+  /* Gradient text */
+  .text-gradient-brand {
+    background: linear-gradient(135deg, #00ff88 0%, #0a73ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .text-gradient-ai {
+    background: linear-gradient(135deg, #a371f7 0%, #00ff88 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Cards */
+  .card-tech {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+  }
+  .card-tech:hover {
+    border-color: var(--accent-blue);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(10, 115, 255, 0.1);
+  }
+
+  /* Buttons */
+  .btn-primary {
+    background: linear-gradient(135deg, #0a73ff 0%, #00ff88 100%);
+    color: #0d1117;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: inline-block;
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
+  }
+  .btn-secondary {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    transition: all 0.3s ease;
+    display: inline-block;
+  }
+  .btn-secondary:hover {
+    border-color: var(--accent-green);
+    color: var(--accent-green);
+  }
+
+  /* Section badge */
+  .section-badge-pill {
+    background: rgba(10, 115, 255, 0.1);
+    border: 1px solid rgba(10, 115, 255, 0.3);
+    color: var(--accent-blue);
+    padding: 6px 16px;
+    border-radius: 999px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+  }
+
+  /* Glow effect */
+  .glow-blue { box-shadow: 0 0 60px rgba(10, 115, 255, 0.15); }
+  .glow-green { box-shadow: 0 0 60px rgba(0, 255, 136, 0.15); }
+  .glow-purple { box-shadow: 0 0 80px rgba(163, 113, 247, 0.2); }
+
+  /* Fade in animation */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeIn 0.8s ease forwards;
+  }
+  @keyframes fadeIn {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Stat divider */
+  .stat-divider {
+    width: 24px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent-green), var(--accent-blue));
+    margin: 0 auto 12px;
+  }
+
+  /* Speaker placeholder */
+  .speaker-placeholder {
+    background: linear-gradient(135deg, rgba(163, 113, 247, 0.1), rgba(10, 115, 255, 0.05));
+    border: 1px dashed var(--border);
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+  }
+  .speaker-placeholder:hover {
+    border-color: var(--accent-purple);
+    background: linear-gradient(135deg, rgba(163, 113, 247, 0.15), rgba(10, 115, 255, 0.1));
+  }
+
+  /* Header */
+  .header-glass {
+    background: rgba(13, 17, 23, 0.8);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* Hero glow */
+  .hero-glow::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(163, 113, 247, 0.15) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Animated terminal */
+  .terminal-prompt::after {
+    content: '▋';
+    color: var(--accent-green);
+    animation: blink 1s infinite;
+  }
+  @keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+  }
+
+  /* Topic chip */
+  .topic-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(48, 54, 61, 0.4);
+    border: 1px solid var(--border);
+    padding: 8px 16px;
+    border-radius: 999px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-primary);
+    transition: all 0.3s ease;
+  }
+  .topic-chip:hover {
+    border-color: var(--accent-purple);
+    color: var(--accent-purple);
+  }
+
+  /* Nav link */
+  .nav-link {
+    color: var(--text-secondary);
+    transition: color 0.2s;
+  }
+  .nav-link:hover { color: var(--accent-green); }
+
+  /* Footer link */
+  .footer-link {
+    color: var(--text-secondary);
+    transition: color 0.2s;
+    text-decoration: none;
+  }
+  .footer-link:hover { color: var(--accent-green); }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header-glass fixed top-0 left-0 right-0 z-50">
+  <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+    <a href="#" class="flex items-center gap-3">
+      <img src="assets/logo.jpeg" alt="AWS UG Security Ecuador" class="w-10 h-10 rounded-lg object-cover" />
+      <div class="hidden sm:block">
+        <div class="font-mono font-bold text-sm" style="color:#e6edf3">AWS_UG_SECURITY</div>
+        <div class="font-mono text-xs" style="color:#6e7681">GEN_AI.SECURITY.DAY</div>
+      </div>
+    </a>
+    <nav class="hidden md:flex items-center gap-8">
+      <a href="#about" class="nav-link font-mono text-sm">about()</a>
+      <a href="#agenda" class="nav-link font-mono text-sm">agenda()</a>
+      <a href="#actividades" class="nav-link font-mono text-sm">actividades()</a>
+      <a href="#speakers" class="nav-link font-mono text-sm">speakers()</a>
+      <a href="#sponsors" class="nav-link font-mono text-sm">sponsors()</a>
+      <a href="#communities" class="nav-link font-mono text-sm">communities()</a>
+    </nav>
+    <a href="https://register.awssecurityecuador.com/" target="_blank" rel="noopener"
+       class="btn-primary font-mono font-semibold text-sm px-5 py-2 rounded-lg">REGISTRO →</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="relative pt-32 pb-24 md:pt-40 md:pb-32 overflow-hidden hero-glow">
+  <div class="absolute inset-0 tech-grid" style="opacity:0.4"></div>
+  <div class="absolute inset-0" style="background:linear-gradient(to bottom,rgba(13,17,23,0.5),#0d1117)"></div>
+
+  <div class="relative z-10 max-w-7xl mx-auto px-6">
+    <div class="text-center max-w-4xl mx-auto">
+
+      <!-- Badge -->
+      <div class="fade-in flex flex-wrap justify-center gap-2 mb-8">
+        <span class="topic-chip" style="border-color:rgba(245,161,51,0.3);color:#f5a133">
+          <span class="w-2 h-2 rounded-full animate-pulse" style="background:#f5a133"></span>
+          EVENT::COMING_SOON
+        </span>
+        <span class="topic-chip">📍 ECUADOR</span>
+        <span class="topic-chip">AWS::COMMUNITY.EVENT</span>
+      </div>
+
+      <!-- Title -->
+      <h1 class="fade-in font-mono font-bold mb-6" style="font-size:clamp(2.5rem,8vw,5.5rem); line-height:1.1">
+        <span class="text-gradient-ai">AWS GenAI</span><br/>
+        <span style="color:#e6edf3">Security Day</span>
+        <span style="color:#00ff88">;</span>
+      </h1>
+
+      <p class="fade-in text-lg md:text-xl mb-10 max-w-2xl mx-auto" style="color:#8b949e">
+        El primer evento presencial dedicado a la <strong style="color:#e6edf3">seguridad en IA Generativa</strong>
+        en AWS — organizado por la comunidad AWS UG Security Ecuador.
+      </p>
+
+      <!-- Event meta -->
+      <div class="fade-in card-tech p-6 md:p-8 max-w-3xl mx-auto mb-10 glow-purple">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-left">
+          <div>
+            <div class="font-mono text-xs mb-1" style="color:#6e7681">date:</div>
+            <div class="font-mono font-bold text-sm" style="color:#00ff88">18 Julio 2026</div>
+          </div>
+          <div>
+            <div class="font-mono text-xs mb-1" style="color:#6e7681">time:</div>
+            <div class="font-mono font-bold text-sm" style="color:#a371f7">08h30 — 16h00</div>
+          </div>
+          <div>
+            <div class="font-mono text-xs mb-1" style="color:#6e7681">venue:</div>
+            <div class="font-mono font-bold text-sm" style="color:#f5a133">U. Ecotec — Guayaquil</div>
+          </div>
+          <div>
+            <div class="font-mono text-xs mb-1" style="color:#6e7681">cost:</div>
+            <div class="font-mono font-bold text-sm" style="color:#0a73ff">FREE</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTAs -->
+      <div class="fade-in flex flex-col sm:flex-row gap-4 justify-center mb-12">
+        <a href="https://register.awssecurityecuador.com/" target="_blank" rel="noopener"
+           class="btn-primary font-mono font-semibold text-sm px-8 py-4 rounded-lg">
+          REGISTER_NOW() →
+        </a>
+        <a href="#agenda"
+           class="btn-secondary font-mono font-semibold text-sm px-8 py-4 rounded-lg">
+          VIEW_AGENDA()
+        </a>
+      </div>
+
+      <!-- Topics -->
+      <div class="fade-in flex flex-wrap justify-center gap-2 max-w-3xl mx-auto">
+        <span class="topic-chip">bedrock</span>
+        <span class="topic-chip">claude</span>
+        <span class="topic-chip">prompt_injection</span>
+        <span class="topic-chip">guardrails</span>
+        <span class="topic-chip">owasp_llm</span>
+        <span class="topic-chip">ai_agents</span>
+        <span class="topic-chip">model_armor</span>
+        <span class="topic-chip">data_privacy</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="relative py-24 md:py-32 overflow-hidden">
+  <div class="absolute inset-0 tech-grid" style="opacity:0.3"></div>
+  <div class="absolute inset-0" style="background:linear-gradient(to bottom,#0d1117,rgba(22,27,34,0.4),#0d1117)"></div>
+
+  <div class="relative z-10 max-w-6xl mx-auto px-6">
+    <div class="text-center mb-16">
+      <div class="fade-in flex justify-center mb-6">
+        <span class="section-badge-pill">// SOBRE_EL_EVENTO()</span>
+      </div>
+      <h2 class="fade-in font-bold mb-4" style="font-size:clamp(1.6rem,4vw,2.8rem)">
+        El futuro de la <span class="text-gradient-ai">IA Generativa Segura</span><br/>
+        empieza aquí.
+      </h2>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-8 mb-12">
+      <div class="fade-in card-tech p-8">
+        <div class="font-mono text-xs mb-3" style="color:#6e7681">// type</div>
+        <p class="text-base leading-relaxed" style="color:#8b949e">
+          AWS GenAI Security Day es un evento presencial dedicado a explorar las
+          <strong style="color:#e6edf3">amenazas, riesgos y mejores prácticas</strong> de la Inteligencia
+          Artificial Generativa en AWS. Un día completo de charlas técnicas, talleres y networking
+          enfocado en cómo construir sistemas de IA seguros, confiables y conformes.
+        </p>
+      </div>
+      <div class="fade-in card-tech p-8">
+        <div class="font-mono text-xs mb-3" style="color:#6e7681">// audience</div>
+        <p class="text-base leading-relaxed" style="color:#8b949e">
+          Pensado para <strong style="color:#e6edf3">profesionales de seguridad cloud, arquitectos, desarrolladores
+          e investigadores</strong> que están construyendo, asegurando o auditando soluciones de IA
+          en AWS. Charlas en español, contenido aplicable, networking con la comunidad.
+        </p>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <div class="fade-in card-tech p-5 text-center">
+        <div class="stat-divider"></div>
+        <div class="font-mono font-bold text-2xl" style="color:#a371f7">10+</div>
+        <div class="font-mono text-xs tracking-widest mt-1" style="color:#6e7681">SPEAKERS</div>
+      </div>
+      <div class="fade-in card-tech p-5 text-center">
+        <div class="stat-divider"></div>
+        <div class="font-mono font-bold text-2xl" style="color:#00ff88">8h</div>
+        <div class="font-mono text-xs tracking-widest mt-1" style="color:#6e7681">DURATION</div>
+      </div>
+      <div class="fade-in card-tech p-5 text-center">
+        <div class="stat-divider"></div>
+        <div class="font-mono font-bold text-2xl" style="color:#0a73ff">FREE</div>
+        <div class="font-mono text-xs tracking-widest mt-1" style="color:#6e7681">ACCESO</div>
+      </div>
+      <div class="fade-in card-tech p-5 text-center">
+        <div class="stat-divider"></div>
+        <div class="font-mono font-bold text-2xl" style="color:#f5a133">1</div>
+        <div class="font-mono text-xs tracking-widest mt-1" style="color:#6e7681">EPIC_DAY</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- AGENDA -->
+<section id="agenda" class="relative py-24 md:py-32 overflow-hidden">
+  <div class="absolute inset-0 tech-grid" style="opacity:0.3"></div>
+  <div class="absolute inset-0" style="background:linear-gradient(to bottom,#0d1117,rgba(13,17,23,0.95),#0d1117)"></div>
+
+  <div class="relative z-10 max-w-6xl mx-auto px-6">
+    <div class="text-center mb-16">
+      <div class="fade-in flex justify-center mb-6">
+        <span class="section-badge-pill">// AGENDA.HORARIO()</span>
+      </div>
+      <h2 class="fade-in font-bold mb-4" style="font-size:clamp(1.6rem,4vw,2.5rem)">
+        Programa del <span class="text-gradient-brand">Día</span>
+      </h2>
+      <p class="fade-in" style="color:#8b949e">Dos salas simultáneas de charlas técnicas. Elige tu track.</p>
+    </div>
+
+    <!-- Plenaria: Apertura -->
+    <div class="fade-in max-w-5xl mx-auto mb-6">
+      <div class="flex items-center gap-4 p-4 rounded-lg card-tech" style="border-left:3px solid #00ff88">
+        <div class="font-mono font-bold text-sm" style="color:#00ff88; min-width:64px">08:45</div>
+        <div class="flex-1">
+          <div class="text-sm font-semibold" style="color:#e6edf3">Apertura — Bienvenida y agradecimiento a Ecotec y Sponsors</div>
+          <div class="font-mono text-xs mt-0.5" style="color:#8b949e">Willie Reyes &amp; Hernán Villavicencio · Auditorio Principal David Samaniego</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tracks simultáneos -->
+    <div class="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+
+      <!-- TRACK A — Auditorio Principal David Samaniego -->
+      <div class="fade-in card-tech p-6">
+        <div class="flex items-center gap-2 mb-5 pb-4" style="border-bottom:1px solid #30363d">
+          <span style="width:10px;height:10px;border-radius:50%;background:#0a73ff;display:inline-block"></span>
+          <h3 class="font-bold text-sm" style="color:#e6edf3">Auditorio Principal David Samaniego</h3>
+        </div>
+        <div class="space-y-4">
+
+          <div class="flex gap-3">
+            <div class="font-mono font-bold text-xs pt-0.5" style="color:#0a73ff; min-width:48px">09:00</div>
+            <div>
+              <div class="text-sm leading-snug" style="color:#e6edf3">Le pregunté a la IA si mi infraestructura estaba comprometida. No me gustó la respuesta</div>
+              <div class="font-mono text-xs mt-1" style="color:#6e7681">Hernán Villavicencio S</div>
+            </div>
+          </div>
+
+          <div class="flex gap-3">
+            <div class="font-mono font-bold text-xs pt-0.5" style="color:#0a73ff; min-width:48px">09:45</div>
+            <div>
+              <div class="text-sm leading-snug" style="color:#e6edf3">IA contra IA: Cómo la inteligencia artificial está cambiando la ciberseguridad</div>
+              <div class="font-mono text-xs mt-1" style="color:#6e7681">Roque Macias</div>
+            </div>
+          </div>
+
+          <div class="flex gap-3">
+            <div class="font-mono font-bold text-xs pt-0.5" style="color:#0a73ff; min-width:48px">10:30</div>
+            <div>
+              <div class="text-sm leading-snug" style="color:#e6edf3">Las 10 vulnerabilidades más comunes en LLMs</div>
+              <div class="font-mono text-xs mt-1" style="color:#6e7681">Ramiro Pulgar</div>
+            </div>
+          </div>
+
+          <div class="flex gap-3">
+            <div class="font-mono font-bold text-xs pt-0.5" style="color:#0a73ff; min-width:48px">11:30</div>
+            <div>
+              <div class="text-sm leading-snug" style="color:#e6edf3">Arquitecturas agénticas aplicadas</div>
+              <div class="font-mono text-xs mt-1" style="color:#6e7681">Andres Esteban Muñoz · Deuna</div>
+            </div>
+          </div>
+
+          <div class="flex gap-3">
+            <div class="font-mono font-bold text-xs pt-0.5" style="color:#0a73ff; min-width:48px">12:15</div>
+            <div>
+              <div class="text-sm leading-snug" style="color:#e6edf3">Voz hoy, WhatsApp mañana, el mismo contexto</div>
+              <div class="font-mono text-xs mt-1" style="color:#6e7681">Andres Zambrano</div>
+            </div>
+          </div>
+
+          <div class="flex gap-3">
+            <div class="font-mono font-bold text-xs pt-0.5" style="color:#0a73ff; min-width:48px">14:00</div>
+            <div>
+              <div class="text-sm leading-snug" style="color:#e6edf3">Perímetro Híbrido Seguro: Implementando Zero Trust con Microsoft Entra ID y AWS</div>
+              <div class="font-mono text-xs mt-1" style="color:#6e7681">Eddin Eduardo Ramirez Chang · Deuna</div>
+            </div>
+          </div>
+
+          <div class="flex gap-3">
+            <div class="font-mono font-bold text-xs pt-0.5" style="color:#0a73ff; min-width:48px">14:45</div>
+            <div>
+              <div class="text-sm leading-snug" style="color:#e6edf3">Blindando tu EKS: Cero Confianza desde el Dockerfile hasta GitOps</div>
+              <div class="font-mono text-xs mt-1" style="color:#6e7681">Jonathan Lopez Torres</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- TRACK B — Aula Golda Meir -->
+      <div class="fade-in card-tech p-6">
+        <div class="flex items-center gap-2 mb-5 pb-4" style="border-bottom:1px solid #30363d">
+          <span style="width:10px;height:10px;border-radius:50%;background:#a371f7;display:inline-block"></span>
+          <h3 class="font-bold text-sm" style="color:#e6edf3">Aula Golda Meir</h3>
+        </div>
+        <div class="space-y-4">
+
+          <div class="flex gap-3">
+            <div class="font-mono font-bold text-xs pt-0.5" style="color:#a371f7; min-width:48px">09:00</div>
+            <div>
+              <div class="text-sm leading-snug" style="color:#e6edf3">Securing Agentic AI on AWS: Riesgos reales del OWASP Top 10 for Agentic Applications</div>
+              <div class="font-mono text-xs mt-1" style="color:#6e7681">Jaime Ramírez</div>
+            </div>
+          </div>
+
+          <div class="flex gap-3">
+            <div class="font-mono font-bold text-xs pt-0.5" style="color:#a371f7; min-width:48px">10:00</div>
+            <div>
+              <div class="text-sm leading-snug" style="color:#e6edf3">Rompiendo la seguridad de la AI… al día de hoy</div>
+              <div class="font-mono text-xs mt-1" style="color:#6e7681">Walter Cuestas</div>
+            </div>
+          </div>
+
+          <div class="flex gap-3">
+            <div class="font-mono font-bold text-xs pt-0.5" style="color:#a371f7; min-width:48px">11:00</div>
+            <div>
+              <div class="text-sm leading-snug" style="color:#e6edf3">Post-Mortem of a Container Breach: Forensics in the Cloud-Native Era</div>
+              <div class="font-mono text-xs mt-1" style="color:#6e7681">Neel Shah</div>
+            </div>
+          </div>
+
+          <div class="flex gap-3">
+            <div class="font-mono font-bold text-xs pt-0.5" style="color:#a371f7; min-width:48px">11:45</div>
+            <div>
+              <div class="text-sm leading-snug" style="color:#e6edf3">Más allá de las pruebas unitarias: Estrategias de QA para Agentes de IA en AWS</div>
+              <div class="font-mono text-xs mt-1" style="color:#6e7681">Kevin Lupera</div>
+            </div>
+          </div>
+
+          <div class="flex gap-3">
+            <div class="font-mono font-bold text-xs pt-0.5" style="color:#a371f7; min-width:48px">12:30</div>
+            <div>
+              <div class="text-sm leading-snug" style="color:#e6edf3">¿Cuándo era el examen? Creando un copiloto educativo con AI y Amazon Bedrock</div>
+              <div class="font-mono text-xs mt-1" style="color:#6e7681">Jaren Pazmiño</div>
+            </div>
+          </div>
+
+          <div class="flex gap-3">
+            <div class="font-mono font-bold text-xs pt-0.5" style="color:#a371f7; min-width:48px">14:15</div>
+            <div>
+              <div class="text-sm leading-snug" style="color:#e6edf3">De Prototipo a Producción: Evolucionando un Chatbot GenAI Universitario en AWS</div>
+              <div class="font-mono text-xs mt-1" style="color:#6e7681">Domenica Amores</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Plenaria: Almuerzo + Cierre -->
+    <div class="fade-in max-w-5xl mx-auto mt-6 space-y-4">
+      <div class="flex items-center gap-4 p-4 rounded-lg card-tech" style="border-left:3px solid #f5a133">
+        <div class="font-mono font-bold text-sm" style="color:#f5a133; min-width:64px">13:00</div>
+        <div class="flex-1">
+          <div class="text-sm font-semibold" style="color:#e6edf3">Almuerzo / Networking</div>
+          <div class="font-mono text-xs mt-0.5" style="color:#8b949e">Pausa para almuerzo y conexión con la comunidad</div>
+        </div>
+      </div>
+      <div class="flex items-center gap-4 p-4 rounded-lg card-tech" style="border-left:3px solid #00ff88">
+        <div class="font-mono font-bold text-sm" style="color:#00ff88; min-width:64px">15:30</div>
+        <div class="flex-1">
+          <div class="text-sm font-semibold" style="color:#e6edf3">Cierre y sorteos</div>
+          <div class="font-mono text-xs mt-0.5" style="color:#8b949e">Willie Reyes &amp; Hernán Villavicencio · Auditorio Principal David Samaniego</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-8 text-center">
+      <span class="font-mono text-xs" style="color:#6e7681">// horarios sujetos a ajustes menores</span>
+    </div>
+  </div>
+</section>
+
+<!-- ACTIVIDADES -->
+<section id="actividades" class="relative py-24 md:py-32 overflow-hidden">
+  <div class="absolute inset-0 tech-grid" style="opacity:0.3"></div>
+  <div class="absolute inset-0" style="background:linear-gradient(to bottom,#0d1117,rgba(22,27,34,0.5),#0d1117)"></div>
+
+  <div class="relative z-10 max-w-6xl mx-auto px-6">
+    <div class="text-center mb-16">
+      <div class="fade-in flex justify-center mb-6">
+        <span class="section-badge-pill">// ACTIVIDADES.HANDS_ON()</span>
+      </div>
+      <h2 class="fade-in font-bold mb-4" style="font-size:clamp(1.6rem,4vw,2.5rem)">
+        Aprende <span class="text-gradient-brand">haciendo</span>
+      </h2>
+      <p class="fade-in" style="color:#8b949e">Más allá de las charlas — hands-on, gamificación y desafíos en equipo.</p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-8">
+
+      <!-- AWS Workshops -->
+      <div class="fade-in card-tech overflow-hidden flex flex-col">
+        <div class="overflow-hidden" style="height:200px">
+          <img src="assets/activities/workshops.jpeg" alt="AWS Workshops"
+               class="w-full h-full object-cover object-center" />
+        </div>
+        <div class="p-6 flex-1 flex flex-col gap-4">
+          <div>
+            <div class="font-mono text-xs mb-2" style="color:#6e7681">// WORKSHOP</div>
+            <h3 class="font-bold text-base mb-2" style="color:#e6edf3">AWS Workshops</h3>
+            <p class="text-sm leading-relaxed" style="color:#8b949e">
+              Laboratorios prácticos guiados paso a paso sobre seguridad en IA Generativa y AWS.
+              Aplica lo que aprendes en las charlas directamente en tu propia consola de AWS.
+            </p>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <span class="font-mono text-xs px-2 py-1 rounded" style="background:rgba(0,255,136,0.1);color:#00ff88;border:1px solid rgba(0,255,136,0.2)">Aula Warren Buffet</span>
+            <span class="font-mono text-xs px-2 py-1 rounded" style="background:rgba(48,54,61,0.4);color:#8b949e;border:1px solid #30363d">09:00</span>
+          </div>
+          <a href="https://builder.aws.com/build/workshops?tab=discover" target="_blank" rel="noopener"
+             class="btn-secondary font-mono text-xs px-4 py-2 rounded-lg text-center mt-auto">
+            builder.aws.com →
+          </a>
+        </div>
+      </div>
+
+      <!-- AWS BuilderCards -->
+      <div class="fade-in card-tech overflow-hidden flex flex-col">
+        <div class="overflow-hidden" style="height:200px">
+          <img src="assets/activities/builder-cards.png" alt="AWS BuilderCards"
+               class="w-full h-full object-cover" />
+        </div>
+        <div class="p-6 flex-1 flex flex-col gap-3">
+          <div>
+            <div class="font-mono text-xs mb-2" style="color:#a371f7">// BUILDER_CARDS</div>
+            <h3 class="font-bold text-base mb-2" style="color:#e6edf3">AWS BuilderCards</h3>
+            <p class="text-sm leading-relaxed" style="color:#8b949e">
+              El juego de cartas oficial de AWS. Combina servicios para armar arquitecturas,
+              aprende cloud de forma divertida y competitiva en equipo.
+              Incluye el add-on de <strong style="color:#a371f7">GenAI</strong> con 50 cartas de IA Generativa.
+            </p>
+          </div>
+          <div class="flex flex-wrap gap-2 mt-auto">
+            <span class="font-mono text-xs px-2 py-1 rounded" style="background:rgba(163,113,247,0.1);color:#a371f7;border:1px solid rgba(163,113,247,0.2)">Aula Steve Jobs y Jeff Bezos</span>
+            <span class="font-mono text-xs px-2 py-1 rounded" style="background:rgba(48,54,61,0.4);color:#8b949e;border:1px solid #30363d">10:00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- AWS JAM -->
+      <div class="fade-in card-tech overflow-hidden flex flex-col">
+        <div class="relative overflow-hidden" style="height:200px">
+          <img src="assets/activities/jam.png" alt="AWS JAM"
+               class="w-full h-full object-cover object-center" />
+          <div class="absolute inset-0" style="background:linear-gradient(to bottom,rgba(13,17,23,0.55) 0%,transparent 35%,transparent 65%,rgba(13,17,23,0.55) 100%)"></div>
+        </div>
+        <div class="p-6 flex-1 flex flex-col gap-3">
+          <div>
+            <div class="font-mono text-xs mb-2" style="color:#00ff88">// AWS_JAM</div>
+            <h3 class="font-bold text-base mb-2" style="color:#e6edf3">AWS JAM</h3>
+            <p class="text-sm leading-relaxed" style="color:#8b949e">
+              Desafíos gamificados en equipo en un sandbox real de AWS. Resuelve problemas
+              abiertos con libertad total para explorar servicios, acumular puntos y competir.
+            </p>
+          </div>
+          <div class="flex flex-wrap gap-2 mt-auto">
+            <span class="font-mono text-xs px-2 py-1 rounded" style="background:rgba(0,255,136,0.1);color:#00ff88;border:1px solid rgba(0,255,136,0.2)">Aula Warren Buffet</span>
+            <span class="font-mono text-xs px-2 py-1 rounded" style="background:rgba(48,54,61,0.4);color:#8b949e;border:1px solid #30363d">10:00</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SPEAKERS -->
+<section id="speakers" class="relative py-24 md:py-32 overflow-hidden">
+  <div class="absolute inset-0 tech-grid" style="opacity:0.3"></div>
+  <div class="absolute inset-0" style="background:linear-gradient(to bottom,#0d1117,rgba(22,27,34,0.4),#0d1117)"></div>
+
+  <div class="relative z-10 max-w-6xl mx-auto px-6">
+    <div class="text-center mb-16">
+      <div class="fade-in flex justify-center mb-6">
+        <span class="section-badge-pill">// PONENTES[]</span>
+      </div>
+      <h2 class="fade-in font-bold mb-4" style="font-size:clamp(1.6rem,4vw,2.5rem)">
+        Ponentes del <span class="text-gradient-ai">Evento</span>
+      </h2>
+      <p class="fade-in" style="color:#8b949e">Ponentes confirmados — más por anunciar.</p>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+
+      <!-- Eddin Eduardo Ramirez Chang -->
+      <a href="https://www.linkedin.com/in/eddin-ramirez-495aa384/" target="_blank" rel="noopener"
+         class="fade-in card-tech overflow-hidden flex flex-col group" style="text-decoration:none">
+        <div class="relative overflow-hidden" style="aspect-ratio:1">
+          <img src="assets/speakers/eddin-eduardo-ramirez-chang.jpg" alt="Eddin Eduardo Ramirez Chang"
+               class="w-full h-full object-cover" />
+          <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+               style="background:rgba(10,115,255,0.82)">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="white">
+              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+            </svg>
+          </div>
+        </div>
+        <div class="p-4">
+          <div class="font-mono font-bold text-sm leading-tight" style="color:#e6edf3">Eddin E. Ramirez Chang</div>
+          <div class="font-mono text-xs mt-1" style="color:#a371f7">Cloud Security Architect</div>
+        </div>
+      </a>
+
+      <!-- Hernán Villavicencio S -->
+      <a href="https://www.linkedin.com/in/hvillavicencio" target="_blank" rel="noopener"
+         class="fade-in card-tech overflow-hidden flex flex-col group" style="text-decoration:none">
+        <div class="relative overflow-hidden" style="aspect-ratio:1">
+          <img src="assets/speakers/hernan-villavicencio-s.png" alt="Hernán Villavicencio S"
+               class="w-full h-full object-cover" />
+          <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+               style="background:rgba(10,115,255,0.82)">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="white">
+              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+            </svg>
+          </div>
+        </div>
+        <div class="p-4">
+          <div class="font-mono font-bold text-sm leading-tight" style="color:#e6edf3">Hernán Villavicencio S</div>
+          <div class="font-mono text-xs mt-1" style="color:#0a73ff">Arquitecto Cloud · Datafast</div>
+          <div class="font-mono text-xs mt-0.5" style="color:#00ff88">AWS Community Builder</div>
+        </div>
+      </a>
+      <!-- Walter Cuestas -->
+      <a href="https://www.linkedin.com/in/wcuestas" target="_blank" rel="noopener"
+         class="fade-in card-tech overflow-hidden flex flex-col group" style="text-decoration:none">
+        <div class="relative overflow-hidden" style="aspect-ratio:1">
+          <img src="assets/speakers/walter-cuestas.png" alt="Walter Cuestas"
+               class="w-full h-full object-cover" />
+          <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+               style="background:rgba(10,115,255,0.82)">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="white">
+              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+            </svg>
+          </div>
+        </div>
+        <div class="p-4">
+          <div class="font-mono font-bold text-sm leading-tight" style="color:#e6edf3">Walter Cuestas</div>
+          <div class="font-mono text-xs mt-1" style="color:#a371f7">Red Teamer · Pentester</div>
+          <div class="font-mono text-xs mt-0.5" style="color:#f5a133">DEF CON Speaker</div>
+        </div>
+      </a>
+
+      <!-- Jonathan Lopez Torres -->
+      <a href="https://www.linkedin.com/in/jonathanlopezt/" target="_blank" rel="noopener"
+         class="fade-in card-tech overflow-hidden flex flex-col group" style="text-decoration:none">
+        <div class="relative overflow-hidden" style="aspect-ratio:1">
+          <img src="assets/speakers/jonathan-lopez-torres.jpg" alt="Jonathan Lopez Torres"
+               class="w-full h-full object-cover" />
+          <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+               style="background:rgba(10,115,255,0.82)">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="white">
+              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+            </svg>
+          </div>
+        </div>
+        <div class="p-4">
+          <div class="font-mono font-bold text-sm leading-tight" style="color:#e6edf3">Jonathan Lopez Torres</div>
+          <div class="font-mono text-xs mt-1" style="color:#0a73ff">Staff DevOps Engineer</div>
+          <div class="font-mono text-xs mt-0.5" style="color:#00ff88">CNCF Leader Guayaquil</div>
+          <div class="font-mono text-xs mt-0.5" style="color:#a371f7">Kubestronaut CNCF</div>
+        </div>
+      </a>
+      <!-- Jaime Ramírez -->
+      <a href="https://www.linkedin.com/in/jaime-patricio-ramirez" target="_blank" rel="noopener"
+         class="fade-in card-tech overflow-hidden flex flex-col group" style="text-decoration:none">
+        <div class="relative overflow-hidden" style="aspect-ratio:1">
+          <img src="assets/speakers/jaime-ramirez.jpg" alt="Jaime Ramírez"
+               class="w-full h-full object-cover" />
+          <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+               style="background:rgba(10,115,255,0.82)">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="white">
+              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+            </svg>
+          </div>
+        </div>
+        <div class="p-4">
+          <div class="font-mono font-bold text-sm leading-tight" style="color:#e6edf3">Jaime Ramírez</div>
+          <div class="font-mono text-xs mt-1" style="color:#a371f7">Seg. Ofensiva · NTT DATA</div>
+          <div class="font-mono text-xs mt-0.5" style="color:#00ff88">DevSecOps · Pentesting</div>
+        </div>
+      </a>
+      <!-- Kevin Lupera -->
+      <a href="https://www.linkedin.com/in/kevin-lupera" target="_blank" rel="noopener"
+         class="fade-in card-tech overflow-hidden flex flex-col group" style="text-decoration:none">
+        <div class="relative overflow-hidden" style="aspect-ratio:1">
+          <img src="assets/speakers/KevinLupera.png" alt="Kevin Lupera"
+               class="w-full h-full object-cover" />
+          <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+               style="background:rgba(10,115,255,0.82)">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="white"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </div>
+        </div>
+        <div class="p-4">
+          <div class="font-mono font-bold text-sm leading-tight" style="color:#e6edf3">Kevin Lupera</div>
+          <div class="font-mono text-xs mt-1" style="color:#0a73ff">Developer Leader · Alegra</div>
+          <div class="font-mono text-xs mt-0.5" style="color:#a371f7">Backend & AWS Architect</div>
+        </div>
+      </a>
+      <!-- Jaren Pazmiño -->
+      <a href="https://www.linkedin.com/in/jaren-pazmi%C3%B1o-b87359277" target="_blank" rel="noopener"
+         class="fade-in card-tech overflow-hidden flex flex-col group" style="text-decoration:none">
+        <div class="relative overflow-hidden" style="aspect-ratio:1">
+          <img src="assets/speakers/jaren pazmino.png" alt="Jaren Pazmiño"
+               class="w-full h-full object-cover" />
+          <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+               style="background:rgba(10,115,255,0.82)">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="white"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </div>
+        </div>
+        <div class="p-4">
+          <div class="font-mono font-bold text-sm leading-tight" style="color:#e6edf3">Jaren Pazmiño</div>
+          <div class="font-mono text-xs mt-1" style="color:#a371f7">Ing. Computación · ESPOL</div>
+          <div class="font-mono text-xs mt-0.5" style="color:#00ff88">Ex Pte. CIAP · AI & Web Dev</div>
+        </div>
+      </a>
+      <!-- Adrian Villamar Vitorino -->
+      <a href="https://sessionize.com/adrian-david-villamar-vitorino" target="_blank" rel="noopener"
+         class="fade-in card-tech overflow-hidden flex flex-col group" style="text-decoration:none">
+        <div class="relative overflow-hidden" style="aspect-ratio:1">
+          <img src="assets/speakers/Adrian Vitorino.jpg" alt="Adrian Villamar Vitorino"
+               class="w-full h-full object-cover" />
+          <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+               style="background:rgba(163,113,247,0.82)">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="white"><path d="M12 0C5.372 0 0 5.372 0 12c0 6.627 5.372 12 12 12s12-5.373 12-12c0-6.628-5.373-12-12-12zm.25 17.5h-2.25V9.5h2.25v8zm-1.125-9.097a1.378 1.378 0 110-2.756 1.378 1.378 0 010 2.756z"/></svg>
+          </div>
+        </div>
+        <div class="p-4">
+          <div class="font-mono font-bold text-sm leading-tight" style="color:#e6edf3">Adrian Villamar</div>
+          <div class="font-mono text-xs mt-1" style="color:#a371f7">Ing. Mecatrónica · ESPOL</div>
+          <div class="font-mono text-xs mt-0.5" style="color:#00ff88">AI · Embedded Systems</div>
+        </div>
+      </a>
+
+      <!-- Domenica Amores -->
+      <a href="https://www.linkedin.com/in/domenica-katherine-amores-cede%C3%B1o-178847310" target="_blank" rel="noopener"
+         class="fade-in card-tech overflow-hidden flex flex-col group" style="text-decoration:none">
+        <div class="relative overflow-hidden" style="aspect-ratio:1">
+          <img src="assets/speakers/Domenica Amores.jpg" alt="Domenica Amores"
+               class="w-full h-full object-cover" />
+          <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+               style="background:rgba(10,115,255,0.82)">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="white"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </div>
+        </div>
+        <div class="p-4">
+          <div class="font-mono font-bold text-sm leading-tight" style="color:#e6edf3">Domenica Amores</div>
+          <div class="font-mono text-xs mt-1" style="color:#a371f7">Ing. Computación · ESPOL</div>
+          <div class="font-mono text-xs mt-0.5" style="color:#00ff88">Frontend · AI · Hackathons</div>
+        </div>
+      </a>
+
+      <!-- Nicole Guevara Cruz -->
+      <a href="https://www.linkedin.com/in/nicole-guevara-cruz-80ba97299" target="_blank" rel="noopener"
+         class="fade-in card-tech overflow-hidden flex flex-col group" style="text-decoration:none">
+        <div class="relative overflow-hidden" style="aspect-ratio:1">
+          <img src="assets/speakers/Nicole Guevara.jpg" alt="Nicole Melanie Guevara Cruz"
+               class="w-full h-full object-cover" />
+          <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+               style="background:rgba(10,115,255,0.82)">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="white"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </div>
+        </div>
+        <div class="p-4">
+          <div class="font-mono font-bold text-sm leading-tight" style="color:#e6edf3">Nicole Guevara Cruz</div>
+          <div class="font-mono text-xs mt-1" style="color:#a371f7">Ing. Computación · ESPOL</div>
+          <div class="font-mono text-xs mt-0.5" style="color:#00ff88">AI · Software Dev</div>
+        </div>
+      </a>
+
+      <!-- Ramiro Pulgar -->
+      <a href="https://www.linkedin.com/in/ramiropulgar/" target="_blank" rel="noopener"
+         class="fade-in card-tech overflow-hidden flex flex-col group" style="text-decoration:none">
+        <div class="relative overflow-hidden" style="aspect-ratio:1">
+          <img src="assets/speakers/Ramiro.jpg" alt="Ramiro Pulgar"
+               class="w-full h-full object-cover" />
+          <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+               style="background:rgba(10,115,255,0.82)">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="white"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </div>
+        </div>
+        <div class="p-4">
+          <div class="font-mono font-bold text-sm leading-tight" style="color:#e6edf3">Ramiro Pulgar</div>
+          <div class="font-mono text-xs mt-1" style="color:#0a73ff">Blue Hat Corporation</div>
+          <div class="font-mono text-xs mt-0.5" style="color:#f5a133">50+ Certs · Blue Hat CERT</div>
+        </div>
+      </a>
+
+      <!-- Roque Macias -->
+      <a href="https://www.linkedin.com/in/roquemacias/" target="_blank" rel="noopener"
+         class="fade-in card-tech overflow-hidden flex flex-col group" style="text-decoration:none">
+        <div class="relative overflow-hidden" style="aspect-ratio:1">
+          <img src="assets/speakers/Roque .jpg" alt="Roque Macias"
+               class="w-full h-full object-cover" />
+          <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+               style="background:rgba(10,115,255,0.82)">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="white"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </div>
+        </div>
+        <div class="p-4">
+          <div class="font-mono font-bold text-sm leading-tight" style="color:#e6edf3">Roque Macias</div>
+          <div class="font-mono text-xs mt-1" style="color:#0a73ff">Bitdefender Ecuador</div>
+          <div class="font-mono text-xs mt-0.5" style="color:#a371f7">Ciberseguridad · Microsoft</div>
+        </div>
+      </a>
+
+      <!-- Neel Shah -->
+      <a href="https://www.linkedin.com/in/neel-shah-07460218a/" target="_blank" rel="noopener"
+         class="fade-in card-tech overflow-hidden flex flex-col group" style="text-decoration:none">
+        <div class="relative overflow-hidden" style="aspect-ratio:1">
+          <img src="assets/speakers/Neel.jpg" alt="Neel Shah"
+               class="w-full h-full object-cover" />
+          <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+               style="background:rgba(10,115,255,0.82)">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="white"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </div>
+        </div>
+        <div class="p-4">
+          <div class="font-mono font-bold text-sm leading-tight" style="color:#e6edf3">Neel Shah</div>
+          <div class="font-mono text-xs mt-1" style="color:#0a73ff">Developer Advocate · StackGen</div>
+          <div class="font-mono text-xs mt-0.5" style="color:#00ff88">KubeCon · 40+ eventos</div>
+        </div>
+      </a>
+
+      <!-- Dolores Avilés -->
+      <a href="https://www.linkedin.com/in/dolores-avil%C3%A9s-salazar" target="_blank" rel="noopener"
+         class="fade-in card-tech overflow-hidden flex flex-col group" style="text-decoration:none">
+        <div class="relative overflow-hidden" style="aspect-ratio:1">
+          <img src="assets/speakers/dolores.png" alt="Dolores Avilés"
+               class="w-full h-full object-cover" />
+          <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+               style="background:rgba(10,115,255,0.82)">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="white"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </div>
+        </div>
+        <div class="p-4">
+          <div class="font-mono font-bold text-sm leading-tight" style="color:#e6edf3">Dolores Avilés</div>
+          <div class="font-mono text-xs mt-1" style="color:#0a73ff">Bluehat Corporation</div>
+          <div class="font-mono text-xs mt-0.5" style="color:#a371f7">Ciberseg. & Gobernanza · 15y</div>
+        </div>
+      </a>
+
+      <!-- Melissa Torres -->
+      <a href="https://www.linkedin.com/in/melissa-torres-campod%C3%B3nico-295432180/" target="_blank" rel="noopener"
+         class="fade-in card-tech overflow-hidden flex flex-col group" style="text-decoration:none">
+        <div class="relative overflow-hidden" style="aspect-ratio:1">
+          <img src="assets/speakers/Melissa torres.png" alt="Melissa Torres Campodónico"
+               class="w-full h-full object-cover" />
+          <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+               style="background:rgba(10,115,255,0.82)">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="white"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </div>
+        </div>
+        <div class="p-4">
+          <div class="font-mono font-bold text-sm leading-tight" style="color:#e6edf3">Melissa Torres</div>
+          <div class="font-mono text-xs mt-1" style="color:#a371f7">Msc. Cybersecurity</div>
+          <div class="font-mono text-xs mt-0.5" style="color:#00ff88">CEH · eJPT · Fortinet FCP</div>
+        </div>
+      </a>
+
+      <!-- Andres Esteban Muñoz -->
+      <a href="https://www.linkedin.com/in/andres-munoz" target="_blank" rel="noopener"
+         class="fade-in card-tech overflow-hidden flex flex-col group" style="text-decoration:none">
+        <div class="relative overflow-hidden" style="aspect-ratio:1">
+          <img src="assets/speakers/Andres Munoz.png" alt="Andres Esteban Muñoz"
+               class="w-full h-full object-cover" />
+          <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+               style="background:rgba(10,115,255,0.82)">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="white"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </div>
+        </div>
+        <div class="p-4">
+          <div class="font-mono font-bold text-sm leading-tight" style="color:#e6edf3">Andres Esteban Muñoz</div>
+          <div class="font-mono text-xs mt-1" style="color:#0a73ff">Head of Infrastructure &amp; SRE</div>
+          <div class="font-mono text-xs mt-0.5" style="color:#00ff88">Cloud · DevOps · AIOps</div>
+        </div>
+      </a>
+
+    </div>
+
+    <div class="text-center mt-10">
+      <p class="font-mono text-sm" style="color:#6e7681">¿Te interesa ser speaker? Contáctanos.</p>
+    </div>
+  </div>
+</section>
+
+<!-- VENUE -->
+<section id="venue" class="relative py-24 md:py-32 overflow-hidden">
+  <div class="absolute inset-0 tech-grid" style="opacity:0.3"></div>
+  <div class="absolute inset-0" style="background:linear-gradient(to bottom,#0d1117,rgba(13,17,23,0.95),#0d1117)"></div>
+
+  <div class="relative z-10 max-w-4xl mx-auto px-6">
+    <div class="text-center mb-12">
+      <div class="fade-in flex justify-center mb-6">
+        <span class="section-badge-pill">// SEDE.UBICACION()</span>
+      </div>
+      <h2 class="fade-in font-bold mb-4" style="font-size:clamp(1.6rem,4vw,2.5rem)">
+        ¿Dónde y <span class="text-gradient-brand">cuándo?</span>
+      </h2>
+    </div>
+
+    <div class="fade-in card-tech p-8 md:p-12 glow-purple">
+      <div class="grid md:grid-cols-2 gap-6">
+        <div>
+          <div class="font-mono text-xs mb-2" style="color:#6e7681">date:</div>
+          <div class="font-mono font-bold text-xl mb-6" style="color:#00ff88">18 Julio 2026</div>
+
+          <div class="font-mono text-xs mb-2" style="color:#6e7681">time:</div>
+          <div class="font-mono font-bold text-xl mb-6" style="color:#a371f7">08h30 — 16h00 ECT</div>
+        </div>
+        <div>
+          <div class="font-mono text-xs mb-2" style="color:#6e7681">venue:</div>
+          <div class="font-mono font-bold text-xl mb-2" style="color:#f5a133">Universidad Ecotec</div>
+          <div class="font-mono text-xs" style="color:#8b949e">Av. Juan Tanca Marengo Km. 2 — Guayaquil</div>
+        </div>
+        <div class="mt-6">
+          <div class="font-mono text-xs mb-2" style="color:#6e7681">access:</div>
+          <div class="font-mono font-bold text-xl" style="color:#0a73ff">FREE — registro requerido</div>
+        </div>
+      </div>
+      <div class="mt-8 pt-6 border-t" style="border-color:#30363d">
+        <p class="font-mono text-sm text-center" style="color:#8b949e">
+          📍 Universidad Ecotec — Av. Juan Tanca Marengo Km. 2, Guayaquil, Ecuador
+        </p>
+      </div>
+      <div class="mt-8 pt-6 border-t flex flex-col items-center gap-4" style="border-color:#30363d">
+        <span class="font-mono text-xs tracking-widest" style="color:#6e7681">// VENUE_SPONSOR</span>
+        <div class="rounded-xl px-10 py-6" style="background:#ffffff">
+          <img src="assets/communities/ecotec.png" alt="Universidad Ecotec — Venue Sponsor"
+               class="h-64 w-auto object-contain" data-img-fallback />
+          <div class="hidden items-center justify-center" style="color:#0d1117;font-weight:bold">Universidad Ecotec</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SPONSORS -->
+<section id="sponsors" class="relative py-24 md:py-32 overflow-hidden">
+  <div class="absolute inset-0 tech-grid" style="opacity:0.3"></div>
+  <div class="absolute inset-0" style="background:linear-gradient(to bottom,#0d1117,rgba(22,27,34,0.4),#0d1117)"></div>
+
+  <div class="relative z-10 max-w-6xl mx-auto px-6">
+    <div class="text-center mb-16">
+      <div class="fade-in flex justify-center mb-6">
+        <span class="section-badge-pill">// PATROCINADORES.NIVELES()</span>
+      </div>
+      <h2 class="fade-in font-bold mb-4" style="font-size:clamp(1.6rem,4vw,2.5rem)">
+        Patrocinadores del <span class="text-gradient-brand">Evento</span>
+      </h2>
+      <p class="fade-in" style="color:#8b949e">Gracias a nuestros sponsors por hacer posible este evento.</p>
+    </div>
+
+    <!-- Sponsor tiers -->
+    <div class="grid gap-6 mb-12">
+
+      <!-- PRINCIPAL -->
+      <div class="fade-in card-tech p-8" style="border-color:rgba(245,161,51,0.5);box-shadow:0 0 40px rgba(245,161,51,0.1)">
+        <div class="text-center mb-8">
+          <span class="font-mono text-xs px-4 py-2 rounded-full" style="color:#f5a133;background:rgba(245,161,51,0.1);border:1px solid rgba(245,161,51,0.4)">⭐ PATROCINADOR PRINCIPAL</span>
+        </div>
+        <div class="flex justify-center">
+          <a href="https://aws.amazon.com/" target="_blank" rel="noopener">
+            <div class="flex items-center justify-center rounded-xl p-6" style="width:100%;max-width:600px;aspect-ratio:16/9">
+              <img src="assets/sponsors/aws logo.png"
+                   alt="Amazon Web Services — Patrocinador Principal"
+                   style="width:95%;height:95%;object-fit:contain" />
+            </div>
+          </a>
+        </div>
+        <div class="text-center mt-6">
+          <p class="font-mono text-xs" style="color:#6e7681">// infraestructura_cloud · amazon_web_services</p>
+        </div>
+      </div>
+
+      <!-- PLATA -->
+      <div class="fade-in card-tech p-8">
+        <div class="text-center mb-8">
+          <span class="font-mono text-xs px-4 py-2 rounded-full" style="color:#8b949e;background:rgba(139,148,158,0.1);border:1px solid rgba(139,148,158,0.3)">🥈 PLATA</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center max-w-2xl mx-auto">
+          <!-- Bitdefender -->
+          <div class="flex items-center justify-center rounded-xl p-6" style="background:#ffffff;aspect-ratio:1">
+            <img src="assets/sponsors/plata-bitdefender.png" alt="Bitdefender — Sponsor Plata"
+                 style="width:90%;height:90%;object-fit:contain" data-img-fallback />
+            <div class="hidden font-bold text-center" style="color:#0d1117">Bitdefender</div>
+          </div>
+          <!-- Deuna -->
+          <div class="flex items-center justify-center rounded-xl p-6" style="background:#ffffff;aspect-ratio:1">
+            <img src="assets/sponsors/Logo Deuna.png" alt="Deuna — Sponsor Plata"
+                 style="width:90%;height:90%;object-fit:contain" data-img-fallback />
+            <div class="hidden font-bold text-center" style="color:#0d1117">Deuna</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BRONCE -->
+      <div class="fade-in card-tech p-8">
+        <div class="text-center mb-8">
+          <span class="font-mono text-xs px-4 py-2 rounded-full" style="color:#cd7f32;background:rgba(205,127,50,0.1);border:1px solid rgba(205,127,50,0.3)">🥉 BRONCE</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center max-w-2xl mx-auto">
+          <!-- Cloud Smart TI -->
+          <div class="flex items-center justify-center rounded-xl p-6" style="background:#ffffff;aspect-ratio:1">
+            <img src="assets/sponsors/bronce-cloudsmart.png" alt="Cloud Smart TI — Sponsor Bronce"
+                 style="width:90%;height:90%;object-fit:contain" data-img-fallback />
+            <div class="hidden font-bold text-center" style="color:#0d1117">Cloud Smart TI</div>
+          </div>
+          <!-- IA Nexo -->
+          <div class="flex items-center justify-center rounded-xl p-6" style="background:#ffffff;aspect-ratio:1">
+            <img src="assets/sponsors/bronce-ianexo.webp" alt="IA Nexo — Sponsor Bronce"
+                 style="width:90%;height:90%;object-fit:contain" data-img-fallback />
+            <div class="hidden font-bold text-center" style="color:#0d1117">IA Nexo</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+      <!-- REFRIGERIO -->
+      <div class="fade-in card-tech p-8">
+        <div class="text-center mb-8">
+          <span class="font-mono text-xs px-4 py-2 rounded-full" style="color:#00ff88;background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.3)">🍽️ REFRIGERIO</span>
+        </div>
+        <div class="flex justify-center">
+          <div class="flex items-center justify-center rounded-xl p-6" style="background:#ffffff;width:100%;max-width:400px;aspect-ratio:1">
+            <img src="assets/sponsors/cafe.png" alt="Caffe Lato — Sponsor Refrigerio"
+                 style="width:90%;height:90%;object-fit:contain" data-img-fallback />
+            <div class="hidden font-bold text-center" style="color:#0d1117">Caffe Lato</div>
+          </div>
+        </div>
+      </div>
+
+    <div class="text-center">
+      <p class="mb-4" style="color:#8b949e">¿Te interesa patrocinar el evento?</p>
+      <a href="mailto:sponsors@awssecurityecuador.com"
+         class="btn-secondary font-mono font-semibold text-sm px-8 py-4 rounded-lg inline-block">
+        Quiero ser sponsor →
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- COMMUNITIES -->
+<section id="communities" class="relative py-24 md:py-32 overflow-hidden">
+  <div class="absolute inset-0 tech-grid" style="opacity:0.3"></div>
+  <div class="absolute inset-0" style="background:linear-gradient(to bottom,#0d1117,rgba(13,17,23,0.95),#0d1117)"></div>
+
+  <div class="relative z-10 max-w-6xl mx-auto px-6">
+    <div class="text-center mb-16">
+      <div class="fade-in flex justify-center mb-6">
+        <span class="section-badge-pill">// COMUNIDADES.ORGANIZADORAS()</span>
+      </div>
+      <h2 class="fade-in font-bold mb-4" style="font-size:clamp(1.6rem,4vw,2.5rem)">
+        Comunidades que <span class="text-gradient-brand">Organizan</span>
+      </h2>
+      <p class="fade-in" style="color:#8b949e">Un evento construido por la comunidad cloud del Ecuador.</p>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-6 mb-12 max-w-4xl mx-auto">
+
+      <!-- Community 1 — AWS UG Security Ecuador -->
+      <a href="https://www.meetup.com/aws-user-group-security-ecuador/" target="_blank" rel="noopener"
+         class="fade-in card-tech p-8 flex flex-col items-center text-center group" style="text-decoration:none">
+        <div class="w-24 h-24 rounded-2xl flex items-center justify-center mb-5 overflow-hidden" style="background:#0d1117;border:1px solid #30363d">
+          <img src="assets/logo.jpeg" alt="AWS UG Security Ecuador" class="w-full h-full object-cover" />
+        </div>
+        <h3 class="font-bold text-lg mb-2" style="color:#e6edf3">AWS UG Security Ecuador</h3>
+        <p class="text-sm mb-4 flex-1" style="color:#8b949e">
+          Comunidad dedicada exclusivamente a la seguridad en la nube AWS en Ecuador.
+        </p>
+        <div class="flex items-center gap-3 font-mono text-xs" style="color:#6e7681">
+          <span style="color:#00ff88">●</span>
+          <span>402+ miembros</span>
+          <span style="color:#30363d">·</span>
+          <span>Guayaquil, EC</span>
+        </div>
+        <div class="mt-4 font-mono text-xs" style="color:#0a73ff">
+          meetup ↗
+        </div>
+      </a>
+
+      <!-- Community 2 — AWS User Group Quito -->
+      <a href="https://www.meetup.com/aws-user-group-quito/" target="_blank" rel="noopener"
+         class="fade-in card-tech p-8 flex flex-col items-center text-center group" style="text-decoration:none">
+        <div class="w-24 h-24 rounded-2xl flex items-center justify-center mb-5 p-3" style="background:#0d1117;border:1px solid #30363d">
+          <img src="assets/communities/aws-ug-quito.png" alt="AWS User Group Quito" class="w-full h-full object-contain" />
+        </div>
+        <h3 class="font-bold text-lg mb-2" style="color:#e6edf3">AWS User Group Quito</h3>
+        <p class="text-sm mb-4 flex-1" style="color:#8b949e">
+          Entusiastas y profesionales dedicados al aprendizaje e implementación de soluciones cloud con AWS.
+        </p>
+        <div class="flex items-center gap-3 font-mono text-xs" style="color:#6e7681">
+          <span style="color:#00ff88">●</span>
+          <span>538+ miembros</span>
+          <span style="color:#30363d">·</span>
+          <span>Quito, EC</span>
+        </div>
+        <div class="mt-4 font-mono text-xs" style="color:#0a73ff">
+          meetup ↗
+        </div>
+      </a>
+
+    </div>
+
+    <div class="text-center">
+      <p class="font-mono text-xs" style="color:#6e7681">
+        // global_aws_user_group_community = part_of(364_groups)
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ALLIED COMMUNITIES -->
+<section id="comunidades-aliadas" class="relative py-24 md:py-32 overflow-hidden">
+  <div class="absolute inset-0 tech-grid" style="opacity:0.3"></div>
+  <div class="absolute inset-0" style="background:linear-gradient(to bottom,#0d1117,rgba(22,27,34,0.4),#0d1117)"></div>
+
+  <div class="relative z-10 max-w-6xl mx-auto px-6">
+    <div class="text-center mb-16">
+      <div class="fade-in flex justify-center mb-6">
+        <span class="section-badge-pill">// COMUNIDADES.ALIADAS()</span>
+      </div>
+      <h2 class="fade-in font-bold mb-4" style="font-size:clamp(1.6rem,4vw,2.5rem)">
+        Comunidades <span class="text-gradient-ai">Aliadas</span>
+      </h2>
+      <p class="fade-in" style="color:#8b949e">AWS Student Builders y comunidades universitarias que apoyan el evento.</p>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+
+      <!-- AWS SBG Universidad de Guayaquil -->
+      <a href="https://www.meetup.com/aws-sbg-at-universidad-de-guayaquil/" target="_blank" rel="noopener"
+         class="fade-in card-tech p-6 flex flex-col items-center text-center group" style="text-decoration:none">
+        <div class="w-20 h-20 rounded-2xl flex items-center justify-center mb-4 overflow-hidden" style="background:#0d1117;border:1px solid #30363d">
+          <img src="assets/communities/aws-sbg-ug.jpeg" alt="AWS SBG Universidad de Guayaquil" class="w-full h-full object-cover" data-img-fallback />
+          <div class="hidden w-full h-full items-center justify-center text-2xl" style="color:#0a73ff">🎓</div>
+        </div>
+        <h3 class="font-bold text-sm mb-1" style="color:#e6edf3">AWS SBG Universidad de Guayaquil</h3>
+        <div class="mt-2 font-mono text-xs" style="color:#0a73ff">meetup ↗</div>
+      </a>
+
+      <!-- AWS SBG ESPOL -->
+      <a href="https://www.meetup.com/aws-sbg-at-escuela-superior-politecnica-del-litoral-espol/" target="_blank" rel="noopener"
+         class="fade-in card-tech p-6 flex flex-col items-center text-center group" style="text-decoration:none">
+        <div class="w-20 h-20 rounded-2xl flex items-center justify-center mb-4 overflow-hidden" style="background:#0d1117;border:1px solid #30363d">
+          <img src="assets/communities/aws-sbg-espol.jpeg" alt="AWS SBG ESPOL" class="w-full h-full object-cover" data-img-fallback />
+          <div class="hidden w-full h-full items-center justify-center text-2xl" style="color:#0a73ff">🎓</div>
+        </div>
+        <h3 class="font-bold text-sm mb-1" style="color:#e6edf3">AWS SBG ESPOL</h3>
+        <div class="mt-2 font-mono text-xs" style="color:#0a73ff">meetup ↗</div>
+      </a>
+
+      <!-- AWS SBG ITB (Instituto Superior Universitario Bolivariano) -->
+      <a href="https://www.meetup.com/aws-sbg-at-instituto-superior-universitario-bolivariano/" target="_blank" rel="noopener"
+         class="fade-in card-tech p-6 flex flex-col items-center text-center group" style="text-decoration:none">
+        <div class="w-20 h-20 rounded-2xl flex items-center justify-center mb-4 overflow-hidden" style="background:#0d1117;border:1px solid #30363d">
+          <img src="assets/communities/aws-sbg-itb.jpeg" alt="AWS SBG Instituto Superior Universitario Bolivariano" class="w-full h-full object-cover" data-img-fallback />
+          <div class="hidden w-full h-full items-center justify-center text-2xl" style="color:#0a73ff">🎓</div>
+        </div>
+        <h3 class="font-bold text-sm mb-1" style="color:#e6edf3">AWS SBG Bolivariano (ITB)</h3>
+        <div class="mt-2 font-mono text-xs" style="color:#0a73ff">meetup ↗</div>
+      </a>
+
+      <!-- AWS SBG ULEAM (Manta) -->
+      <a href="https://www.meetup.com/aws-sbg-at-universidad-laica-eloy-alfaro-de-manabi/" target="_blank" rel="noopener"
+         class="fade-in card-tech p-6 flex flex-col items-center text-center group" style="text-decoration:none">
+        <div class="w-20 h-20 rounded-2xl flex items-center justify-center mb-4 overflow-hidden" style="background:#0d1117;border:1px solid #30363d">
+          <img src="assets/communities/aws-sbg-uleam.jpeg" alt="AWS SBG Universidad Laica Eloy Alfaro de Manabí" class="w-full h-full object-cover" data-img-fallback />
+          <div class="hidden w-full h-full items-center justify-center text-2xl" style="color:#0a73ff">🎓</div>
+        </div>
+        <h3 class="font-bold text-sm mb-1" style="color:#e6edf3">AWS SBG ULEAM (Manta)</h3>
+        <div class="mt-2 font-mono text-xs" style="color:#0a73ff">meetup ↗</div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- CTA REGISTER -->
+<section id="register" class="relative py-24 md:py-32 overflow-hidden">
+  <div class="absolute inset-0 tech-grid" style="opacity:0.3"></div>
+  <div class="absolute inset-0" style="background:linear-gradient(135deg, rgba(163,113,247,0.1) 0%, rgba(10,115,255,0.1) 50%, rgba(0,255,136,0.1) 100%)"></div>
+
+  <div class="relative z-10 max-w-3xl mx-auto px-6 text-center">
+    <div class="fade-in flex justify-center mb-6">
+      <span class="section-badge-pill">// REGISTRATE_AHORA()</span>
+    </div>
+    <h2 class="fade-in font-bold mb-4" style="font-size:clamp(1.8rem,5vw,3rem)">
+      Reserva tu <span class="text-gradient-ai">lugar</span>
+    </h2>
+    <p class="fade-in font-mono text-sm mb-8" style="color:#6e7681">
+      // entrada_gratuita__cupo_limitado()
+    </p>
+    <p class="fade-in mb-10" style="color:#8b949e">
+      Completa tu registro en nuestro formulario oficial. Cupos limitados, asignados por orden de inscripción.
+    </p>
+    <a href="https://register.awssecurityecuador.com/" target="_blank" rel="noopener"
+       class="btn-primary font-mono font-bold text-lg px-10 py-5 rounded-lg inline-block">
+      REGISTER_FREE() →
+    </a>
+    <p class="font-mono text-xs mt-6" style="color:#6e7681">
+      AWS::GEN_AI.SECURITY.DAY_2026
+    </p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="relative py-12 border-t" style="border-color:#30363d">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="grid md:grid-cols-3 gap-8 mb-8">
+      <div>
+        <div class="flex items-center gap-3 mb-4">
+          <img src="assets/logo.jpeg" alt="AWS UG Security Ecuador" class="w-10 h-10 rounded-lg object-cover" />
+          <div>
+            <div class="font-mono font-bold text-sm" style="color:#e6edf3">AWS_UG_SECURITY</div>
+            <div class="font-mono text-xs" style="color:#6e7681">ECUADOR.COMMUNITY</div>
+          </div>
+        </div>
+        <p class="text-sm" style="color:#8b949e">
+          Organizado por AWS User Group Security Ecuador. Evento gratuito, para la comunidad.
+        </p>
+      </div>
+      <div>
+        <div class="font-mono font-bold text-xs mb-4" style="color:#6e7681">NAV</div>
+        <div class="space-y-2">
+          <a href="#about" class="footer-link block font-mono text-sm">about()</a>
+          <a href="#agenda" class="footer-link block font-mono text-sm">agenda()</a>
+          <a href="#speakers" class="footer-link block font-mono text-sm">speakers()</a>
+          <a href="#sponsors" class="footer-link block font-mono text-sm">sponsors()</a>
+          <a href="#communities" class="footer-link block font-mono text-sm">communities()</a>
+          <a href="https://register.awssecurityecuador.com/" target="_blank" rel="noopener" class="footer-link block font-mono text-sm">register()</a>
+        </div>
+      </div>
+      <div>
+        <div class="font-mono font-bold text-xs mb-4" style="color:#6e7681">LINKS</div>
+        <div class="space-y-2">
+          <a href="https://www.awssecurityecuador.com/" class="footer-link block font-mono text-sm">awssecurityecuador.com ↗</a>
+          <a href="https://www.meetup.com/aws-user-group-security-ecuador/" target="_blank" rel="noopener" class="footer-link block font-mono text-sm">meetup ↗</a>
+          <a href="mailto:sponsors@awssecurityecuador.com" class="footer-link block font-mono text-sm">sponsor_us</a>
+        </div>
+      </div>
+    </div>
+    <div class="pt-8 border-t flex flex-col md:flex-row justify-between items-center gap-4" style="border-color:#30363d">
+      <p class="font-mono text-xs" style="color:#6e7681">
+        // © 2026 AWS_UG_SECURITY_ECUADOR — ALL_RIGHTS_RESERVED
+      </p>
+      <p class="font-mono text-xs" style="color:#6e7681">
+        POWERED_BY::COMMUNITY
+      </p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

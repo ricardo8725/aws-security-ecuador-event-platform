@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Admin — AWS UG Security Ecuador</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛠️</text></svg>" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="config.js"></script>
+<style>
+  :root { --bg:#0d1117; --bg2:#161b22; --bd:#30363d; --tx:#e6edf3; --mut:#8b949e; --blue:#0a73ff; --green:#00ff88; }
+  body { background:var(--bg); color:var(--tx); font-family:'Inter',system-ui,sans-serif; margin:0; }
+  .mono { font-family:'JetBrains Mono',monospace; }
+  .card { background:var(--bg2); border:1px solid var(--bd); border-radius:12px; }
+  .btn { background:var(--blue); color:#fff; border:none; border-radius:8px; padding:.6rem 1.2rem; cursor:pointer; font-weight:600; }
+  .btn:hover { background:#388bfd; }
+  .btn-sec { background:transparent; border:1px solid var(--bd); color:var(--tx); border-radius:8px; padding:.5rem 1rem; cursor:pointer; }
+  table { width:100%; border-collapse:collapse; }
+  th,td { text-align:left; padding:.5rem .75rem; border-bottom:1px solid var(--bd); font-size:.85rem; }
+  th { color:var(--mut); font-weight:600; }
+  input { background:var(--bg); border:1px solid var(--bd); border-radius:8px; color:var(--tx); padding:.5rem .75rem; }
+  .form-in { background:var(--bg); border:1px solid var(--bd); border-radius:8px; color:var(--tx); padding:.5rem .75rem; font-size:.85rem; outline:none; width:100%; }
+  .form-in:focus { border-color:var(--blue); }
+  .form-sel { background:var(--bg); border:1px solid var(--bd); border-radius:8px; color:var(--tx); padding:.5rem .75rem; font-size:.85rem; outline:none; width:100%; }
+  .tab-btn.active { color:var(--blue); border-bottom:2px solid var(--blue); }
+</style>
+</head>
+<body>
+<div class="max-w-6xl mx-auto px-6 py-8">
+  <div class="flex items-center justify-between mb-8">
+    <div>
+      <div class="mono font-bold text-lg" style="color:var(--blue)">AWS_UG_SECURITY · ADMIN</div>
+      <div class="mono text-xs" style="color:var(--mut)" id="user-info"></div>
+    </div>
+    <div class="flex gap-3">
+      <button class="btn-sec" id="logout-btn" style="display:none" onclick="logout()">Cerrar sesión</button>
+    </div>
+  </div>
+
+  <!-- Login -->
+  <div id="login-view" class="card p-10 text-center" style="display:none">
+    <div class="text-4xl mb-4">🔒</div>
+    <h1 class="text-xl font-bold mb-2">Panel de Administración</h1>
+    <p class="mb-6" style="color:var(--mut)">Acceso restringido a organizadores autorizados.</p>
+    <button class="btn" onclick="login()">Iniciar sesión</button>
+  </div>
+
+  <!-- Dashboard -->
+  <div id="dash-view" style="display:none">
+
+    <!-- Tabs -->
+    <div class="flex gap-2 mb-6 border-b" style="border-color:var(--bd)">
+      <button id="tab-registrations" onclick="switchTab('registrations')" class="tab-btn active px-4 py-2 text-sm font-semibold mono">Registros</button>
+      <button id="tab-budget" onclick="switchTab('budget')" class="tab-btn px-4 py-2 text-sm font-semibold mono" style="color:var(--mut)">Presupuesto</button>
+      <button id="tab-certificates" onclick="switchTab('certificates')" class="tab-btn px-4 py-2 text-sm font-semibold mono" style="color:var(--mut)">Certificados</button>
+    </div>
+
+    <!-- TAB: Registrations -->
+    <div id="view-registrations">
+
+    <!-- Summary cards -->
+    <div class="grid grid-cols-2 md:grid-cols-6 gap-4 mb-6" id="metrics"></div>
+
+    <!-- Analytics row: donut + breakdowns (2 cols) + role table (full width) -->
+    <div class="grid md:grid-cols-2 gap-4 mb-4" id="analytics-row"></div>
+    <div class="mb-6" id="role-row"></div>
+
+    <!-- Registrations table -->
+    <div class="card p-5 mb-6">
+      <div class="flex flex-wrap items-center gap-3 mb-4">
+        <input id="search" placeholder="Buscar nombre o correo..." class="flex-1" oninput="renderTable()" />
+        <button class="btn-sec" onclick="exportCsv('/api/export')">Exportar todos (CSV)</button>
+        <button class="btn-sec" onclick="exportCsv('/api/pool/export')">Exportar pool reclutamiento (CSV)</button>
+        <button class="btn-sec" onclick="exportCsv('/api/sponsors/export')">Exportar base sponsors (CSV)</button>
+      </div>
+      <div style="overflow-x:auto">
+        <table>
+          <thead><tr>
+            <th>Nombre</th><th>Correo</th><th>Ciudad</th><th>Exp AWS</th><th>Situación</th><th>Check-in</th><th>Empleo</th><th>Sponsors</th>
+          </tr></thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+      <div class="mono text-xs mt-3" style="color:var(--mut)" id="count"></div>
+    </div>
+
+    </div><!-- /view-registrations -->
+
+    <!-- TAB: Budget -->
+    <div id="view-budget" style="display:none">
+
+      <!-- Balance summary -->
+      <div class="grid grid-cols-3 gap-4 mb-6" id="budget-summary"></div>
+
+      <!-- Add item form -->
+      <div class="card p-5 mb-6">
+        <p class="font-semibold text-sm mb-4" style="color:var(--tx)">Agregar movimiento</p>
+        <div class="grid md:grid-cols-6 gap-3">
+          <select id="b-type" class="form-sel">
+            <option value="income">💰 Ingreso</option>
+            <option value="expense">💸 Egreso</option>
+          </select>
+          <select id="b-category" class="form-sel">
+            <optgroup label="Ingresos"><option value="sponsor">Sponsor</option><option value="donation">Donación</option></optgroup>
+            <optgroup label="Egresos"><option value="catering">Catering</option><option value="swag">Swag / Regalos</option><option value="badges">Gafetes / Camisetas</option><option value="av">A/V / Técnico</option><option value="logistics">Logística</option><option value="marketing">Marketing</option><option value="other">Otro</option></optgroup>
+          </select>
+          <input id="b-description" placeholder="Descripción *" class="form-in md:col-span-2" />
+          <input id="b-sponsor" placeholder="Nombre sponsor (opcional)" class="form-in" />
+          <input id="b-amount" type="number" step="0.01" min="0" placeholder="Monto USD *" class="form-in" />
+          <select id="b-status" class="form-sel">
+            <option value="estimated">Estimado</option>
+            <option value="committed">Comprometido</option>
+            <option value="received">Recibido</option>
+            <option value="paid">Pagado</option>
+          </select>
+          <input id="b-notes" placeholder="Notas (opcional)" class="form-in md:col-span-2" />
+          <button class="btn" onclick="addBudgetItem()">Agregar</button>
+        </div>
+      </div>
+
+      <!-- Budget table -->
+      <div class="card p-5">
+        <div class="flex gap-2 mb-4">
+          <button onclick="setBudgetFilter('all')" id="bf-all" class="btn-sec" style="font-size:.75rem">Todos</button>
+          <button onclick="setBudgetFilter('income')" id="bf-income" class="btn-sec" style="font-size:.75rem;color:#00ff88">💰 Ingresos</button>
+          <button onclick="setBudgetFilter('expense')" id="bf-expense" class="btn-sec" style="font-size:.75rem;color:#f5a133">💸 Egresos</button>
+          <button onclick="exportBudgetCsv()" class="btn-sec" style="font-size:.75rem;margin-left:auto">Exportar CSV</button>
+        </div>
+        <div style="overflow-x:auto">
+          <table>
+            <thead><tr>
+              <th>Tipo</th><th>Categoría</th><th>Descripción</th><th>Sponsor</th><th>Monto</th><th>Estado</th><th>Notas</th><th></th>
+            </tr></thead>
+            <tbody id="budget-rows"></tbody>
+          </table>
+        </div>
+        <div class="mono text-xs mt-3" style="color:var(--mut)" id="budget-count"></div>
+      </div>
+
+    </div><!-- /view-budget -->
+
+    <!-- TAB: Certificates -->
+    <div id="view-certificates" style="display:none">
+
+      <!-- Progress cards -->
+      <div class="grid grid-cols-3 gap-4 mb-6" id="cert-summary"></div>
+
+      <!-- Generate panel -->
+      <div class="card p-6 mb-6">
+        <p class="font-semibold text-sm mb-1" style="color:var(--tx)">Generar y enviar certificados</p>
+        <p class="text-xs mb-5" style="color:var(--mut)">
+          Solo se procesan los asistentes con check-in confirmado que aún no tienen certificado.
+          El proceso envía el PDF por correo a cada asistente automáticamente.
+        </p>
+        <div class="flex flex-wrap gap-3 items-center">
+          <button class="btn" id="cert-generate-btn" onclick="generateCertificates()">
+            🎓 Generar certificados pendientes
+          </button>
+          <button class="btn-sec" onclick="loadCertificateStatus()" style="font-size:.8rem">
+            ↺ Actualizar estado
+          </button>
+        </div>
+        <!-- Progress bar (hidden until running) -->
+        <div id="cert-progress-wrap" style="display:none;margin-top:1.25rem">
+          <div class="flex justify-between text-xs mb-1">
+            <span style="color:var(--mut)">Generando…</span>
+            <span class="mono" style="color:var(--tx)" id="cert-progress-label"></span>
+          </div>
+          <div style="height:8px;background:var(--bd);border-radius:4px">
+            <div id="cert-progress-bar" style="height:100%;background:var(--green);border-radius:4px;width:0%;transition:width .4s"></div>
+          </div>
+        </div>
+        <!-- Result message -->
+        <div id="cert-result" style="display:none;margin-top:1rem" class="mono text-sm"></div>
+      </div>
+
+      <!-- Info note -->
+      <div class="card p-4" style="border-color:#30363d;background:rgba(0,255,136,.04)">
+        <p class="text-xs" style="color:var(--mut);line-height:1.7">
+          <span style="color:var(--green)">✓</span> Los certificados se almacenan en S3 privado y se sirven via CloudFront con URLs únicas por UUID.<br/>
+          <span style="color:var(--green)">✓</span> El campo <code class="mono" style="color:var(--tx)">cert_id</code> y <code class="mono" style="color:var(--tx)">cert_url</code> quedan guardados en DynamoDB por cada asistente.<br/>
+          <span style="color:var(--green)">✓</span> Si un asistente ya tiene certificado y se vuelve a ejecutar, no se regenera (idempotente).<br/>
+          <span style="color:#f5a133)">⚠</span> El proceso puede tomar varios minutos para 400 asistentes (5 min de timeout en Lambda).
+        </p>
+      </div>
+
+    </div><!-- /view-certificates -->
+
+  </div><!-- /dash-view -->
+</div>
+
+<script>
+const C = window.ADMIN_CONFIG || {};
+let TOKEN = null, ALL = [];
+
+function b64url(bytes){return btoa(String.fromCharCode(...bytes)).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');}
+async function sha256(str){const d=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(str));return new Uint8Array(d);}
+
+async function login(){
+  const verifier = b64url(crypto.getRandomValues(new Uint8Array(32)));
+  sessionStorage.setItem('pkce_verifier', verifier);
+  const challenge = b64url(await sha256(verifier));
+  const u = new URL(C.userPoolDomain + '/oauth2/authorize');
+  u.searchParams.set('client_id', C.clientId);
+  u.searchParams.set('response_type', 'code');
+  u.searchParams.set('scope', 'openid email profile');
+  u.searchParams.set('redirect_uri', C.redirectUri);
+  u.searchParams.set('code_challenge', challenge);
+  u.searchParams.set('code_challenge_method', 'S256');
+  window.location.href = u.toString();
+}
+
+function logout(){
+  sessionStorage.clear();
+  const u = new URL(C.userPoolDomain + '/logout');
+  u.searchParams.set('client_id', C.clientId);
+  u.searchParams.set('logout_uri', C.redirectUri);
+  window.location.href = u.toString();
+}
+
+async function exchangeCode(code){
+  const verifier = sessionStorage.getItem('pkce_verifier');
+  const body = new URLSearchParams({
+    grant_type:'authorization_code', client_id:C.clientId,
+    code, redirect_uri:C.redirectUri, code_verifier:verifier,
+  });
+  const r = await fetch(C.userPoolDomain + '/oauth2/token', {
+    method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body,
+  });
+  if(!r.ok) throw new Error('token exchange failed');
+  return r.json();
+}
+
+async function api(path){
+  const r = await fetch(C.apiBase + path, { headers:{ Authorization:'Bearer '+TOKEN }});
+  if(r.status===401){ // token invalid/expired — show login without auto-loop
+    sessionStorage.clear(); TOKEN=null;
+    document.getElementById('dash-view').style.display='none';
+    document.getElementById('login-view').style.display='block';
+    document.getElementById('logout-btn').style.display='none';
+    return null;
+  }
+  return r;
+}
+
+async function exportCsv(path){
+  const r = await api(path);
+  if(!r || !r.ok){ alert('Error al exportar'); return; }
+  const blob = await r.blob();
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = path.includes('pool') ? 'candidate-pool.csv' : (path.includes('sponsors') ? 'sponsors-base.csv' : 'registrations.csv');
+  a.click();
+}
+
+function metricCard(label,val,color){
+  return `<div class="card p-4 text-center"><div class="text-2xl font-bold mono" style="color:${color}">${val}</div><div class="mono text-xs mt-1" style="color:var(--mut)">${label}</div></div>`;
+}
+
+/* ---- SVG Donut chart (no library needed) ---- */
+function donutChart(slices, cx=90, cy=90, r=70, stroke=20){
+  const total = slices.reduce((s,x)=>s+x.v,0)||1;
+  let offset=0, paths='', legend='';
+  const circ = 2*Math.PI*r;
+  slices.forEach(s=>{
+    const pct=s.v/total, dash=pct*circ, gap=circ-dash;
+    const angle=offset*2*Math.PI-Math.PI/2;
+    paths+=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${s.c}" stroke-width="${stroke}"
+      stroke-dasharray="${dash} ${gap}" stroke-dashoffset="${-offset*circ}"
+      transform="rotate(-90 ${cx} ${cy})" style="transform-origin:${cx}px ${cy}px;transform:rotate(${offset*360-90}deg)" />`;
+    legend+=`<div class="flex items-center gap-2 text-xs"><span style="width:10px;height:10px;border-radius:50%;background:${s.c};display:inline-block"></span><span style="color:var(--tx)">${s.label}</span><span class="mono" style="color:var(--mut)">${s.v} (${Math.round(pct*100)}%)</span></div>`;
+    offset+=pct;
+  });
+  return `<svg viewBox="0 0 ${cx*2} ${cy*2}" style="width:100%;max-width:180px">${paths}
+    <text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="middle" style="fill:var(--tx);font-size:18px;font-weight:bold">${total}</text>
+    <text x="${cx}" y="${cy+18}" text-anchor="middle" dominant-baseline="middle" style="fill:var(--mut);font-size:10px">total</text>
+  </svg><div class="flex flex-col gap-2 mt-3">${legend}</div>`;
+}
+
+function barBreakdown(title, data, colors){
+  const total=Object.values(data).reduce((a,b)=>a+b,0)||1;
+  const LABELS={
+    employed:'Trabajando', open_to_offers:'Abierto a ofertas', seeking:'Buscando activamente',
+    freelance:'Freelance / Independiente', student:'Estudiante', not_specified:'No especificado',
+    beginner:'Principiante',intermediate:'Intermedio',advanced:'Avanzado',expert:'Experto',
+    quito:'Quito',guayaquil:'Guayaquil',cuenca:'Cuenca',ambato:'Ambato',manta:'Manta',
+    loja:'Loja',machala:'Machala',other_ec:'Otra (Ecuador)',other_country:'Fuera de Ecuador','?':'—'
+  };
+  const palette=['#0a73ff','#00ff88','#a371f7','#f5a133','#ff6b6b','#4ecdc4','#ffd93d'];
+  const rows=Object.entries(data).sort((a,b)=>b[1]-a[1]).map(([k,v],i)=>{
+    const pct=Math.round(v/total*100), c=colors?colors[i%colors.length]:palette[i%palette.length];
+    return `<div class="mb-2">
+      <div class="flex justify-between text-xs mb-1">
+        <span style="color:var(--tx)">${LABELS[k]||k}</span>
+        <span class="mono" style="color:var(--mut)">${v} · ${pct}%</span>
+      </div>
+      <div style="height:6px;background:var(--bd);border-radius:3px">
+        <div style="width:${pct}%;height:100%;background:${c};border-radius:3px;transition:width .4s"></div>
+      </div></div>`;
+  }).join('');
+  return `<div class="card p-5"><p class="font-semibold text-sm mb-4" style="color:var(--tx)">${title}</p>${rows}</div>`;
+}
+
+function renderAnalytics(m){
+  const empSlices=[
+    {v:m.by_employment?.employed||0,       c:'#00ff88', label:'Trabajando'},
+    {v:m.by_employment?.open_to_offers||0,  c:'#0a73ff', label:'Abierto a ofertas'},
+    {v:m.by_employment?.seeking||0,         c:'#f5a133', label:'Buscando empleo'},
+    {v:m.by_employment?.freelance||0,       c:'#a371f7', label:'Freelance'},
+    {v:m.by_employment?.student||0,         c:'#ff6b6b', label:'Estudiante'},
+    {v:m.by_employment?.not_specified||0,   c:'#6e7681', label:'No especificado'},
+  ].filter(s=>s.v>0);
+
+  const emailSlices=[
+    {v:m.email_corporate||0, c:'#0a73ff', label:'Email corporativo'},
+    {v:m.email_personal||0,  c:'#a371f7', label:'Email personal'},
+  ];
+
+  document.getElementById('analytics-row').innerHTML =
+    `<div class="card p-5">
+       <p class="font-semibold text-sm mb-4" style="color:var(--tx)">Situación laboral</p>
+       <div class="flex flex-col items-center">${donutChart(empSlices)}</div>
+     </div>` +
+    `<div class="card p-5">
+       <p class="font-semibold text-sm mb-4" style="color:var(--tx)">Tipo de correo</p>
+       <div class="flex flex-col items-center">${donutChart(emailSlices)}</div>
+       <div class="mt-4 pt-4 border-t" style="border-color:var(--bd)">
+         <div class="flex justify-between text-xs"><span style="color:var(--mut)">Con empresa registrada</span><span class="mono font-bold" style="color:var(--tx)">${m.has_company||0}</span></div>
+         <div class="flex justify-between text-xs mt-1"><span style="color:var(--mut)">Sin empresa</span><span class="mono font-bold" style="color:var(--tx)">${m.no_company||0}</span></div>
+       </div>
+     </div>`;
+
+  // Role breakdown table
+  const byRole = m.by_role || {};
+  const roleTotal = Object.values(byRole).reduce((a,b)=>a+b,0)||1;
+  const roleRows = Object.entries(byRole).slice(0,20).map(([role,count])=>{
+    const pct=(count/roleTotal*100).toFixed(1);
+    return `<tr>
+      <td style="padding:.5rem .75rem;font-size:.9rem;color:var(--tx)">${role}</td>
+      <td style="padding:.5rem .75rem;font-weight:bold;font-size:.9rem;color:var(--mut);width:80px">${pct}%</td>
+      <td style="padding:.5rem .75rem;width:50%">
+        <div style="height:8px;background:var(--bd);border-radius:4px">
+          <div style="width:${pct}%;height:100%;background:#a371f7;border-radius:4px;transition:width .4s"></div>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('role-row').innerHTML =
+    `<div class="card p-5">
+       <p class="font-semibold text-sm mb-1" style="color:var(--tx)">Distribución de Roles</p>
+       <p class="text-xs mb-4" style="color:var(--mut)">Basado en el cargo declarado por el asistente (normalizado)</p>
+       <table style="width:100%">
+         <thead><tr>
+           <th style="padding:.5rem .75rem;text-align:left;color:var(--mut);font-size:.75rem;text-transform:uppercase;letter-spacing:.05em">ROL</th>
+           <th style="padding:.5rem .75rem;text-align:left;color:var(--mut);font-size:.75rem;text-transform:uppercase;letter-spacing:.05em">PORCENTAJE</th>
+           <th style="padding:.5rem .75rem;text-align:left;color:var(--mut);font-size:.75rem;text-transform:uppercase;letter-spacing:.05em">PROPORCIÓN VISUAL</th>
+         </tr></thead>
+         <tbody>${roleRows}</tbody>
+       </table>
+     </div>`;
+
+  // Third analytics card: experience bars
+  document.getElementById('analytics-row').innerHTML +=
+    barBreakdown('Experiencia AWS', m.by_experience||{});
+}
+
+function renderTable(){
+  const q=(document.getElementById('search').value||'').toLowerCase();
+  const rows = ALL.filter(a => !q || (`${a.first_name||''} ${a.last_name||''}`.toLowerCase().includes(q) || String(a.email||'').toLowerCase().includes(q)));
+  document.getElementById('rows').innerHTML = rows.map(a=>`<tr>
+    <td>${(a.first_name||'')+' '+(a.last_name||'')}</td>
+    <td class="mono text-xs">${a.email||''}</td>
+    <td>${a.city||''}</td>
+    <td>${a.experience||''}</td>
+    <td>${a.employment_status||'—'}</td>
+    <td>${a.checked_in?'✅':'⏳'}</td>
+    <td>${a.consent_recruiters?'👤':''}</td>
+    <td>${a.consent_sponsors?'🤝':''}</td>
+  </tr>`).join('');
+  document.getElementById('count').textContent = `// ${rows.length} de ${ALL.length} registros`;
+}
+
+async function loadDashboard(){
+  document.getElementById('login-view').style.display='none';
+  document.getElementById('dash-view').style.display='block';
+  document.getElementById('logout-btn').style.display='inline-block';
+
+  const [mRes, dRes] = await Promise.all([api('/api/metrics'), api('/api/registrations')]);
+  const m = await mRes.json();
+  const d = await dRes.json();
+
+  document.getElementById('metrics').innerHTML =
+    metricCard('TOTAL', m.total, 'var(--blue)') +
+    metricCard('CHECK-INS', m.checked_in, 'var(--green)') +
+    metricCard('PENDIENTES', m.not_checked_in, '#f5a133') +
+    metricCard('CON EMPRESA', m.has_company||0, '#a371f7') +
+    metricCard('POOL EMPLEO', m.recruiter_pool, '#a371f7') +
+    metricCard('POOL SPONSORS', m.sponsor_pool, '#00ff88');
+
+  renderAnalytics(m);
+
+  ALL = d.attendees || [];
+  renderTable();
+}
+
+// ---- Tab switching ----
+function switchTab(tab){
+  document.getElementById('view-registrations').style.display = tab==='registrations'?'block':'none';
+  document.getElementById('view-budget').style.display        = tab==='budget'?'block':'none';
+  document.getElementById('view-certificates').style.display  = tab==='certificates'?'block':'none';
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+tab).classList.add('active');
+  document.querySelectorAll('.tab-btn').forEach(b=>b.style.color = b.classList.contains('active')?'var(--blue)':'var(--mut)');
+  if(tab==='budget') loadBudget();
+  if(tab==='certificates') loadCertificateStatus();
+}
+
+// ---- Budget ----
+let BUDGET_ALL=[], BUDGET_FILTER='all';
+const CAT_LABELS={sponsor:'Sponsor',donation:'Donación',catering:'Catering',swag:'Swag/Regalos',badges:'Gafetes/Camisetas',av:'A/V',logistics:'Logística',marketing:'Marketing',other:'Otro'};
+const STATUS_LABELS={estimated:'Estimado',committed:'Comprometido',received:'Recibido',paid:'Pagado'};
+const STATUS_COLORS={estimated:'#6e7681',committed:'#f5a133',received:'#00ff88',paid:'#0a73ff'};
+
+function setBudgetFilter(f){ BUDGET_FILTER=f; renderBudget(); }
+
+function renderBudget(){
+  const items = BUDGET_FILTER==='all'?BUDGET_ALL:BUDGET_ALL.filter(i=>i.type===BUDGET_FILTER);
+  document.getElementById('budget-rows').innerHTML = items.map(i=>`<tr>
+    <td class="mono text-xs">${i.type==='income'?'💰 Ingreso':'💸 Egreso'}</td>
+    <td>${CAT_LABELS[i.category]||i.category||'—'}</td>
+    <td>${i.description||''}</td>
+    <td style="color:var(--mut)">${i.sponsor_name||'—'}</td>
+    <td class="mono font-bold" style="color:${i.type==='income'?'#00ff88':'#f5a133'}">${i.type==='income'?'+':'-'}$${parseFloat(i.amount||0).toFixed(2)}</td>
+    <td><span class="mono text-xs px-2 py-1 rounded" style="background:rgba(0,0,0,.3);color:${STATUS_COLORS[i.status]||'#6e7681'}">${STATUS_LABELS[i.status]||i.status}</span></td>
+    <td style="color:var(--mut);font-size:.8rem">${i.notes||''}</td>
+    <td><button onclick="deleteBudgetItem('${i.item_id}')" style="color:#f85149;background:none;border:none;cursor:pointer;font-size:.85rem">✕</button></td>
+  </tr>`).join('');
+  document.getElementById('budget-count').textContent = `// ${items.length} movimientos`;
+}
+
+async function loadBudget(){
+  const r = await api('/api/budget'); if(!r||!r.ok) return;
+  const d = await r.json();
+  BUDGET_ALL = d.items||[];
+  const income=d.total_income||0, expense=d.total_expense||0, balance=d.balance||0;
+  document.getElementById('budget-summary').innerHTML =
+    `<div class="card p-5 text-center"><div class="text-2xl font-bold mono" style="color:#00ff88">$${income.toFixed(2)}</div><div class="mono text-xs mt-1" style="color:var(--mut)">INGRESOS</div></div>` +
+    `<div class="card p-5 text-center"><div class="text-2xl font-bold mono" style="color:#f5a133">$${expense.toFixed(2)}</div><div class="mono text-xs mt-1" style="color:var(--mut)">EGRESOS</div></div>` +
+    `<div class="card p-5 text-center"><div class="text-2xl font-bold mono" style="color:${balance>=0?'#0a73ff':'#f85149'}">$${balance.toFixed(2)}</div><div class="mono text-xs mt-1" style="color:var(--mut)">BALANCE</div></div>`;
+  renderBudget();
+}
+
+async function addBudgetItem(){
+  const body={
+    type:document.getElementById('b-type').value,
+    category:document.getElementById('b-category').value,
+    description:document.getElementById('b-description').value.trim(),
+    sponsor_name:document.getElementById('b-sponsor').value.trim(),
+    amount:document.getElementById('b-amount').value,
+    status:document.getElementById('b-status').value,
+    notes:document.getElementById('b-notes').value.trim(),
+  };
+  if(!body.description||!body.amount){ alert('Descripción y monto son requeridos.'); return; }
+  const r=await fetch('/api/budget',{method:'POST',headers:{Authorization:'Bearer '+TOKEN,'Content-Type':'application/json'},body:JSON.stringify(body)});
+  if(!r.ok){ alert('Error al guardar'); return; }
+  ['b-description','b-sponsor','b-amount','b-notes'].forEach(id=>document.getElementById(id).value='');
+  await loadBudget();
+}
+
+async function deleteBudgetItem(id){
+  if(!confirm('¿Eliminar este movimiento?')) return;
+  await fetch('/api/budget?id='+id,{method:'DELETE',headers:{Authorization:'Bearer '+TOKEN}});
+  await loadBudget();
+}
+
+function exportBudgetCsv(){
+  const items=BUDGET_FILTER==='all'?BUDGET_ALL:BUDGET_ALL.filter(i=>i.type===BUDGET_FILTER);
+  const cols=['type','category','description','sponsor_name','amount','status','notes','created_at'];
+  const csv=[cols.join(','),...items.map(i=>cols.map(c=>`"${(i[c]||'').toString().replace(/"/g,'""')}"`).join(','))].join('\n');
+  const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'})); a.download='presupuesto.csv'; a.click();
+}
+
+// ---- Certificates ----
+async function loadCertificateStatus(){
+  const r = await api('/api/certificates/status');
+  if(!r || !r.ok) return;
+  const d = await r.json();
+  const total   = d.total_checked_in  || 0;
+  const done    = d.already_generated || 0;
+  const pending = d.pending           || 0;
+  document.getElementById('cert-summary').innerHTML =
+    metricCard('ASISTENTES CON CHECK-IN', total,   'var(--blue)')  +
+    metricCard('CERTIFICADOS EMITIDOS',   done,    'var(--green)') +
+    metricCard('PENDIENTES',              pending, pending > 0 ? '#f5a133' : 'var(--mut)');
+}
+
+async function generateCertificates(){
+  const pending = document.getElementById('cert-summary')
+    .querySelector(':nth-child(3) .text-2xl')?.textContent ?? '?';
+
+  if(!confirm(
+    `¿Generar certificados para los asistentes con check-in pendientes?\n\n` +
+    `Pendientes estimados: ${pending}\n\n` +
+    `Cada asistente recibirá un email con su certificado PDF.\n` +
+    `El proceso puede tardar varios minutos.`
+  )) return;
+
+  const btn = document.getElementById('cert-generate-btn');
+  const resultEl = document.getElementById('cert-result');
+  const progressWrap = document.getElementById('cert-progress-wrap');
+  const progressBar  = document.getElementById('cert-progress-bar');
+  const progressLbl  = document.getElementById('cert-progress-label');
+
+  btn.disabled = true;
+  btn.textContent = '⏳ Procesando…';
+  resultEl.style.display = 'none';
+  progressWrap.style.display = 'block';
+  progressBar.style.width = '5%';
+  progressLbl.textContent = 'Iniciando…';
+
+  // Animate indeterminate while waiting (Lambda can take minutes)
+  let fakeProgress = 5;
+  const ticker = setInterval(()=>{
+    if(fakeProgress < 90){ fakeProgress += 1; progressBar.style.width = fakeProgress+'%'; }
+    progressLbl.textContent = `~${fakeProgress}% · procesando…`;
+  }, 3000);
+
+  try {
+    const r = await fetch(C.apiBase + '/api/certificates/generate', {
+      method: 'POST',
+      headers: { Authorization: 'Bearer '+TOKEN, 'Content-Type': 'application/json' },
+      body: JSON.stringify({}),
+    });
+    clearInterval(ticker);
+    progressBar.style.width = '100%';
+
+    if(!r.ok){
+      const err = await r.text();
+      resultEl.style.color = '#f85149';
+      resultEl.textContent = `✗ Error ${r.status}: ${err}`;
+    } else {
+      const d = await r.json();
+      resultEl.style.color = d.failed > 0 ? '#f5a133' : 'var(--green)';
+      resultEl.textContent =
+        `✓ Generados: ${d.generated}   ✗ Fallidos: ${d.failed}   — ${d.message}`;
+      // Refresh status cards
+      await loadCertificateStatus();
+    }
+  } catch(e) {
+    clearInterval(ticker);
+    resultEl.style.color = '#f85149';
+    resultEl.textContent = `✗ Error de red: ${e.message}`;
+  } finally {
+    resultEl.style.display = 'block';
+    progressWrap.style.display = 'none';
+    progressBar.style.width = '0%';
+    btn.disabled = false;
+    btn.textContent = '🎓 Generar certificados pendientes';
+  }
+}
+
+(async function init(){
+  if(!C.clientId){ document.body.innerHTML='<p style="padding:2rem">Config no encontrada. Despliega config.js.</p>'; return; }
+  const params = new URLSearchParams(window.location.search);
+  const code = params.get('code');
+  if(code){
+    try{
+      const t = await exchangeCode(code);
+      TOKEN = t.id_token;
+      sessionStorage.setItem('id_token', TOKEN);
+      window.history.replaceState({}, '', C.redirectUri);
+    }catch(e){ console.error('token exchange', e); }
+  }
+  TOKEN = TOKEN || sessionStorage.getItem('id_token');
+  if(TOKEN){
+    try{ await loadDashboard(); }
+    catch(e){ console.error('dashboard', e); document.getElementById('login-view').style.display='block'; }
+  } else {
+    document.getElementById('login-view').style.display='block';
+  }
+})();
+</script>
+</body>
+</html>

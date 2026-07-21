@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Check-in Staff — AWS GenAI Security Day 2026</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✅</text></svg>" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400,500,600,700&family=JetBrains+Mono:wght@400,500,700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="html5-qrcode.min.js"></script>
+<style>
+  :root {
+    --bg-primary: #0d1117;
+    --bg-secondary: #161b22;
+    --border: #30363d;
+    --text-primary: #e6edf3;
+    --text-secondary: #8b949e;
+    --accent-green: #00ff88;
+    --accent-blue: #0a73ff;
+    --accent-orange: #f5a133;
+    --accent-red: #f85149;
+  }
+  body { background: var(--bg-primary); color: var(--text-primary); font-family: 'Inter', sans-serif; }
+  .font-mono { font-family: 'JetBrains Mono', monospace; }
+  .card { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 12px; }
+  #reader { width: 100%; max-width: 400px; margin: 0 auto; }
+  #reader video { border-radius: 8px; }
+  .result-success { background: rgba(0,255,136,0.1); border: 1px solid rgba(0,255,136,0.3); }
+  .result-warning { background: rgba(245,161,51,0.1); border: 1px solid rgba(245,161,51,0.3); }
+  .result-error { background: rgba(248,81,73,0.1); border: 1px solid rgba(248,81,73,0.3); }
+</style>
+</head>
+<body class="min-h-screen p-4">
+
+<!-- Auth Gate -->
+<div id="auth-gate" class="max-w-md mx-auto mt-20">
+  <div class="card p-8 text-center">
+    <div class="text-3xl mb-4">🔐</div>
+    <h1 class="font-bold text-xl mb-2">Staff Check-in Portal</h1>
+    <p class="text-sm mb-6" style="color:var(--text-secondary)">Ingresa la clave de staff para acceder al escáner de QR.</p>
+    <input type="password" id="secret-input" placeholder="Clave de staff"
+           class="w-full p-3 rounded-lg mb-4 font-mono text-sm"
+           style="background:rgba(48,54,61,0.4);border:1px solid var(--border);color:var(--text-primary)" />
+    <button onclick="authenticate()" class="w-full py-3 rounded-lg font-mono font-bold text-sm"
+            style="background:linear-gradient(135deg,#0a73ff,#00ff88);color:#0d1117">
+      ACCEDER →
+    </button>
+    <p id="auth-error" class="text-sm mt-3 hidden" style="color:var(--accent-red)">Clave incorrecta</p>
+  </div>
+</div>
+
+<!-- Scanner (hidden until auth) -->
+<div id="scanner-view" class="max-w-lg mx-auto hidden">
+  <div class="text-center mb-6">
+    <h1 class="font-bold text-2xl">📱 Check-in Scanner</h1>
+    <p class="font-mono text-xs mt-1" style="color:var(--text-secondary)">AWS GenAI Security Day 2026</p>
+  </div>
+
+  <!-- QR Scanner -->
+  <div class="card p-4 mb-4">
+    <div class="text-center mb-3">
+      <button id="start-camera-btn" onclick="startScanner()" class="px-6 py-3 rounded-lg font-mono font-bold text-sm"
+              style="background:var(--accent-green);color:#0d1117">
+        📷 ACTIVAR CÁMARA PARA ESCANEAR QR
+      </button>
+    </div>
+    <div id="reader"></div>
+    <p id="camera-status" class="text-center font-mono text-xs mt-2" style="color:var(--text-secondary)">
+      Presiona el botón para activar la cámara y escanear códigos QR.
+    </p>
+  </div>
+
+  <!-- Manual code input -->
+  <div class="card p-4 mb-4">
+    <label class="font-mono text-xs block mb-2" style="color:var(--text-secondary)">// ingreso_manual()</label>
+    <div class="flex gap-2">
+      <input type="text" id="manual-code" placeholder="CODIGO (8 chars)"
+             class="flex-1 p-3 rounded-lg font-mono text-sm uppercase"
+             style="background:rgba(48,54,61,0.4);border:1px solid var(--border);color:var(--text-primary)"
+             maxlength="8" />
+      <button onclick="manualCheckin()" class="px-6 py-3 rounded-lg font-mono font-bold text-sm"
+              style="background:var(--accent-blue);color:white">CHECK</button>
+    </div>
+  </div>
+
+  <!-- Result -->
+  <div id="result" class="card p-6 hidden">
+    <div id="result-icon" class="text-4xl text-center mb-3"></div>
+    <div id="result-message" class="font-bold text-center text-lg mb-4"></div>
+    <div id="result-details" class="space-y-2"></div>
+  </div>
+
+  <!-- Stats -->
+  <div class="card p-4 mt-4 text-center">
+    <span class="font-mono text-xs" style="color:var(--text-secondary)">Check-ins esta sesión: </span>
+    <span id="checkin-count" class="font-mono font-bold" style="color:var(--accent-green)">0</span>
+  </div>
+
+  <!-- Attendees List -->
+  <div class="card p-4 mt-4">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="font-bold text-sm">📋 Registrados</h2>
+      <button onclick="loadAttendees()" class="px-3 py-1 rounded font-mono text-xs"
+              style="background:var(--accent-blue);color:white">CARGAR LISTA</button>
+    </div>
+    <div id="attendees-stats" class="hidden mb-3 p-3 rounded-lg" style="background:rgba(48,54,61,0.4)">
+      <div class="grid grid-cols-3 gap-2 text-center font-mono text-xs">
+        <div><span id="stat-total" class="block text-lg font-bold" style="color:var(--text-primary)">0</span>Total</div>
+        <div><span id="stat-checked" class="block text-lg font-bold" style="color:var(--accent-green)">0</span>Asistieron</div>
+        <div><span id="stat-pending" class="block text-lg font-bold" style="color:var(--accent-orange)">0</span>Pendientes</div>
+      </div>
+    </div>
+    <div id="attendees-filter" class="hidden mb-3">
+      <select id="filter-status" onchange="filterAttendees()" class="w-full p-2 rounded font-mono text-xs"
+              style="background:rgba(48,54,61,0.4);border:1px solid var(--border);color:var(--text-primary)">
+        <option value="all">Todos</option>
+        <option value="checked">✅ Asistieron (checked-in)</option>
+        <option value="pending">⏳ Pendientes</option>
+      </select>
+    </div>
+    <div id="attendees-list" class="space-y-2 max-h-96 overflow-y-auto"></div>
+  </div>
+</div>
+
+<script>
+let staffSecret = '';
+let checkinCount = 0;
+let html5QrCode = null;
+
+function authenticate() {
+  staffSecret = document.getElementById('secret-input').value;
+  if (!staffSecret) {
+    document.getElementById('auth-error').classList.remove('hidden');
+    return;
+  }
+  document.getElementById('auth-gate').classList.add('hidden');
+  document.getElementById('scanner-view').classList.remove('hidden');
+}
+
+function startScanner() {
+  document.getElementById('start-camera-btn').style.display = 'none';
+  document.getElementById('camera-status').textContent = 'Iniciando cámara...';
+
+  html5QrCode = new Html5Qrcode("reader");
+  html5QrCode.start(
+    { facingMode: "environment" },
+    { fps: 10, qrbox: { width: 250, height: 250 } },
+    onScanSuccess,
+    () => {}
+  ).then(() => {
+    document.getElementById('camera-status').textContent = '📸 Cámara activa — apunta al código QR del asistente';
+    document.getElementById('camera-status').style.color = 'var(--accent-green)';
+  }).catch(err => {
+    console.log("Camera error:", err);
+    document.getElementById('camera-status').textContent = '⚠️ No se pudo acceder a la cámara. Usa el ingreso manual abajo.';
+    document.getElementById('camera-status').style.color = 'var(--accent-orange)';
+    document.getElementById('start-camera-btn').style.display = 'inline-block';
+    document.getElementById('start-camera-btn').textContent = '🔄 REINTENTAR CÁMARA';
+  });
+}
+
+async function onScanSuccess(decodedText) {
+  // Pause scanner
+  if (html5QrCode) html5QrCode.pause();
+
+  let data;
+  try {
+    data = JSON.parse(decodedText);
+  } catch {
+    data = { code: decodedText };
+  }
+
+  await doCheckin(data);
+
+  // Resume after 3 seconds
+  setTimeout(() => {
+    if (html5QrCode) html5QrCode.resume();
+  }, 3000);
+}
+
+async function manualCheckin() {
+  const code = document.getElementById('manual-code').value.trim().toUpperCase();
+  if (!code) return;
+  await doCheckin({ code });
+  document.getElementById('manual-code').value = '';
+}
+
+async function doCheckin(data) {
+  const resultDiv = document.getElementById('result');
+  const iconDiv = document.getElementById('result-icon');
+  const msgDiv = document.getElementById('result-message');
+  const detailsDiv = document.getElementById('result-details');
+
+  resultDiv.classList.remove('hidden', 'result-success', 'result-warning', 'result-error');
+
+  try {
+    const res = await fetch('/api/checkin', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Checkin-Secret': staffSecret
+      },
+      body: JSON.stringify(data)
+    });
+
+    // Parse defensively: if the server (or an edge/proxy) returns non-JSON
+    // (e.g. an HTML error page), don't crash into the generic connection error.
+    const raw = await res.text();
+    let result;
+    try {
+      result = JSON.parse(raw);
+    } catch {
+      result = null;
+    }
+
+    if (res.status === 401) {
+      resultDiv.classList.add('result-error');
+      iconDiv.textContent = '🚫';
+      msgDiv.textContent = 'No autorizado';
+      detailsDiv.innerHTML = '<p class="text-sm" style="color:var(--accent-red)">Clave de staff incorrecta. Recarga la página.</p>';
+      return;
+    }
+
+    if (res.status === 404 || (result && result.valid === false)) {
+      resultDiv.classList.add('result-error');
+      iconDiv.textContent = '❌';
+      msgDiv.textContent = 'No encontrado';
+      const notFoundMsg = (result && result.message) ? result.message : 'Registro no encontrado. Verifica el código QR.';
+      detailsDiv.innerHTML = `<p class="text-sm" style="color:var(--accent-red)">${notFoundMsg}</p>`;
+      return;
+    }
+
+    if (!result) {
+      resultDiv.classList.add('result-error');
+      iconDiv.textContent = '⚠️';
+      msgDiv.textContent = 'Respuesta inesperada';
+      detailsDiv.innerHTML = `<p class="text-sm" style="color:var(--accent-red)">El servidor respondió con un formato inválido (HTTP ${res.status}). Intenta de nuevo.</p>`;
+      return;
+    }
+
+    if (result.valid && !result.already_checked_in) {
+      resultDiv.classList.add('result-success');
+      iconDiv.textContent = '✅';
+      msgDiv.textContent = 'Check-in exitoso!';
+      msgDiv.style.color = 'var(--accent-green)';
+      checkinCount++;
+      document.getElementById('checkin-count').textContent = checkinCount;
+    } else if (result.already_checked_in) {
+      resultDiv.classList.add('result-warning');
+      iconDiv.textContent = '⚠️';
+      msgDiv.textContent = 'Ya registrado';
+      msgDiv.style.color = 'var(--accent-orange)';
+    }
+
+    if (result.attendee) {
+      detailsDiv.innerHTML = `
+        <div class="font-mono text-xs" style="color:var(--text-secondary)">
+          <p><strong style="color:var(--text-primary)">${result.attendee.name}</strong></p>
+          <p>${result.attendee.email}</p>
+          <p>${result.attendee.company || ''}</p>
+          <p style="color:var(--accent-blue);font-size:14px;margin-top:8px">${result.attendee.code}</p>
+        </div>
+      `;
+    }
+
+  } catch (err) {
+    resultDiv.classList.add('result-error');
+    iconDiv.textContent = '⚠️';
+    msgDiv.textContent = 'Error de conexión';
+    detailsDiv.innerHTML = '<p class="text-sm" style="color:var(--accent-red)">No se pudo conectar con el servidor.</p>';
+  }
+}
+
+// Enter key on secret input
+document.getElementById('secret-input').addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') authenticate();
+});
+document.getElementById('manual-code').addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') manualCheckin();
+});
+
+// Attendees list
+let allAttendees = [];
+
+async function loadAttendees() {
+  const listDiv = document.getElementById('attendees-list');
+  listDiv.innerHTML = '<p class="text-center font-mono text-xs" style="color:var(--text-secondary)">Cargando...</p>';
+
+  try {
+    const res = await fetch('/api/attendees', {
+      headers: { 'X-Checkin-Secret': staffSecret }
+    });
+    const data = await res.json();
+
+    if (res.status !== 200) {
+      listDiv.innerHTML = `<p class="text-center text-sm" style="color:var(--accent-red)">${data.message}</p>`;
+      return;
+    }
+
+    allAttendees = data.attendees || [];
+    document.getElementById('stat-total').textContent = data.total;
+    document.getElementById('stat-checked').textContent = data.checked_in;
+    document.getElementById('stat-pending').textContent = data.not_checked_in;
+    document.getElementById('attendees-stats').classList.remove('hidden');
+    document.getElementById('attendees-filter').classList.remove('hidden');
+
+    renderAttendees(allAttendees);
+  } catch (err) {
+    listDiv.innerHTML = '<p class="text-center text-sm" style="color:var(--accent-red)">Error de conexión</p>';
+  }
+}
+
+function filterAttendees() {
+  const filter = document.getElementById('filter-status').value;
+  let filtered = allAttendees;
+  if (filter === 'checked') filtered = allAttendees.filter(a => a.checked_in);
+  if (filter === 'pending') filtered = allAttendees.filter(a => !a.checked_in);
+  renderAttendees(filtered);
+}
+
+function renderAttendees(list) {
+  const listDiv = document.getElementById('attendees-list');
+  if (!list.length) {
+    listDiv.innerHTML = '<p class="text-center font-mono text-xs" style="color:var(--text-secondary)">Sin resultados</p>';
+    return;
+  }
+  listDiv.innerHTML = list.map(a => `
+    <div class="p-3 rounded-lg flex items-center justify-between" style="background:rgba(48,54,61,0.3);border:1px solid var(--border)">
+      <div>
+        <div class="text-sm font-medium">${a.name}</div>
+        <div class="font-mono text-xs" style="color:var(--text-secondary)">${a.email}</div>
+        ${a.company ? `<div class="font-mono text-xs" style="color:var(--text-secondary)">${a.company}</div>` : ''}
+      </div>
+      <div class="text-right">
+        <div class="text-lg">${a.checked_in ? '✅' : '⏳'}</div>
+        <div class="font-mono text-xs" style="color:var(--accent-blue)">${a.code}</div>
+      </div>
+    </div>
+  `).join('');
+}
+</script>
+</body>
+</html>

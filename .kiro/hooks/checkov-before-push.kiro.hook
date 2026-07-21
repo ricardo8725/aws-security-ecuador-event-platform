@@ -1,0 +1,16 @@
+{
+  "enabled": true,
+  "name": "Checkov Security Scan",
+  "description": "Runs checkov on the Terraform directory before pushing to catch security misconfigurations. If checkov finds critical issues, the agent should warn the user before proceeding with the push.",
+  "version": "1",
+  "when": {
+    "type": "preToolUse",
+    "toolTypes": [
+      "shell"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Check if the command about to be executed is a `git push`. If it is, first run `checkov -d terraform/ --quiet --compact` and review the results. If there are FAILED checks with HIGH or CRITICAL severity, warn the user about the issues found and ask if they want to proceed with the push anyway. If all checks pass or only LOW/MEDIUM issues exist, mention the results briefly and proceed normally."
+  }
+}

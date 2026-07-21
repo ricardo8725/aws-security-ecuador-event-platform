@@ -1,0 +1,13 @@
+{
+  "enabled": true,
+  "name": "Security Agent — Full Scan",
+  "description": "On-demand full security scan of the entire codebase via AWS Security Agent. Takes ~45 min. Run periodically or before major releases.",
+  "version": "1",
+  "when": {
+    "type": "userTriggered"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "The user has manually triggered a full security scan. Run the Security Code Scan workflow from the AWS Security Agent power: call setup_check first, then start_security_scan with path='/Users/wreyes/Documents/Deployments/PersonalDev/awssecurityecuador' and title='awssecurityecuador-full-scan'. Poll every 5 minutes with get_scan_status until COMPLETED or FAILED. On completion call get_scan_findings, present results grouped by severity (CRITICAL → HIGH → MEDIUM → LOW), and write the full report to .security-agent/findings-{scan_id}.md. Offer to fix any HIGH or CRITICAL findings."
+  }
+}

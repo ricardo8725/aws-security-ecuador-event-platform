@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sponsors — AWS GenAI Security Day 2026</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤝</text></svg>" />
+<meta name="description" content="Conviértete en sponsor del AWS GenAI Security Day 2026 — Ecuador." />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" crossorigin="anonymous" />
+<!-- Cloudflare Turnstile -->
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  :root {
+    --bg-primary: #0d1117;
+    --bg-secondary: #161b22;
+    --bg-card: rgba(22, 27, 34, 0.6);
+    --border: #30363d;
+    --border-focus: #0a73ff;
+    --text-primary: #e6edf3;
+    --text-secondary: #8b949e;
+    --text-muted: #6e7681;
+    --accent-blue: #0a73ff;
+    --accent-green: #00ff88;
+    --accent-gold: #f5a133;
+    --accent-silver: #8b949e;
+    --accent-bronze: #cd7f32;
+  }
+  * { box-sizing: border-box; }
+  body { background: var(--bg-primary); color: var(--text-primary); font-family: 'Inter', sans-serif; margin: 0; min-height: 100vh; }
+  .font-mono { font-family: 'JetBrains Mono', monospace; }
+  .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; backdrop-filter: blur(10px); }
+  .form-input, .form-select {
+    background: rgba(48,54,61,0.4); border: 1px solid var(--border); color: var(--text-primary);
+    padding: 12px 16px; border-radius: 8px; width: 100%; font-size: 14px; transition: all 0.2s;
+  }
+  .form-input:focus, .form-select:focus { outline: none; border-color: var(--border-focus); box-shadow: 0 0 0 3px rgba(10,115,255,0.1); }
+  .form-input::placeholder { color: var(--text-muted); }
+  .form-label { display: block; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--text-secondary); margin-bottom: 8px; }
+  .form-label .required { color: #f85149; margin-left: 4px; }
+  .btn-primary { background: linear-gradient(135deg, #0a73ff 0%, #00ff88 100%); color: #0d1117; font-weight: 700; border: none; cursor: pointer; transition: all 0.3s; }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,255,136,0.3); }
+  .tier-card { cursor: pointer; transition: all 0.3s; border: 2px solid transparent; }
+  .tier-card:hover { transform: translateY(-2px); }
+  .tier-card.selected { border-color: var(--accent-blue); box-shadow: 0 0 20px rgba(10,115,255,0.2); }
+  .alert-success { background: rgba(0,255,136,0.1); border: 1px solid rgba(0,255,136,0.3); color: var(--accent-green); padding: 16px; border-radius: 8px; }
+  .alert-error { background: rgba(248,81,73,0.1); border: 1px solid rgba(248,81,73,0.3); color: #f85149; padding: 16px; border-radius: 8px; }
+  .tech-grid { background-image: linear-gradient(rgba(48,54,61,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(48,54,61,0.3) 1px, transparent 1px); background-size: 50px 50px; }
+  .spinner { width:16px;height:16px;border:2px solid rgba(13,17,23,0.3);border-top-color:#0d1117;border-radius:50%;animation:spin .8s linear infinite;display:inline-block; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<div class="fixed inset-0 tech-grid" style="opacity:0.15;z-index:-1"></div>
+
+<main class="max-w-3xl mx-auto px-6 py-12 md:py-20">
+
+  <!-- Header -->
+  <div class="text-center mb-12">
+    <div class="flex justify-center mb-6">
+      <img src="https://www.awssecurityecuador.com/assets/logos/17.png" alt="AWS UG Security Ecuador" class="w-16 h-16 rounded-xl" />
+    </div>
+    <div class="font-mono text-xs mb-3" style="color:#a371f7">// SPONSOR_PROGRAM()</div>
+    <h1 class="font-bold mb-3" style="font-size:clamp(1.8rem,5vw,2.8rem)">
+      <span style="background:linear-gradient(135deg,#a371f7,#0a73ff,#00ff88);-webkit-background-clip:text;-webkit-text-fill-color:transparent">AWS GenAI</span> Security Day
+    </h1>
+    <p class="text-lg mb-2" style="color:var(--text-secondary)">Conviértete en sponsor del evento</p>
+    <p class="font-mono text-sm" style="color:var(--text-muted)">18 Julio 2026 · Ecuador · 200 asistentes</p>
+  </div>
+
+  <!-- Tiers -->
+  <div class="mb-10">
+    <div class="font-mono text-xs mb-4" style="color:#a371f7">// tiers_de_sponsorship()</div>
+    <div class="grid md:grid-cols-3 gap-4 mb-4">
+      <div class="tier-card card p-5 text-center" data-tier="oro" onclick="selectTier(this, 'oro')">
+        <div class="text-3xl mb-2">🥇</div>
+        <h3 class="font-bold text-lg" style="color:var(--accent-gold)">Oro</h3>
+        <p class="font-mono text-xl font-bold mt-1">$1,000</p>
+        <p class="text-xs mt-2" style="color:var(--text-secondary)">Logo principal, stand, charla de 5 min, redes sociales</p>
+      </div>
+      <div class="tier-card card p-5 text-center" data-tier="plata" onclick="selectTier(this, 'plata')">
+        <div class="text-3xl mb-2">🥈</div>
+        <h3 class="font-bold text-lg" style="color:var(--accent-silver)">Plata</h3>
+        <p class="font-mono text-xl font-bold mt-1">$500</p>
+        <p class="text-xs mt-2" style="color:var(--text-secondary)">Logo en materiales, stand, mención en redes</p>
+      </div>
+      <div class="tier-card card p-5 text-center" data-tier="bronce" onclick="selectTier(this, 'bronce')">
+        <div class="text-3xl mb-2">🥉</div>
+        <h3 class="font-bold text-lg" style="color:var(--accent-bronze)">Bronce</h3>
+        <p class="font-mono text-xl font-bold mt-1">$300</p>
+        <p class="text-xs mt-2" style="color:var(--text-secondary)">Logo en materiales, mención en redes</p>
+      </div>
+    </div>
+    <div class="grid md:grid-cols-2 gap-4">
+      <div class="tier-card card p-5 text-center" data-tier="supporter" onclick="selectTier(this, 'supporter')">
+        <div class="text-3xl mb-2">⭐</div>
+        <h3 class="font-bold">Supporter</h3>
+        <p class="font-mono text-lg font-bold mt-1">$100</p>
+        <p class="text-xs mt-2" style="color:var(--text-secondary)">Apoyo comunidad, mención especial</p>
+      </div>
+      <div class="tier-card card p-5 text-center" data-tier="otra" onclick="selectTier(this, 'otra')">
+        <div class="text-3xl mb-2">💬</div>
+        <h3 class="font-bold">Otra manera</h3>
+        <p class="font-mono text-lg font-bold mt-1">Conversemos</p>
+        <p class="text-xs mt-2" style="color:var(--text-secondary)">Espacio, catering, swag, servicios</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Form -->
+  <div class="card p-6 md:p-10">
+    <div id="success-msg" class="alert-success mb-6 hidden">
+      ✓ <strong>Solicitud enviada.</strong> Nos pondremos en contacto contigo pronto. ¡Gracias por apoyar a la comunidad!
+    </div>
+    <div id="error-msg" class="alert-error mb-6 hidden">
+      ✗ <span id="error-text">Error al enviar la solicitud.</span>
+    </div>
+
+    <form id="sponsor-form" onsubmit="submitForm(event)">
+      <div class="font-mono text-xs mb-4" style="color:#a371f7">// datos_del_sponsor()</div>
+
+      <div class="grid md:grid-cols-2 gap-4 mb-4">
+        <div>
+          <label class="form-label">Nombre<span class="required">*</span></label>
+          <input type="text" name="nombre" class="form-input" required placeholder="Tu nombre" />
+        </div>
+        <div>
+          <label class="form-label">Apellido<span class="required">*</span></label>
+          <input type="text" name="apellido" class="form-input" required placeholder="Tu apellido" />
+        </div>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-4 mb-4">
+        <div>
+          <label class="form-label">Empresa<span class="required">*</span></label>
+          <input type="text" name="empresa" class="form-input" required placeholder="Nombre de la empresa" />
+        </div>
+        <div>
+          <label class="form-label">Correo de contacto<span class="required">*</span></label>
+          <input type="email" name="email" class="form-input" required placeholder="correo@empresa.com" />
+        </div>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-4 mb-4">
+        <div>
+          <label class="form-label">Teléfono</label>
+          <input type="tel" name="telefono" class="form-input" placeholder="+593 99 999 9999" />
+        </div>
+        <div>
+          <label class="form-label">Tier seleccionado<span class="required">*</span></label>
+          <input type="text" name="tier" id="tier-input" class="form-input" readonly required placeholder="← Selecciona un tier arriba" />
+        </div>
+      </div>
+
+      <div class="mb-6">
+        <label class="form-label">Mensaje adicional</label>
+        <textarea name="mensaje" class="form-input" rows="3" placeholder="¿Algo que quieras agregar? (opcional)" style="resize:vertical"></textarea>
+      </div>
+
+      <!-- Honeypot -->
+      <div style="position:absolute;left:-9999px" aria-hidden="true">
+        <input type="text" name="website" tabindex="-1" autocomplete="off" />
+      </div>
+
+      <!-- Cloudflare Turnstile CAPTCHA -->
+      <div class="cf-turnstile mb-4" data-sitekey="0x4AAAAAADXdBBmDAZMroo6d" data-callback="onTurnstileSuccess" data-theme="dark"></div>
+
+      <input type="hidden" name="_subject" value="Nueva solicitud de sponsor — AWS GenAI Security Day 2026" />
+
+      <p class="text-xs mb-6" style="color:var(--text-muted)">
+        Tu información será utilizada únicamente para coordinar el patrocinio del evento.
+      </p>
+
+      <button type="submit" id="submit-btn" class="btn-primary w-full font-mono font-bold text-sm px-8 py-4 rounded-lg flex items-center justify-center gap-2">
+        <span id="submit-text">ENVIAR SOLICITUD →</span>
+      </button>
+    </form>
+  </div>
+
+  <!-- Footer -->
+  <div class="text-center mt-10">
+    <p class="text-sm mb-2" style="color:var(--text-secondary)">
+      ¿Tienes preguntas? Escríbenos a <a href="mailto:info@awssecurityecuador.com" style="color:var(--accent-blue)">info@awssecurityecuador.com</a>
+    </p>
+    <p class="font-mono text-xs" style="color:var(--text-muted)">// © 2026 AWS_UG_SECURITY_ECUADOR</p>
+  </div>
+</main>
+
+<script>
+let selectedTier = '';
+let turnstileToken = '';
+
+function onTurnstileSuccess(token) { turnstileToken = token; }
+
+function selectTier(el, tier) {
+  document.querySelectorAll('.tier-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedTier = tier;
+  const labels = { oro: '🥇 Oro — $1,000', plata: '🥈 Plata — $500', bronce: '🥉 Bronce — $300', supporter: '⭐ Supporter — $100', otra: '💬 Otra manera' };
+  document.getElementById('tier-input').value = labels[tier] || tier;
+}
+
+async function submitForm(e) {
+  e.preventDefault();
+  const form = e.target;
+  const btn = document.getElementById('submit-btn');
+  const submitText = document.getElementById('submit-text');
+  const successMsg = document.getElementById('success-msg');
+  const errorMsg = document.getElementById('error-msg');
+
+  // Honeypot check
+  if (form.website.value) return;
+
+  if (!selectedTier) {
+    document.getElementById('error-text').textContent = 'Por favor selecciona un tier de sponsorship.';
+    errorMsg.classList.remove('hidden');
+    return;
+  }
+
+  btn.disabled = true;
+  submitText.innerHTML = '<span class="spinner"></span> ENVIANDO...';
+  errorMsg.classList.add('hidden');
+  successMsg.classList.add('hidden');
+
+  const data = new FormData(form);
+  const body = {
+    nombre: data.get('nombre'),
+    apellido: data.get('apellido'),
+    empresa: data.get('empresa'),
+    email: data.get('email'),
+    telefono: data.get('telefono') || '',
+    tier: selectedTier,
+    mensaje: data.get('mensaje') || '',
+    turnstile_token: turnstileToken
+  };
+
+  try {
+    const res = await fetch('/api/sponsor', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+
+    if (res.ok) {
+      successMsg.classList.remove('hidden');
+      form.reset();
+      document.querySelectorAll('.tier-card').forEach(c => c.classList.remove('selected'));
+      document.getElementById('tier-input').value = '';
+      selectedTier = '';
+    } else {
+      const err = await res.json().catch(() => ({}));
+      document.getElementById('error-text').textContent = err.message || 'Error al enviar. Intenta nuevamente.';
+      errorMsg.classList.remove('hidden');
+    }
+  } catch {
+    document.getElementById('error-text').textContent = 'No se pudo conectar. Verifica tu conexión.';
+    errorMsg.classList.remove('hidden');
+  } finally {
+    btn.disabled = false;
+    submitText.textContent = 'ENVIAR SOLICITUD →';
+  }
+}
+</script>
+</body>
+</html>

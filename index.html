@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AWS User Group Security Ecuador</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡️</text></svg>" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ["'Inter'", '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
+            mono: ["'JetBrains Mono'", "'SF Mono'", "'Fira Code'", 'monospace'],
+          },
+        },
+      },
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" crossorigin="anonymous" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="font-sans antialiased" style="background:#0d1117;color:#e6edf3;font-family:'Inter',-apple-system,BlinkMacSystemFont,system-ui,sans-serif">
+
+  <!-- ==================== NAVBAR ==================== -->
+  <nav id="navbar" class="fixed top-0 w-full z-50">
+    <div class="px-6 py-4" style="border-bottom:1px solid transparent" id="nav-inner">
+      <div class="max-w-6xl mx-auto flex items-center justify-between">
+
+        <a href="#home" class="flex items-center gap-3 group">
+          <div class="relative w-10 h-10 rounded-lg flex items-center justify-center overflow-hidden"
+               style="background:rgba(10,115,255,0.12);border:1px solid #0a73ff">
+            <img src="assets/logos/17.png" alt="Logo" class="w-7 h-7 object-contain" data-img-fallback />
+            <div class="hidden w-full h-full items-center justify-center" style="color:#0a73ff;font-size:1.2rem">🛡️</div>
+            <div class="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full animate-pulse"
+                 style="background:#00ff88;border:2px solid #0d1117"></div>
+          </div>
+          <div>
+            <div class="font-mono text-sm font-bold leading-none" style="color:#0a73ff">AWS_UG_SECURITY</div>
+            <div class="font-mono text-xs leading-none mt-0.5" style="color:#6e7681">ECUADOR.COMMUNITY</div>
+          </div>
+        </a>
+
+        <!-- Desktop links -->
+        <div class="hidden md:flex items-center gap-8">
+          <a href="#home"          class="nav-link font-mono text-sm">Inicio</a>
+          <a href="#quienes-somos" class="nav-link font-mono text-sm">Quiénes Somos</a>
+          <a href="#eventos"       class="nav-link font-mono text-sm">Eventos</a>
+          <a href="#eventos-pasados" class="nav-link font-mono text-sm">Eventos Pasados</a>
+          <a href="https://www.meetup.com/aws-user-group-security-ecuador/" target="_blank" rel="noopener"
+             class="btn-primary font-mono text-sm px-5 py-2 rounded-lg">ÚNETE</a>
+        </div>
+
+        <button id="mobile-menu-btn" class="md:hidden transition-colors" style="color:#8b949e">
+          <svg id="icon-open"  class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+          <svg id="icon-close" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div id="mobile-menu" class="hidden md:hidden" style="background:rgba(22,27,34,0.98);border-bottom:1px solid #30363d">
+      <div class="max-w-6xl mx-auto px-6 py-4 flex flex-col gap-4">
+        <a href="#home"          class="font-mono text-sm" style="color:#8b949e">Inicio</a>
+        <a href="#quienes-somos" class="font-mono text-sm" style="color:#8b949e">Quiénes Somos</a>
+        <a href="#eventos"       class="font-mono text-sm" style="color:#8b949e">Eventos</a>
+        <a href="#eventos-pasados" class="font-mono text-sm" style="color:#8b949e">Eventos Pasados</a>
+        <a href="https://www.meetup.com/aws-user-group-security-ecuador/" target="_blank" rel="noopener"
+           class="btn-primary font-mono text-sm px-5 py-2 rounded-lg w-fit">ÚNETE</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ==================== HERO ==================== -->
+  <section id="home" class="hero-section relative min-h-screen flex items-center justify-center overflow-hidden">
+    <div class="absolute inset-0" style="background:linear-gradient(to bottom,transparent 70%,#0d1117);pointer-events:none;z-index:1"></div>
+
+    <div class="relative z-10 max-w-4xl mx-auto px-6 text-center" style="padding-top:80px">
+
+      <!-- Badge -->
+      <div class="fade-in flex justify-center mb-8">
+        <span class="section-badge-pill">COMMUNITY • SECURITY • AWS • ECUADOR</span>
+      </div>
+
+      <!-- Hero logo -->
+      <div class="fade-in flex justify-center mb-8">
+        <div class="hero-logo-container">
+          <div class="hero-logo-icon">
+            <img src="assets/logo-pepa.jpeg" alt="AWS UG Security Ecuador" data-img-fallback />
+            <div class="hidden w-full h-full items-center justify-center" style="color:#0a73ff;font-size:4rem">🛡️</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Title -->
+      <h1 class="fade-in mb-6">
+        <span class="block font-mono font-black leading-none text-gradient-brand" style="font-size:clamp(2.2rem,6vw,3.8rem)">AWS</span>
+        <span class="block font-mono font-bold leading-tight" style="font-size:clamp(1.4rem,4vw,2.5rem);color:#e6edf3">USER GROUP</span>
+        <span class="block font-mono tracking-widest mt-2" style="font-size:clamp(0.8rem,2vw,1.1rem);color:#8b949e">SECURITY ECUADOR</span>
+      </h1>
+
+      <!-- Subtitle -->
+      <p class="fade-in text-base md:text-lg max-w-2xl mx-auto mb-10 leading-relaxed" style="color:#8b949e">
+        Comunidad dedicada exclusivamente a la seguridad en la nube AWS en Ecuador.
+        Aprende, comparte y conecta con profesionales de seguridad cloud.
+      </p>
+
+      <!-- CTAs -->
+      <div class="fade-in flex flex-col sm:flex-row gap-4 justify-center mb-16">
+        <a href="https://www.meetup.com/aws-user-group-security-ecuador/" target="_blank" rel="noopener"
+           class="btn-primary font-mono font-semibold text-sm px-8 py-4 rounded-lg">
+          ÚNETE AHORA
+        </a>
+        <a href="#eventos" class="btn-secondary font-mono font-semibold text-sm px-8 py-4 rounded-lg">
+          VER EVENTOS
+        </a>
+      </div>
+
+      <!-- Stats -->
+      <div class="fade-in grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div class="card-tech p-5 text-center">
+          <div class="stat-divider"></div>
+          <div class="font-mono font-bold text-2xl" style="color:#0a73ff">312+</div>
+          <div class="font-mono text-xs tracking-widest mt-1" style="color:#6e7681">MIEMBROS</div>
+        </div>
+        <div class="card-tech p-5 text-center">
+          <div class="stat-divider"></div>
+          <div class="font-mono font-bold text-2xl" style="color:#00ff88">5.0★</div>
+          <div class="font-mono text-xs tracking-widest mt-1" style="color:#6e7681">RATING</div>
+        </div>
+        <div class="card-tech p-5 text-center">
+          <div class="stat-divider"></div>
+          <div class="font-mono font-bold text-2xl" style="color:#0a73ff">FREE</div>
+          <div class="font-mono text-xs tracking-widest mt-1" style="color:#6e7681">ACCESO</div>
+        </div>
+        <div class="card-tech p-5 text-center">
+          <div class="stat-divider"></div>
+          <div class="font-mono font-bold text-2xl" style="color:#00ff88">100%</div>
+          <div class="font-mono text-xs tracking-widest mt-1" style="color:#6e7681">COMUNIDAD</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2" style="opacity:0.3">
+      <span class="font-mono text-xs tracking-widest" style="color:#6e7681">SCROLL</span>
+      <div class="w-px h-8" style="background:linear-gradient(to bottom,#6e7681,transparent)"></div>
+    </div>
+  </section>
+
+  <!-- ==================== QUIÉNES SOMOS ==================== -->
+  <section id="quienes-somos" class="relative py-24 md:py-32 overflow-hidden">
+    <div class="absolute inset-0 tech-grid" style="opacity:0.4"></div>
+    <div class="absolute inset-0" style="background:linear-gradient(to bottom,#0d1117,rgba(22,27,34,0.4),#0d1117)"></div>
+
+    <div class="relative z-10 max-w-6xl mx-auto px-6">
+
+      <div class="text-center mb-16">
+        <div class="fade-in flex justify-center mb-6">
+          <span class="section-badge-pill">ABOUT</span>
+        </div>
+        <h2 class="fade-in font-bold mb-4" style="font-size:clamp(1.6rem,4vw,2.5rem)">
+          Quiénes <span class="text-gradient-brand">Somos</span>
+        </h2>
+        <p class="fade-in max-w-2xl mx-auto" style="color:#8b949e">
+          Una comunidad nacida para llenar el vacío de especialistas en seguridad cloud en Ecuador.
+        </p>
+      </div>
+
+      <!-- Mission -->
+      <div class="fade-in mb-16">
+        <div class="card-tech p-8">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="w-10 h-10 rounded-lg flex items-center justify-center text-lg"
+                 style="background:rgba(10,115,255,0.12);border:1px solid #0a73ff">🎯</div>
+            <h3 class="font-mono font-bold tracking-wider" style="color:#0a73ff">MISSION.statement</h3>
+          </div>
+          <p class="leading-relaxed mb-4" style="color:#e6edf3">
+            Somos una comunidad dedicada <em>exclusivamente</em> a la seguridad en la nube AWS en Ecuador. Creamos un espacio donde cualquier persona —desde principiantes hasta profesionales experimentados— puede crecer, conectar y compartir conocimiento real.
+          </p>
+          <p class="leading-relaxed" style="color:#8b949e">
+            Cubrimos IAM, escenarios de compromiso real, servicios nativos como Security Hub, GuardDuty, CloudTrail y KMS, y estrategias de defensa contra atacantes modernos.
+          </p>
+        </div>
+      </div>
+
+      <!-- Focus areas -->
+      <div class="mb-16">
+        <p class="fade-in font-mono text-xs text-center tracking-widest mb-8" style="color:#6e7681">FOCUS_AREAS</p>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="fade-in card-tech p-6 group">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl mb-4 transition-transform group-hover:scale-110"
+                 style="background:rgba(10,115,255,0.12);border:1px solid rgba(10,115,255,0.25)">🔐</div>
+            <h4 class="font-bold mb-2 font-mono" style="color:#e6edf3">IAM & Accesos</h4>
+            <p class="text-sm leading-relaxed" style="color:#8b949e">Seguridad de identidades, privilegios y escalación de permisos en AWS.</p>
+          </div>
+          <div class="fade-in card-tech p-6 group">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl mb-4 transition-transform group-hover:scale-110"
+                 style="background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.2)">🔍</div>
+            <h4 class="font-bold mb-2 font-mono" style="color:#e6edf3">Detección</h4>
+            <p class="text-sm leading-relaxed" style="color:#8b949e">GuardDuty, Security Hub, CloudTrail — vigilancia continua de tu infraestructura.</p>
+          </div>
+          <div class="fade-in card-tech p-6 group">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl mb-4 transition-transform group-hover:scale-110"
+                 style="background:rgba(10,115,255,0.12);border:1px solid rgba(10,115,255,0.25)">⚔️</div>
+            <h4 class="font-bold mb-2 font-mono" style="color:#e6edf3">Ataque & Defensa</h4>
+            <p class="text-sm leading-relaxed" style="color:#8b949e">Escenarios reales de compromiso y estrategias Blue Team en AWS.</p>
+          </div>
+          <div class="fade-in card-tech p-6 group">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl mb-4 transition-transform group-hover:scale-110"
+                 style="background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.2)">📋</div>
+            <h4 class="font-bold mb-2 font-mono" style="color:#e6edf3">Compliance</h4>
+            <p class="text-sm leading-relaxed" style="color:#8b949e">ISO 27001, mejores prácticas y gobernanza de seguridad en la nube.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Target audience -->
+      <div class="fade-in card-tech p-8 mb-16">
+        <h3 class="font-mono font-bold mb-6 flex flex-wrap items-center gap-2" style="color:#e6edf3">
+          <span style="color:#0a73ff">TARGET_AUDIENCE</span>
+          <span style="color:#6e7681">=</span>
+          <span style="color:#00ff88">["todos"]</span>
+        </h3>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          <div class="flex items-center gap-3 text-sm" style="color:#8b949e"><span style="color:#0a73ff">▸</span> Arquitectos de Soluciones</div>
+          <div class="flex items-center gap-3 text-sm" style="color:#8b949e"><span style="color:#0a73ff">▸</span> Ingenieros DevSecOps</div>
+          <div class="flex items-center gap-3 text-sm" style="color:#8b949e"><span style="color:#0a73ff">▸</span> Profesionales de Seguridad</div>
+          <div class="flex items-center gap-3 text-sm" style="color:#8b949e"><span style="color:#0a73ff">▸</span> Desarrolladores Cloud</div>
+          <div class="flex items-center gap-3 text-sm" style="color:#8b949e"><span style="color:#0a73ff">▸</span> Estudiantes y Entusiastas</div>
+          <div class="flex items-center gap-3 text-sm" style="color:#8b949e"><span style="color:#0a73ff">▸</span> Expertos en Seguridad</div>
+        </div>
+      </div>
+
+      <!-- Leaders -->
+      <div>
+        <p class="fade-in font-mono text-xs text-center tracking-widest mb-8" style="color:#6e7681">COMMUNITY LEADERS</p>
+        <div class="grid md:grid-cols-3 gap-6">
+
+          <!-- Willie Reyes — Líder Principal -->
+          <div class="fade-in card-tech p-6 flex flex-col">
+            <div class="flex items-center gap-4 mb-5">
+              <div class="w-14 h-14 rounded-full flex items-center justify-center font-mono font-bold text-lg flex-shrink-0"
+                   style="background:linear-gradient(135deg,#2d1f6e,#4a2d8f);border:2px solid #5a3db0;color:#fff">WR</div>
+              <div>
+                <div class="font-bold" style="color:#e6edf3">Willie Reyes</div>
+                <div class="font-mono text-xs mt-0.5" style="color:#f5a133">LÍDER PRINCIPAL</div>
+              </div>
+            </div>
+            <p class="text-sm leading-relaxed flex-1 mb-5" style="color:#8b949e">
+              Profesional con 16 años de experiencia en infraestructura de TI, ciberseguridad y continuidad del negocio. Máster en Seguridad de la Información, certificado en AWS, Azure y OCI. Ha contribuido activamente a certificaciones ISO 27001, 22301 y PCI en diversas instituciones.
+            </p>
+            <a href="https://www.linkedin.com/in/williereyes/" target="_blank" rel="noopener"
+               class="card-link flex items-center gap-2 font-mono text-xs">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+              linkedin.com/in/williereyes
+            </a>
+          </div>
+
+          <!-- Anthony Grijalva — Co-líder 1 -->
+          <div class="fade-in card-tech p-6 flex flex-col">
+            <div class="flex items-center gap-4 mb-5">
+              <div class="w-14 h-14 rounded-full flex items-center justify-center font-mono font-bold text-lg flex-shrink-0"
+                   style="background:linear-gradient(135deg,#0a3d6e,#0a73ff);border:2px solid #388bfd;color:#fff">AG</div>
+              <div>
+                <div class="font-bold" style="color:#e6edf3">Anthony Grijalva</div>
+                <div class="font-mono text-xs mt-0.5" style="color:#0a73ff">CO-LÍDER</div>
+              </div>
+            </div>
+            <p class="text-sm leading-relaxed flex-1 mb-5" style="color:#8b949e">
+              Cloud Security Engineer especializado en AWS y Azure, con experiencia en automatización de despliegues y configuración segura de entornos híbridos y cloud-native. Realiza hacking ético y pentesting en infraestructuras tradicionales y en la nube.
+            </p>
+            <a href="https://www.linkedin.com/in/anthonygrijalvaa/" target="_blank" rel="noopener"
+               class="card-link flex items-center gap-2 font-mono text-xs">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+              linkedin.com/in/anthonygrijalvaa
+            </a>
+          </div>
+
+          <!-- Xavier Llauca — Co-líder 2 -->
+          <div class="fade-in card-tech p-6 flex flex-col">
+            <div class="flex items-center gap-4 mb-5">
+              <div class="w-14 h-14 rounded-full flex items-center justify-center font-mono font-bold text-lg flex-shrink-0"
+                   style="background:linear-gradient(135deg,#0d4a3e,#00cc6e);border:2px solid #00ff88;color:#fff">XL</div>
+              <div>
+                <div class="font-bold" style="color:#e6edf3">Xavier Llauca</div>
+                <div class="font-mono text-xs mt-0.5" style="color:#00ff88">CO-LÍDER</div>
+              </div>
+            </div>
+            <p class="text-sm leading-relaxed flex-1 mb-5" style="color:#8b949e">
+              Ingeniero de Seguridad en la Nube con experiencia en automatización de infraestructura y gestión de configuración. Ha colaborado con equipos DevOps para garantizar entrega de software segura y ha liderado actividades de pentesting en infraestructuras tradicionales y cloud.
+            </p>
+            <a href="https://www.linkedin.com/in/xllauca/" target="_blank" rel="noopener"
+               class="card-link flex items-center gap-2 font-mono text-xs">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+              linkedin.com/in/xllauca
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== EVENTOS ==================== -->
+  <section id="eventos" class="relative py-24 md:py-32 overflow-hidden">
+    <div class="absolute inset-0 tech-grid" style="opacity:0.3"></div>
+    <div class="absolute inset-0" style="background:linear-gradient(to bottom,#0d1117,rgba(13,17,23,0.95),#0d1117)"></div>
+
+    <div class="relative z-10 max-w-6xl mx-auto px-6">
+
+      <div class="text-center mb-16">
+        <div class="fade-in flex justify-center mb-6">
+          <span class="section-badge-pill">EVENTS</span>
+        </div>
+        <h2 class="fade-in font-bold mb-4" style="font-size:clamp(1.6rem,4vw,2.5rem)">
+          Próximos <span class="text-gradient-brand">Eventos</span>
+        </h2>
+        <p class="fade-in" style="color:#8b949e">Talleres presenciales, webinars y meetups — aprende junto a la comunidad.</p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-6 mb-12">
+
+        <!-- Event 1 — REAL: CloudFormation Hooks (May 26, 2026) -->
+        <div class="fade-in card-tech flex flex-col overflow-hidden">
+          <!-- Event flyer header -->
+          <div class="relative w-full h-44 flex-shrink-0">
+            <img src="assets/evento-cloudformation-hooks.webp" alt="CloudFormation Hooks: Validación Proactiva para una Nube Segura"
+                 class="w-full h-full object-cover" data-img-fallback />
+            <div class="hidden w-full h-full items-center justify-center" style="background:#161b22">
+              <span class="text-5xl">🛡️</span>
+            </div>
+            <div class="absolute inset-0" style="background:linear-gradient(to bottom,rgba(13,17,23,0.1) 0%,rgba(13,17,23,0.75) 100%)"></div>
+            <div class="absolute top-3 left-3 right-3 flex items-start justify-between">
+              <span class="font-mono text-xs px-3 py-1 rounded-full" style="color:#00ff88;background:rgba(0,255,136,0.15);border:1px solid rgba(0,255,136,0.3)">VIRTUAL</span>
+              <span class="font-mono text-xs px-3 py-1 rounded-full flex items-center gap-1" style="color:#f5a133;background:rgba(245,161,51,0.15);border:1px solid rgba(245,161,51,0.3)">
+                <span class="w-1.5 h-1.5 rounded-full animate-pulse" style="background:#f5a133"></span>PRÓXIMO
+              </span>
+            </div>
+          </div>
+          <!-- Card content -->
+          <div class="p-6 flex flex-col flex-1">
+            <h3 class="font-bold text-base mb-3 leading-snug" style="color:#e6edf3">
+              CloudFormation Hooks: Validación Proactiva para una Nube Segura
+            </h3>
+            <p class="text-sm leading-relaxed mb-4 flex-1" style="color:#8b949e">
+              Detén recursos inseguros antes de que existan. Exploraremos cómo usar CloudFormation Hooks para aplicar controles preventivos a escala: bloquear buckets sin cifrado, rechazar security groups expuestos y forzar etiquetado obligatorio.
+            </p>
+            <div class="space-y-2 mb-6">
+              <div class="flex items-center gap-2 font-mono text-xs" style="color:#6e7681"><span style="color:#00ff88">🗓️</span> 26 de Mayo, 2026 — 7:00 PM (ECT)</div>
+              <div class="flex items-center gap-2 font-mono text-xs" style="color:#6e7681"><span style="color:#0a73ff">🌐</span> Online — enlace al registrarse</div>
+              <div class="flex items-center gap-2 font-mono text-xs" style="color:#6e7681"><span style="color:#f5a133">👥</span> 25 confirmados • 75 cupos disponibles</div>
+              <div class="flex items-center gap-2 font-mono text-xs" style="color:#6e7681"><span style="color:#00ff88">💲</span> Acceso gratuito</div>
+            </div>
+            <a href="https://www.meetup.com/aws-user-group-security-ecuador/events/314648896/" target="_blank" rel="noopener"
+               class="btn-primary w-full font-mono text-sm py-3 rounded-lg text-center">REGISTRARSE EN MEETUP</a>
+          </div>
+        </div>
+
+        <!-- Event 2 — REAL: Contenedores en AWS (June 9, 2026) -->
+        <div class="fade-in card-tech flex flex-col overflow-hidden">
+          <!-- Event flyer header -->
+          <div class="relative w-full h-44 flex-shrink-0">
+            <img src="assets/evento-contenedores-aws.webp" alt="Estrategias de Seguridad para Contenedores en AWS"
+                 class="w-full h-full object-cover" data-img-fallback />
+            <div class="hidden w-full h-full items-center justify-center" style="background:#161b22">
+              <span class="text-5xl">🐳</span>
+            </div>
+            <div class="absolute inset-0" style="background:linear-gradient(to bottom,rgba(13,17,23,0.1) 0%,rgba(13,17,23,0.75) 100%)"></div>
+            <div class="absolute top-3 left-3 right-3 flex items-start justify-between">
+              <span class="font-mono text-xs px-3 py-1 rounded-full" style="color:#00ff88;background:rgba(0,255,136,0.15);border:1px solid rgba(0,255,136,0.3)">VIRTUAL</span>
+              <span class="font-mono text-xs px-3 py-1 rounded-full flex items-center gap-1" style="color:#00ff88;background:rgba(0,255,136,0.15);border:1px solid rgba(0,255,136,0.3)">
+                <span class="w-1.5 h-1.5 rounded-full animate-pulse" style="background:#00ff88"></span>PRÓXIMAMENTE
+              </span>
+            </div>
+          </div>
+          <!-- Card content -->
+          <div class="p-6 flex flex-col flex-1">
+            <h3 class="font-bold text-base mb-3 leading-snug" style="color:#e6edf3">
+              Estrategias de Seguridad para Contenedores en AWS
+            </h3>
+            <p class="text-sm leading-relaxed mb-4 flex-1" style="color:#8b949e">
+              Fortalece clústeres de Kubernetes en Amazon EKS: controles de acceso, políticas de seguridad, aislamiento de workloads, gestión de secretos y protección de la cadena de suministro de imágenes.
+            </p>
+            <div class="space-y-2 mb-6">
+              <div class="flex items-center gap-2 font-mono text-xs" style="color:#6e7681"><span style="color:#00ff88">🗓️</span> 9 de Junio, 2026 — 7:00 PM (ECT)</div>
+              <div class="flex items-center gap-2 font-mono text-xs" style="color:#6e7681"><span style="color:#0a73ff">🌐</span> Online — enlace al registrarse</div>
+              <div class="flex items-center gap-2 font-mono text-xs" style="color:#6e7681"><span style="color:#00ff88">👥</span> 5 confirmados • 95 cupos disponibles</div>
+              <div class="flex items-center gap-2 font-mono text-xs" style="color:#6e7681"><span style="color:#00ff88">💲</span> Acceso gratuito</div>
+            </div>
+            <a href="https://www.meetup.com/aws-user-group-security-ecuador/events/314908710/" target="_blank" rel="noopener"
+               class="btn-primary w-full font-mono text-sm py-3 rounded-lg text-center">REGISTRARSE EN MEETUP</a>
+          </div>
+        </div>
+
+        <!-- Event 3 — AWS Incident Response (June 16, 2026) -->
+        <div class="fade-in card-tech flex flex-col overflow-hidden">
+          <!-- Event flyer header -->
+          <div class="relative w-full h-44 flex-shrink-0">
+            <img src="assets/evento-incident-response.webp" alt="AWS Incident Response: Del Caos a la Contención en Minutos"
+                 class="w-full h-full object-cover" data-img-fallback />
+            <div class="hidden w-full h-full items-center justify-center" style="background:#161b22">
+              <span class="text-5xl">🚨</span>
+            </div>
+            <div class="absolute inset-0" style="background:linear-gradient(to bottom,rgba(13,17,23,0.1) 0%,rgba(13,17,23,0.75) 100%)"></div>
+            <div class="absolute top-3 left-3 right-3 flex items-start justify-between">
+              <span class="font-mono text-xs px-3 py-1 rounded-full" style="color:#00ff88;background:rgba(0,255,136,0.15);border:1px solid rgba(0,255,136,0.3)">VIRTUAL</span>
+              <span class="font-mono text-xs px-3 py-1 rounded-full flex items-center gap-1" style="color:#00ff88;background:rgba(0,255,136,0.15);border:1px solid rgba(0,255,136,0.3)">
+                <span class="w-1.5 h-1.5 rounded-full animate-pulse" style="background:#00ff88"></span>PRÓXIMAMENTE
+              </span>
+            </div>
+          </div>
+          <!-- Card content -->
+          <div class="p-6 flex flex-col flex-1">
+            <h3 class="font-bold text-base mb-3 leading-snug" style="color:#e6edf3">
+              AWS Incident Response: Del Caos a la Contención en Minutos
+            </h3>
+            <p class="text-sm leading-relaxed mb-4 flex-1" style="color:#8b949e">
+              Un incidente en la nube puede escalar en minutos. Cubriremos las fases clave del incident response en AWS: identificación de IoCs, herramientas nativas para contención, análisis forense básico y automatización de la respuesta con Lambda y EventBridge.
+            </p>
+            <div class="space-y-2 mb-6">
+              <div class="flex items-center gap-2 font-mono text-xs" style="color:#6e7681"><span style="color:#00ff88">🗓️</span> 16 de Junio, 2026 — 7:00 PM (ECT)</div>
+              <div class="flex items-center gap-2 font-mono text-xs" style="color:#6e7681"><span style="color:#0a73ff">🌐</span> Online — enlace al registrarse</div>
+              <div class="flex items-center gap-2 font-mono text-xs" style="color:#6e7681"><span style="color:#00ff88">👥</span> 13 confirmados • 87 cupos disponibles</div>
+              <div class="flex items-center gap-2 font-mono text-xs" style="color:#6e7681"><span style="color:#00ff88">💲</span> Acceso gratuito</div>
+            </div>
+            <a href="https://www.meetup.com/aws-user-group-security-ecuador/events/314962017/" target="_blank" rel="noopener"
+               class="btn-primary w-full font-mono text-sm py-3 rounded-lg text-center">REGISTRARSE EN MEETUP</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== EVENTOS PASADOS ==================== -->
+  <section id="eventos-pasados" class="relative py-24 md:py-32 overflow-hidden">
+    <div class="absolute inset-0 tech-grid" style="opacity:0.3"></div>
+    <div class="absolute inset-0" style="background:linear-gradient(to bottom,#0d1117,rgba(13,17,23,0.95),#0d1117)"></div>
+
+    <div class="relative z-10 max-w-6xl mx-auto px-6">
+
+      <div class="text-center mb-16">
+        <div class="fade-in flex justify-center mb-6">
+          <span class="section-badge-pill">PAST EVENTS</span>
+        </div>
+        <h2 class="fade-in font-bold mb-4" style="font-size:clamp(1.6rem,4vw,2.5rem)">
+          Eventos <span class="text-gradient-brand">Pasados</span>
+        </h2>
+        <p class="fade-in" style="color:#8b949e">Revive nuestras charlas, talleres y participaciones como comunidad.</p>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-8">
+
+        <!-- Evento Pasado 1 — UCSG Presencial -->
+        <div class="fade-in card-tech flex flex-col overflow-hidden">
+          <div class="relative w-full h-52 flex-shrink-0">
+            <img src="assets/evento-ucsg-presencial.jpeg" alt="Primer evento presencial AWS UG Security Ecuador en UCSG"
+                 class="w-full h-full object-cover" data-img-fallback />
+            <div class="hidden w-full h-full items-center justify-center" style="background:#161b22">
+              <span class="text-5xl">🎓</span>
+            </div>
+            <div class="absolute inset-0" style="background:linear-gradient(to bottom,rgba(13,17,23,0.1) 0%,rgba(13,17,23,0.75) 100%)"></div>
+            <div class="absolute top-3 left-3">
+              <span class="font-mono text-xs px-3 py-1 rounded-full" style="color:#0a73ff;background:rgba(10,115,255,0.15);border:1px solid rgba(10,115,255,0.3)">PRESENCIAL</span>
+            </div>
+          </div>
+          <div class="p-6 flex flex-col flex-1">
+            <h3 class="font-bold text-base mb-3 leading-snug" style="color:#e6edf3">
+              Primer Evento Presencial — Universidad Católica de Santiago de Guayaquil
+            </h3>
+            <p class="text-sm leading-relaxed mb-4 flex-1" style="color:#8b949e">
+              El primer evento presencial de la comunidad AWS User Group Security Ecuador en la Universidad Católica de Santiago de Guayaquil. Realizamos dos sesiones: Elias Guevara Celi presentó fundamentos de la nube, y Willie Reyes presentó fundamentos de seguridad en la nube, seguido de una introducción al taller de fundamentos de seguridad de AWS.
+            </p>
+            <div class="space-y-2 mb-4">
+              <div class="flex items-center gap-2 font-mono text-xs" style="color:#6e7681"><span style="color:#0a73ff">📍</span> Universidad Católica de Santiago de Guayaquil</div>
+              <div class="flex items-center gap-2 font-mono text-xs" style="color:#6e7681"><span style="color:#f5a133">🎤</span> Speakers: Elias Guevara Celi, Willie Reyes</div>
+              <div class="flex items-center gap-2 font-mono text-xs" style="color:#6e7681"><span style="color:#00ff88">🙏</span> Agradecimiento a José Miguel Erazo Ayón</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Evento Pasado 2 — AWS Student Builder Group UniValle -->
+        <div class="fade-in card-tech flex flex-col overflow-hidden">
+          <div class="relative w-full h-52 flex-shrink-0">
+            <img src="assets/evento-univalle-colombia.jpeg" alt="Charla en AWS Student Builder Group Universidad del Valle"
+                 class="w-full h-full object-cover" data-img-fallback />
+            <div class="hidden w-full h-full items-center justify-center" style="background:#161b22">
+              <span class="text-5xl">🌎</span>
+            </div>
+            <div class="absolute inset-0" style="background:linear-gradient(to bottom,rgba(13,17,23,0.1) 0%,rgba(13,17,23,0.75) 100%)"></div>
+            <div class="absolute top-3 left-3">
+              <span class="font-mono text-xs px-3 py-1 rounded-full" style="color:#00ff88;background:rgba(0,255,136,0.15);border:1px solid rgba(0,255,136,0.3)">VIRTUAL</span>
+            </div>
+          </div>
+          <div class="p-6 flex flex-col flex-1">
+            <h3 class="font-bold text-base mb-3 leading-snug" style="color:#e6edf3">
+              Charla en AWS Student Builder Group — Universidad del Valle
+            </h3>
+            <p class="text-sm leading-relaxed mb-4 flex-1" style="color:#8b949e">
+              Charla sobre fundamentos de AWS en el AWS Student Builder Group de la Universidad del Valle. Se explicaron los conceptos base para comenzar a crear recursos dentro de AWS de manera gratuita, con gran asistencia del público.
+            </p>
+            <div class="space-y-2 mb-4">
+              <div class="flex items-center gap-2 font-mono text-xs" style="color:#6e7681"><span style="color:#0a73ff">📍</span> AWS Student Builder Group — Universidad del Valle</div>
+              <div class="flex items-center gap-2 font-mono text-xs" style="color:#6e7681"><span style="color:#f5a133">🎤</span> Speaker: Willie Reyes</div>
+              <div class="flex items-center gap-2 font-mono text-xs" style="color:#6e7681"><span style="color:#00ff88">🙏</span> Invitación de Juan Manuel Hoyos Contreras</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Evento Pasado 3 — ECOTEC con Jose Daniel Franco -->
+        <div class="fade-in card-tech flex flex-col overflow-hidden">
+          <div class="relative w-full h-52 flex-shrink-0">
+            <img src="assets/evento-ecotec-1.jpeg" alt="Charla AWS en Universidad ECOTEC - Administración de Centro de Cómputo"
+                 class="w-full h-full object-cover" data-img-fallback />
+            <div class="hidden w-full h-full items-center justify-center" style="background:#161b22">
+              <span class="text-5xl">🏫</span>
+            </div>
+            <div class="absolute inset-0" style="background:linear-gradient(to bottom,rgba(13,17,23,0.1) 0%,rgba(13,17,23,0.75) 100%)"></div>
+            <div class="absolute top-3 left-3">
+              <span class="font-mono text-xs px-3 py-1 rounded-full" style="color:#0a73ff;background:rgba(10,115,255,0.15);border:1px solid rgba(10,115,255,0.3)">PRESENCIAL</span>
+            </div>
+          </div>
+          <div class="p-6 flex flex-col flex-1">
+            <h3 class="font-bold text-base mb-3 leading-snug" style="color:#e6edf3">
+              Charla AWS — Universidad ECOTEC (Administración de Centro de Cómputo)
+            </h3>
+            <p class="text-sm leading-relaxed mb-4 flex-1" style="color:#8b949e">
+              Charla sobre AWS en la materia Administración de Centro de Cómputo con los estudiantes de Ingeniería en Sistemas Inteligentes de la Universidad ECOTEC. Se abordaron temas de infraestructura y seguridad en AWS, con participación proactiva de los alumnos.
+            </p>
+            <div class="space-y-2 mb-4">
+              <div class="flex items-center gap-2 font-mono text-xs" style="color:#6e7681"><span style="color:#0a73ff">📍</span> Universidad ECOTEC — Guayaquil</div>
+              <div class="flex items-center gap-2 font-mono text-xs" style="color:#6e7681"><span style="color:#f5a133">🎤</span> Speaker: Willie Reyes</div>
+              <div class="flex items-center gap-2 font-mono text-xs" style="color:#6e7681"><span style="color:#00ff88">🙏</span> Invitación de Jose Daniel Franco Lamilla</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Evento Pasado 4 — ECOTEC con Fabián Balseca -->
+        <div class="fade-in card-tech flex flex-col overflow-hidden">
+          <div class="relative w-full h-52 flex-shrink-0">
+            <img src="assets/evento-ecotec-2.jpeg" alt="Charla Seguridad en la Nube en Universidad ECOTEC"
+                 class="w-full h-full object-cover" data-img-fallback />
+            <div class="hidden w-full h-full items-center justify-center" style="background:#161b22">
+              <span class="text-5xl">🏫</span>
+            </div>
+            <div class="absolute inset-0" style="background:linear-gradient(to bottom,rgba(13,17,23,0.1) 0%,rgba(13,17,23,0.75) 100%)"></div>
+            <div class="absolute top-3 left-3">
+              <span class="font-mono text-xs px-3 py-1 rounded-full" style="color:#0a73ff;background:rgba(10,115,255,0.15);border:1px solid rgba(10,115,255,0.3)">PRESENCIAL</span>
+            </div>
+          </div>
+          <div class="p-6 flex flex-col flex-1">
+            <h3 class="font-bold text-base mb-3 leading-snug" style="color:#e6edf3">
+              Introducción a Seguridad en la Nube — Universidad ECOTEC
+            </h3>
+            <p class="text-sm leading-relaxed mb-4 flex-1" style="color:#8b949e">
+              Charla con los estudiantes de Ingeniería en Sistemas Inteligentes de la Universidad ECOTEC sobre introducción a la seguridad de nube en AWS. Se compartió experiencia profesional y los diferentes caminos dentro de TI y seguridad a través de roadmap.sh.
+            </p>
+            <div class="space-y-2 mb-4">
+              <div class="flex items-center gap-2 font-mono text-xs" style="color:#6e7681"><span style="color:#0a73ff">📍</span> Universidad ECOTEC — Guayaquil</div>
+              <div class="flex items-center gap-2 font-mono text-xs" style="color:#6e7681"><span style="color:#f5a133">🎤</span> Speaker: Willie Reyes</div>
+              <div class="flex items-center gap-2 font-mono text-xs" style="color:#6e7681"><span style="color:#00ff88">🙏</span> Invitación de Fabián Balseca Chávez</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Evento Pasado 5 — YouTube: Piensa como un atacante -->
+        <div class="fade-in card-tech flex flex-col overflow-hidden">
+          <div class="relative w-full h-52 flex-shrink-0">
+            <img src="https://img.youtube.com/vi/nA5jDpV4XDg/maxresdefault.jpg" alt="Piensa como un atacante y actúa como un Blue Team en AWS"
+                 class="w-full h-full object-cover" />
+            <div class="absolute inset-0" style="background:linear-gradient(to bottom,rgba(13,17,23,0.1) 0%,rgba(13,17,23,0.75) 100%)"></div>
+            <div class="absolute top-3 left-3 flex gap-2">
+              <span class="font-mono text-xs px-3 py-1 rounded-full" style="color:#ff0000;background:rgba(255,0,0,0.15);border:1px solid rgba(255,0,0,0.3)">▶ YOUTUBE</span>
+            </div>
+          </div>
+          <div class="p-6 flex flex-col flex-1">
+            <h3 class="font-bold text-base mb-3 leading-snug" style="color:#e6edf3">
+              Piensa como un atacante y actúa como un Blue Team en AWS
+            </h3>
+            <p class="text-sm leading-relaxed mb-4 flex-1" style="color:#8b949e">
+              Charla grabada sobre estrategias ofensivas y defensivas en AWS. Aprende a pensar como un atacante para fortalecer tu postura de seguridad como Blue Team.
+            </p>
+            <a href="https://www.youtube.com/watch?v=nA5jDpV4XDg" target="_blank" rel="noopener"
+               class="btn-primary w-full font-mono text-sm py-3 rounded-lg text-center">VER EN YOUTUBE ▶</a>
+          </div>
+        </div>
+
+        <!-- Evento Pasado 6 — YouTube: Respuesta automática a incidentes -->
+        <div class="fade-in card-tech flex flex-col overflow-hidden">
+          <div class="relative w-full h-52 flex-shrink-0">
+            <img src="https://img.youtube.com/vi/kiz4Ls7YRm0/maxresdefault.jpg" alt="Respuesta automática a incidentes utilizando servicios nativos de AWS"
+                 class="w-full h-full object-cover" />
+            <div class="absolute inset-0" style="background:linear-gradient(to bottom,rgba(13,17,23,0.1) 0%,rgba(13,17,23,0.75) 100%)"></div>
+            <div class="absolute top-3 left-3 flex gap-2">
+              <span class="font-mono text-xs px-3 py-1 rounded-full" style="color:#ff0000;background:rgba(255,0,0,0.15);border:1px solid rgba(255,0,0,0.3)">▶ YOUTUBE</span>
+            </div>
+          </div>
+          <div class="p-6 flex flex-col flex-1">
+            <h3 class="font-bold text-base mb-3 leading-snug" style="color:#e6edf3">
+              Nadie apretó un botón: Respuesta automática a incidentes con servicios nativos de AWS
+            </h3>
+            <p class="text-sm leading-relaxed mb-4 flex-1" style="color:#8b949e">
+              Charla sobre cómo automatizar la respuesta a incidentes de seguridad utilizando servicios nativos de AWS sin intervención manual.
+            </p>
+            <a href="https://www.youtube.com/watch?v=kiz4Ls7YRm0" target="_blank" rel="noopener"
+               class="btn-primary w-full font-mono text-sm py-3 rounded-lg text-center">VER EN YOUTUBE ▶</a>
+          </div>
+        </div>
+
+        <!-- Evento Pasado 7 — YouTube: DevSecOps en AWS -->
+        <div class="fade-in card-tech flex flex-col overflow-hidden">
+          <div class="relative w-full h-52 flex-shrink-0">
+            <img src="https://img.youtube.com/vi/SsTHmKWimPE/maxresdefault.jpg" alt="Implementando DevSecOps en AWS sin morir en el intento"
+                 class="w-full h-full object-cover" />
+            <div class="absolute inset-0" style="background:linear-gradient(to bottom,rgba(13,17,23,0.1) 0%,rgba(13,17,23,0.75) 100%)"></div>
+            <div class="absolute top-3 left-3 flex gap-2">
+              <span class="font-mono text-xs px-3 py-1 rounded-full" style="color:#ff0000;background:rgba(255,0,0,0.15);border:1px solid rgba(255,0,0,0.3)">▶ YOUTUBE</span>
+            </div>
+          </div>
+          <div class="p-6 flex flex-col flex-1">
+            <h3 class="font-bold text-base mb-3 leading-snug" style="color:#e6edf3">
+              Implementando DevSecOps en AWS sin morir en el intento
+            </h3>
+            <p class="text-sm leading-relaxed mb-4 flex-1" style="color:#8b949e">
+              Charla sobre cómo integrar seguridad en el ciclo de desarrollo con prácticas DevSecOps en AWS de forma práctica y sin complejidad innecesaria.
+            </p>
+            <a href="https://www.youtube.com/watch?v=SsTHmKWimPE" target="_blank" rel="noopener"
+               class="btn-primary w-full font-mono text-sm py-3 rounded-lg text-center">VER EN YOUTUBE ▶</a>
+          </div>
+        </div>
+
+        <!-- Evento Pasado 8 — YouTube: CloudFormation Hooks -->
+        <div class="fade-in card-tech flex flex-col overflow-hidden">
+          <div class="relative w-full h-52 flex-shrink-0">
+            <img src="https://img.youtube.com/vi/2JZOW4p7Yfk/maxresdefault.jpg" alt="CloudFormation Hooks: Validación Proactiva para una Nube Segura"
+                 class="w-full h-full object-cover" />
+            <div class="absolute inset-0" style="background:linear-gradient(to bottom,rgba(13,17,23,0.1) 0%,rgba(13,17,23,0.75) 100%)"></div>
+            <div class="absolute top-3 left-3 flex gap-2">
+              <span class="font-mono text-xs px-3 py-1 rounded-full" style="color:#ff0000;background:rgba(255,0,0,0.15);border:1px solid rgba(255,0,0,0.3)">▶ YOUTUBE</span>
+            </div>
+          </div>
+          <div class="p-6 flex flex-col flex-1">
+            <h3 class="font-bold text-base mb-3 leading-snug" style="color:#e6edf3">
+              CloudFormation Hooks: Validación Proactiva para una Nube Segura
+            </h3>
+            <p class="text-sm leading-relaxed mb-4 flex-1" style="color:#8b949e">
+              Charla sobre cómo usar CloudFormation Hooks para aplicar controles preventivos a escala: bloquear recursos inseguros antes de que existan en tu infraestructura AWS.
+            </p>
+            <a href="https://www.youtube.com/watch?v=2JZOW4p7Yfk" target="_blank" rel="noopener"
+               class="btn-primary w-full font-mono text-sm py-3 rounded-lg text-center">VER EN YOUTUBE ▶</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== LOGOS ==================== -->
+  <section class="relative py-16" style="background:#161b22;border-top:1px solid #30363d;border-bottom:1px solid #30363d">
+    <div class="max-w-6xl mx-auto px-6">
+      <p class="fade-in font-mono text-xs text-center tracking-widest mb-10" style="color:#6e7681">COMMUNITY LOGOS</p>
+      <div class="fade-in flex flex-wrap items-center justify-center gap-5 md:gap-8">
+        <div class="logo-item w-20 h-20 rounded-xl flex items-center justify-center p-3" style="background:#21262d;border:1px solid #30363d">
+          <img src="assets/logos/1.png" alt="" class="w-full h-full object-contain" class="logo-bar-img" data-img-hide /></div>
+        <div class="logo-item w-20 h-20 rounded-xl flex items-center justify-center p-3" style="background:#21262d;border:1px solid #30363d">
+          <img src="assets/logos/2.png" alt="" class="w-full h-full object-contain" class="logo-bar-img" data-img-hide /></div>
+        <div class="logo-item w-20 h-20 rounded-xl flex items-center justify-center p-3" style="background:#21262d;border:1px solid #30363d">
+          <img src="assets/logos/3.png" alt="" class="w-full h-full object-contain" class="logo-bar-img" data-img-hide /></div>
+        <div class="logo-item w-20 h-20 rounded-xl flex items-center justify-center p-3" style="background:#21262d;border:1px solid #30363d">
+          <img src="assets/logos/4.png" alt="" class="w-full h-full object-contain" class="logo-bar-img" data-img-hide /></div>
+        <div class="logo-item w-20 h-20 rounded-xl flex items-center justify-center p-3" style="background:#21262d;border:1px solid #30363d">
+          <img src="assets/logos/5.png" alt="" class="w-full h-full object-contain" class="logo-bar-img" data-img-hide /></div>
+        <div class="logo-item w-20 h-20 rounded-xl flex items-center justify-center p-3" style="background:#21262d;border:1px solid #30363d">
+          <img src="assets/logos/6.png" alt="" class="w-full h-full object-contain" class="logo-bar-img" data-img-hide /></div>
+        <div class="logo-item w-20 h-20 rounded-xl flex items-center justify-center p-3" style="background:#21262d;border:1px solid #30363d">
+          <img src="assets/logos/7.png" alt="" class="w-full h-full object-contain" class="logo-bar-img" data-img-hide /></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer style="background:#0d1117;border-top:1px solid #30363d">
+    <div class="max-w-6xl mx-auto px-6 py-12">
+      <div class="grid md:grid-cols-3 gap-8 mb-10">
+
+        <div>
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-10 h-10 rounded-lg flex items-center justify-center"
+                 style="background:rgba(10,115,255,0.12);border:1px solid #0a73ff">
+              <img src="assets/logos/17.png" alt="" class="w-7 h-7 object-contain" data-img-fallback />
+              <span class="hidden" style="color:#0a73ff">🛡️</span>
+            </div>
+            <div>
+              <div class="font-mono text-sm font-bold" style="color:#0a73ff">AWS_UG_SECURITY</div>
+              <div class="font-mono text-xs" style="color:#6e7681">ECUADOR.COMMUNITY</div>
+            </div>
+          </div>
+          <p class="text-sm leading-relaxed" style="color:#8b949e">
+            Comunidad dedicada a la seguridad en la nube AWS en Ecuador. Aprende, comparte y crece.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="font-mono text-xs tracking-widest mb-4" style="color:#6e7681">QUICK_LINKS</h4>
+          <div class="space-y-2">
+            <a href="#home"          class="footer-link block font-mono text-sm">→ Inicio</a>
+            <a href="#quienes-somos" class="footer-link block font-mono text-sm">→ Quiénes Somos</a>
+            <a href="#blog"          class="footer-link block font-mono text-sm">→ Blog</a>
+            <a href="#eventos"       class="footer-link block font-mono text-sm">→ Eventos</a>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="font-mono text-xs tracking-widest mb-4" style="color:#6e7681">CONNECT_WITH_US</h4>
+          <div class="space-y-3">
+            <a href="https://www.meetup.com/aws-user-group-security-ecuador/" target="_blank" rel="noopener"
+               class="social-link flex items-center gap-3">
+              <span class="w-8 h-8 rounded-lg flex items-center justify-center text-sm" style="background:rgba(10,115,255,0.08);border:1px solid #30363d">🤝</span>
+              <span class="font-mono text-sm">Meetup Group</span>
+            </a>
+            <a href="https://www.instagram.com/awssecurityecuador/" target="_blank" rel="noopener"
+               class="social-link flex items-center gap-3">
+              <span class="w-8 h-8 rounded-lg flex items-center justify-center text-sm" style="background:rgba(10,115,255,0.08);border:1px solid #30363d">📸</span>
+              <span class="font-mono text-sm">@awssecurityecuador</span>
+            </a>
+            <a href="https://www.linkedin.com/company/awssecurityecuador" target="_blank" rel="noopener"
+               class="social-link flex items-center gap-3">
+              <span class="w-8 h-8 rounded-lg flex items-center justify-center text-sm" style="background:rgba(10,115,255,0.08);border:1px solid #30363d">💼</span>
+              <span class="font-mono text-sm">LinkedIn</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex flex-col md:flex-row items-center justify-between gap-4 pt-8" style="border-top:1px solid #30363d">
+        <p class="font-mono text-xs" style="color:#6e7681">
+          © 2026 AWS_USER_GROUP_SECURITY_ECUADOR | POWERED_BY_COMMUNITY
+        </p>
+        <div class="flex items-center gap-3">
+          <span class="w-2 h-2 rounded-full animate-pulse" style="background:#00ff88"></span>
+          <span class="font-mono text-xs" style="color:#6e7681">COMUNIDAD_ACTIVA • GUAYAQUIL_EC</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==================== EVENT MODAL ==================== -->
+  <div id="event-modal" class="modal-overlay" role="dialog" aria-modal="true">
+    <div class="modal-content">
+      <div class="flex items-center justify-between mb-6">
+        <div>
+          <div class="font-mono text-xs mb-1 tracking-widest" style="color:#0a73ff">REGISTRO</div>
+          <h3 id="modal-event-title" class="font-bold text-lg" style="color:#e6edf3">Registrarse al Evento</h3>
+        </div>
+        <button class="modal-close-btn js-close-modal w-8 h-8 flex items-center justify-center">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+
+      <form id="event-form" class="space-y-4">
+        <div>
+          <label class="block font-mono text-xs tracking-widest mb-2" style="color:#8b949e">NOMBRE_COMPLETO *</label>
+          <input type="text" name="name" required placeholder="John Doe" />
+        </div>
+        <div>
+          <label class="block font-mono text-xs tracking-widest mb-2" style="color:#8b949e">EMAIL *</label>
+          <input type="email" name="email" required placeholder="nombre@empresa.com" />
+        </div>
+        <div>
+          <label class="block font-mono text-xs tracking-widest mb-2" style="color:#8b949e">EMPRESA / ORGANIZACIÓN</label>
+          <input type="text" name="company" placeholder="Opcional" />
+        </div>
+        <div>
+          <label class="block font-mono text-xs tracking-widest mb-2" style="color:#8b949e">NIVEL DE EXPERIENCIA</label>
+          <select name="level">
+            <option value="">Selecciona un nivel</option>
+            <option value="beginner">Principiante</option>
+            <option value="intermediate">Intermedio</option>
+            <option value="advanced">Avanzado</option>
+          </select>
+        </div>
+        <div class="pt-2">
+          <button type="submit" id="submit-btn" class="btn-primary w-full font-mono font-semibold text-sm py-3 rounded-lg">
+            CONFIRMAR REGISTRO
+          </button>
+        </div>
+      </form>
+
+      <p class="mt-4 text-center font-mono text-xs" style="color:#6e7681">
+        FREE_ACCESS • NO_SPAM • COMMUNITY_FIRST
+      </p>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

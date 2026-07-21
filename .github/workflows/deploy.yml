@@ -1,0 +1,131 @@
+name: Deploy to AWS
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: us-east-1
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.5.0
+
+      - name: Terraform Init
+        working-directory: ./terraform
+        run: terraform init
+
+      - name: Terraform Plan
+        working-directory: ./terraform
+        run: terraform plan -var="aws_profile=" -var="checkin_secret=${{ secrets.CHECKIN_SECRET }}" -var="turnstile_secret=${{ secrets.TURNSTILE_SECRET }}" -out=tfplan
+
+      - name: Terraform Apply
+        working-directory: ./terraform
+        run: terraform apply -auto-approve tfplan
+
+      - name: Get Terraform Outputs
+        id: tf-outputs
+        working-directory: ./terraform
+        run: |
+          echo "main_bucket=$(terraform output -raw website_bucket_name)" >> $GITHUB_OUTPUT
+          echo "main_distribution=$(terraform output -raw cloudfront_distribution_id)" >> $GITHUB_OUTPUT
+          echo "aisecurity_bucket=$(terraform output -raw aisecurity_bucket_name)" >> $GITHUB_OUTPUT
+          echo "aisecurity_distribution=$(terraform output -raw aisecurity_distribution_id)" >> $GITHUB_OUTPUT
+          echo "register_bucket=$(terraform output -raw register_bucket_name)" >> $GITHUB_OUTPUT
+          echo "register_distribution=$(terraform output -raw register_distribution_id)" >> $GITHUB_OUTPUT
+          echo "sponsors_bucket=$(terraform output -raw sponsors_bucket_name)" >> $GITHUB_OUTPUT
+          echo "sponsors_distribution=$(terraform output -raw sponsors_distribution_id)" >> $GITHUB_OUTPUT
+          echo "admin_bucket=$(terraform output -raw admin_bucket_name)" >> $GITHUB_OUTPUT
+          echo "admin_distribution=$(terraform output -raw admin_distribution_id)" >> $GITHUB_OUTPUT
+          echo "admin_cognito_domain=$(terraform output -raw admin_cognito_domain)" >> $GITHUB_OUTPUT
+          echo "admin_cognito_client_id=$(terraform output -raw admin_cognito_client_id)" >> $GITHUB_OUTPUT
+
+      - name: Sync main website to S3
+        run: |
+          aws s3 sync . s3://${{ steps.tf-outputs.outputs.main_bucket }}/ \
+            --exclude ".*" \
+            --exclude "*/.*" \
+            --exclude ".git/*" \
+            --exclude ".github/*" \
+            --exclude ".kiro/*" \
+            --exclude "terraform/*" \
+            --exclude "lambda/*" \
+            --exclude "sources/*" \
+            --exclude "aisecurity/*" \
+            --exclude "register/*" \
+            --exclude "sponsors/*" \
+            --exclude "admin/*" \
+            --exclude "README.md" \
+            --exclude "*.md" \
+            --exclude "*.sh" \
+            --exclude "*.pdf" \
+            --delete
+
+      - name: Sync aisecurity site to S3
+        run: |
+          aws s3 sync ./aisecurity s3://${{ steps.tf-outputs.outputs.aisecurity_bucket }}/ \
+            --exclude ".DS_Store" \
+            --delete
+
+      - name: Sync register site to S3
+        run: |
+          aws s3 sync ./register s3://${{ steps.tf-outputs.outputs.register_bucket }}/ \
+            --exclude ".DS_Store" \
+            --delete
+
+      - name: Sync sponsors site to S3
+        run: |
+          aws s3 sync ./sponsors s3://${{ steps.tf-outputs.outputs.sponsors_bucket }}/ \
+            --exclude ".DS_Store" \
+            --delete
+
+      - name: Generate admin config.js and sync admin site to S3
+        run: |
+          cat > ./admin/config.js <<EOF
+          window.ADMIN_CONFIG = {
+            region: "us-east-1",
+            userPoolDomain: "${{ steps.tf-outputs.outputs.admin_cognito_domain }}",
+            clientId: "${{ steps.tf-outputs.outputs.admin_cognito_client_id }}",
+            redirectUri: "https://admin.awssecurityecuador.com/",
+            apiBase: ""
+          };
+          EOF
+          aws s3 sync ./admin s3://${{ steps.tf-outputs.outputs.admin_bucket }}/ \
+            --exclude ".DS_Store" \
+            --delete
+
+      - name: Invalidate CloudFront caches
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ steps.tf-outputs.outputs.main_distribution }} \
+            --paths "/*"
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ steps.tf-outputs.outputs.aisecurity_distribution }} \
+            --paths "/*"
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ steps.tf-outputs.outputs.register_distribution }} \
+            --paths "/*"
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ steps.tf-outputs.outputs.sponsors_distribution }} \
+            --paths "/*"
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ steps.tf-outputs.outputs.admin_distribution }} \
+            --paths "/*"

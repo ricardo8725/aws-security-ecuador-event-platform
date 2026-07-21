@@ -1,0 +1,393 @@
+/* =============================================
+   AWS UG Security Ecuador
+   Color palette: servicescloudsec.systems
+   ============================================= */
+
+:root {
+  --bg-primary:    #0d1117;
+  --bg-secondary:  #161b22;
+  --bg-elevated:   #21262d;
+  --border:        #30363d;
+  --border-active: #0a73ff;
+  --text-primary:  #e6edf3;
+  --text-secondary:#8b949e;
+  --text-muted:    #6e7681;
+  --blue:          #0a73ff;
+  --blue-hover:    #388bfd;
+  --blue-dim:      rgba(10, 115, 255, 0.12);
+  --green:         #00ff88;
+  --green-dim:     rgba(0, 255, 136, 0.08);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+}
+
+::selection {
+  background: rgba(10, 115, 255, 0.3);
+  color: #fff;
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-primary); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--blue); }
+
+/* ---------- Grid pattern (from servicescloudsec.systems) ---------- */
+.tech-grid {
+  background-image:
+    linear-gradient(rgba(10, 115, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(10, 115, 255, 0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* ---------- Gradient text (blue → green) ---------- */
+.text-gradient-brand {
+  background: linear-gradient(90deg, var(--blue), var(--green));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* ---------- Card ---------- */
+.card-tech {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.card-tech:hover {
+  border-color: var(--border-active);
+  box-shadow: 0 0 20px rgba(10, 115, 255, 0.12);
+  transform: translateY(-3px);
+}
+
+.card-tech::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--blue), var(--green));
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.card-tech:hover::before { opacity: 1; }
+
+/* ---------- Buttons ---------- */
+.btn-primary {
+  background: var(--blue);
+  border: 1px solid var(--blue);
+  border-radius: 8px;
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.btn-primary:hover {
+  background: var(--blue-hover);
+  border-color: var(--blue-hover);
+  box-shadow: 0 0 24px rgba(10, 115, 255, 0.35);
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-secondary);
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.btn-secondary:hover {
+  border-color: var(--border-active);
+  color: var(--text-primary);
+  box-shadow: 0 0 16px rgba(10, 115, 255, 0.1);
+}
+
+/* ---------- Section badge ---------- */
+.section-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(10, 115, 255, 0.08);
+  border: 1px solid rgba(10, 115, 255, 0.25);
+  border-radius: 9999px;
+  padding: 0.35rem 1rem;
+}
+
+/* ---------- Navbar ---------- */
+#navbar {
+  background: transparent;
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+#navbar.scrolled {
+  background: rgba(13, 17, 23, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+
+/* Nav links — replaces inline onmouseover/onmouseout */
+.nav-link {
+  color: var(--text-secondary);
+  transition: color 0.2s ease;
+}
+.nav-link:hover { color: var(--text-primary); }
+.nav-link.active { color: #f5a133; }
+
+/* Card LinkedIn / leader links */
+.card-link {
+  color: var(--blue);
+  transition: color 0.2s ease;
+}
+.card-link:hover { color: var(--blue-hover); }
+
+/* Footer navigation links */
+.footer-link {
+  color: var(--text-secondary);
+  transition: color 0.2s ease;
+}
+.footer-link:hover { color: var(--blue); }
+
+/* Footer social links */
+.social-link {
+  color: var(--text-secondary);
+  transition: color 0.2s ease;
+}
+.social-link:hover { color: var(--text-primary); }
+
+/* Modal close button hover */
+.modal-close-btn {
+  color: var(--text-secondary);
+  transition: background 0.2s ease, color 0.2s ease;
+  border-radius: 8px;
+}
+.modal-close-btn:hover { background: var(--bg-elevated); }
+
+/* ---------- Blog cards ---------- */
+.blog-card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--blue), var(--green));
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.blog-card:hover::after { opacity: 1; }
+
+/* ---------- Fade-in on scroll ---------- */
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---------- Logo items ---------- */
+.logo-item {
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+.logo-item:hover {
+  border-color: var(--border-active) !important;
+  transform: translateY(-3px);
+}
+
+/* Logo bar images — opacity + hover handled via CSS, not inline JS */
+.logo-bar-img {
+  opacity: 0.55;
+  transition: opacity 0.2s ease;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.logo-item:hover .logo-bar-img { opacity: 1; }
+
+/* ---------- Modal ---------- */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+.modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+.modal-content {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.75rem;
+  max-width: 460px;
+  width: 100%;
+  transform: scale(0.95) translateY(8px);
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+.modal-overlay.active .modal-content {
+  transform: scale(1) translateY(0);
+}
+
+/* ---------- Input styles ---------- */
+.modal-content input,
+.modal-content select {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-primary);
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  transition: border-color 0.2s ease;
+  outline: none;
+  font-family: inherit;
+}
+.modal-content input:focus,
+.modal-content select:focus {
+  border-color: var(--border-active);
+}
+.modal-content input::placeholder { color: var(--text-muted); }
+
+select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%238b949e'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 1rem;
+  padding-right: 2.5rem;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+/* ---------- Hero section (personal site style) ---------- */
+.hero-section {
+  background:
+    linear-gradient(rgba(10, 115, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(10, 115, 255, 0.04) 1px, transparent 1px),
+    var(--bg-primary);
+  background-size: 60px 60px;
+  position: relative;
+}
+
+.hero-section::after {
+  content: '';
+  position: absolute;
+  top: -80px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 700px;
+  height: 320px;
+  background: radial-gradient(ellipse, rgba(10, 115, 255, 0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* ---------- Hero logo container (personal site style) ---------- */
+.hero-logo-container {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 28px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hero-logo-container:hover {
+  border-color: var(--blue);
+  box-shadow: 0 0 32px rgba(10, 115, 255, 0.2);
+}
+
+.hero-logo-icon {
+  width: 150px;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-logo-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 12px;
+}
+
+/* ---------- Section badge pill (personal site style) ---------- */
+.section-badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(10, 115, 255, 0.08);
+  border: 1px solid rgba(10, 115, 255, 0.25);
+  border-radius: 9999px;
+  padding: 5px 16px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--blue);
+  font-family: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+}
+
+.section-badge-pill::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  display: inline-block;
+  animation: badge-pulse 2s infinite;
+}
+
+@keyframes badge-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.25); }
+  50%       { box-shadow: 0 0 0 5px rgba(0, 255, 136, 0); }
+}
+
+/* ---------- Hero radial glow (legacy, kept for compatibility) ---------- */
+.hero-glow::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 800px; height: 500px;
+  background: radial-gradient(ellipse, rgba(10, 115, 255, 0.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* ---------- Stat divider line ---------- */
+.stat-divider {
+  width: 48px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--blue), var(--green));
+  border-radius: 2px;
+  margin: 0 auto 0.5rem;
+}
