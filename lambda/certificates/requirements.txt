@@ -1,0 +1,5 @@
+# Certificates Lambda dependencies.
+# Install into this folder before packaging, e.g.:
+#   pip install -r requirements.txt -t .
+reportlab==5.0.0
+pillow==12.2.0

@@ -7,37 +7,37 @@ variable "aws_region" {
 variable "aws_profile" {
   description = "AWS CLI profile for local development (leave empty in CI/CD)"
   type        = string
-  default     = "servicescloudsec-admin"
+  default     = ""
 }
 
 variable "project_name" {
   description = "Project identifier used for resource naming"
   type        = string
-  default     = "awssecurity-ecuador"
+  # Set in terraform.tfvars, e.g. "mysecurity-event"
 }
 
 variable "domain_name" {
   description = "Custom domain for the CloudFront distribution"
   type        = string
-  default     = "www.awssecurityecuador.com"
+  # Set in terraform.tfvars, e.g. "www.example.com"
 }
 
 variable "hosted_zone_name" {
   description = "Route53 hosted zone name (must already exist)"
   type        = string
-  default     = "awssecurityecuador.com"
+  # Set in terraform.tfvars, e.g. "example.com"
 }
 
 variable "github_org" {
   description = "GitHub organization or username that owns the repo"
   type        = string
-  default     = "ricardo8725"
+  # Set in terraform.tfvars, e.g. "your-github-username"
 }
 
 variable "github_repo" {
   description = "GitHub repository name"
   type        = string
-  default     = "awssecurityecuador"
+  # Set in terraform.tfvars, e.g. "your-repo-name"
 }
 
 variable "checkin_secret" {

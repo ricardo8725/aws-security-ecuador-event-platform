@@ -40,6 +40,17 @@ node_modules/
 # Lambda build artifacts
 lambda/*.zip
 
+# Lambda vendored dependencies (installed via `pip install -r requirements.txt -t .`)
+# Keep handlers, requirements.txt, and static assets; ignore installed packages.
+lambda/**/PIL/
+lambda/**/pillow.libs/
+lambda/**/pillow-*.dist-info/
+lambda/**/reportlab/
+lambda/**/reportlab-*.dist-info/
+lambda/**/qrcode/
+lambda/**/qrcode-*.dist-info/
+lambda/**/bin/
+
 # PDFs
 *.pdf
 
