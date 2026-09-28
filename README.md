@@ -71,7 +71,21 @@ The `.kiro/` directory shows how this was built with an AI IDE:
 ## Deploy it yourself
 
 Prerequisites: an AWS account, a Route53 hosted zone for your domain, Terraform
-`>= 1.5`, and (for CI/CD) a GitHub repo with OIDC configured.
+`>= 1.5`, Python 3.12, and (for CI/CD) a GitHub repo with OIDC configured.
+
+**1. Install Lambda dependencies.** Third-party packages are not committed —
+each function that needs them declares a `requirements.txt`. Install them into
+the function folder before packaging:
+
+```bash
+pip install -r lambda/register/requirements.txt      -t lambda/register
+pip install -r lambda/certificates/requirements.txt  -t lambda/certificates
+```
+
+The `admin`, `checkin`, and `sponsors` functions only use the AWS SDK (`boto3`),
+which the Lambda runtime already provides, so they need no extra install.
+
+**2. Provision the infrastructure with Terraform:**
 
 ```bash
 cd terraform
